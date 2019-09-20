@@ -1,0 +1,9 @@
+.btn-windesheim {
+  background-color: $color-windesheim-green;
+  border: $color-windesheim-green 1px solid;
+
+  &:hover{
+    background-color: $color-windesheim-green-hover;
+    border: $color-windesheim-green-hover 1px solid;
+  }
+}

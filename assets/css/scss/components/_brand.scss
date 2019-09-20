@@ -1,3 +1,20 @@
-.brand {
-  color: #000;
+.brand-container {
+  margin-left: 80px;
+  margin-top: 20px;
+}
+
+/* On screens that are 992px or less, set the background color to blue */
+@media screen and (max-width: 992px) {
+  .brand-container {
+    margin-left: 60px;
+    margin-top: 20px;
+  }
+}
+
+/* On screens that are 600px or less, set the background color to olive */
+@media screen and (max-width: 600px) {
+  .brand-container {
+    margin-left: 20px;
+    margin-top: 20px;
+  }
 }

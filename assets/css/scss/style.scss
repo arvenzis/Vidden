@@ -1,2 +1,9 @@
 @import "settings/_settings";
 @import "components/_components";
+@import "bootstrap";
+
+html {
+  font-family: "Roboto", sans-serif !important;
+  font: 0.875em/1.57143 "Roboto", sans-serif !important;
+  color: $color-windesheim-black !important;
+}
