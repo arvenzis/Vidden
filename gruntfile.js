@@ -14,28 +14,22 @@ module.exports = function(grunt) {
                 }
             }
         },
-        // watch: {
-        //     options: {
-        //         livereload: true
-        //     },
-        //
-        //     sass: {
-        //         options: {
-        //             implementation: sass
-        //         },
-        //         dist: {
-        //             files: {
-        //                 'dist/css/style.css': 'assets/css/scss/style.scss'
-        //             }
-        //         }
-        //     },
-        //
-        //     font: {
-        //         files: ['assets/fonts/**'],
-        //         tasks: ['clean:fonts', 'copy']
-        //     },
-        //
-        // },
+        watcher: {
+            css: {
+                files: 'assets/css/**/*.scss',
+                tasks: ['sass'],
+                options: {
+                    livereload: true,
+                },
+            },
+            js: {
+                files: 'assets/js/**/*.js',
+                tasks: ['uglify'],
+                options: {
+                    livereload: true,
+                },
+            }
+        },
         uglify: {
             options: {
                 preserveComments: false
@@ -49,8 +43,6 @@ module.exports = function(grunt) {
             }
         },
     });
-
-    // grunt.registerTask('watch', ['watch']);
 
     grunt.registerTask('build', ['sass', 'uglify']);
 
