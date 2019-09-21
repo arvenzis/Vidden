@@ -4,10 +4,5 @@ var app = new Vue({
         return {
             loggedIn: true
         };
-    },
-    // state: function() {
-    //     return {
-    //         loggedIn: true
-    //     }
-    // }
+    }
 });

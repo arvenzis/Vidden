@@ -1,0 +1,14 @@
+.action {
+  &__container {
+    color: $color-white;
+    background-color: $color-windesheim-green;
+    text-align: center;
+    padding: 30px;
+    margin-bottom: 10px;
+
+    &:hover {
+      background-color: $color-windesheim-green-hover;
+      cursor: pointer;
+    }
+  }
+}

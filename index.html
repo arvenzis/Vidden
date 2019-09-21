@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="dist/css/vidden.css" />
     <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet">
+    <link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
@@ -19,9 +20,41 @@
             <img src="assets/img/windesheim-logo.png" alt="Windesheim logo" width="170" height="108">
         </div>
         <login v-if="!loggedIn"></login>
+        <div class="container">
 
+            <welcome-alert></welcome-alert>
+
+            <div class="row">
+                <div class="col flex-column">
+                    <div class="action__container">
+                        <i class="fa fa-3x fa-plus"></i><br>
+                        Nieuw
+                    </div>
+                </div>
+                <div class="col flex-column">
+                    <div class="action__container">
+                        <i class="fa fa-3x fa-archive"></i><br>
+                        Archief
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col flex-column">
+                    <div class="action__container">
+                        <i class="fa fa-3x fa-cog"></i><br>
+                        Instellingen
+                    </div>
+                </div>
+                <div class="col flex-column">
+                    <div class="action__container">
+                        <i class="fa fa-3x fa-sign-out"></i><br>
+                        Uitloggen
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
+<!--<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>-->
 <script src="dist/js/vidden.min.js"></script>
-
 </html>
