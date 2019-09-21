@@ -23,7 +23,7 @@ module.exports = function(grunt) {
                 },
             },
             js: {
-                files: 'assets/js/**/*.js',
+                files: ['assets/js/components/*.js', 'assets/js/*.js'],
                 tasks: ['uglify'],
                 options: {
                     livereload: true,
@@ -37,7 +37,7 @@ module.exports = function(grunt) {
             dist: {
                 files: {
                     'dist/js/vidden.min.js': [
-                        'assets/js/**/*.js'
+                       ['assets/js/components/*.js', 'assets/js/*.js']
                     ],
                 }
             }

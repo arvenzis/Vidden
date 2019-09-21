@@ -3,61 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="shortcut icon" type="image/png" href="assets/img/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="dist/css/vidden.css" />
     <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
     <title>Vidden</title>
 </head>
 <body>
-    <div class="brand-container">
-        <img src="assets/img/windesheim-logo.png" alt="Windesheim logo" width="170" height="108">
-    </div>
-    <div class="container" style="margin-top: 80px">
-        <div class="row justify-content-center">
-            <div class="col-md-7">
-                <div class="card">
-                    <div class="card-header">Inloggen</div>
-
-                    <div class="card-body">
-                        <form method="POST">
-
-                            <div class="form-group row">
-                                <label for="email" class="col-md-4 col-form-label text-md-right">Gebruikernaam</label>
-
-                                <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" name="email" required autocomplete="email" autofocus>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">Wachtwoord</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password">
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-6 offset-md-4">
-                                    <a href="#">
-                                        Wachtwoord vergeten?
-                                    </a>
-                                </div>
-                            </div>
-
-                            <div class="form-group row mb-0">
-                                <div class="col-md-8 offset-md-4">
-                                    <button type="submit" class="btn btn-primary btn-windesheim">
-                                        Inloggen
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <div id="app">
+        <div class="brand-container">
+            <img src="assets/img/windesheim-logo.png" alt="Windesheim logo" width="170" height="108">
         </div>
+        <login v-if="!loggedIn"></login>
+
     </div>
 </body>
+<script src="dist/js/vidden.min.js"></script>
+
 </html>

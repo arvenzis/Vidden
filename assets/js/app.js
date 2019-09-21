@@ -1,0 +1,1 @@
+Vue.component('login', LoginComponent);
