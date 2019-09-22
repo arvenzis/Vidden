@@ -34,7 +34,7 @@ var WelcomeAlertComponent = Vue.extend({
     },
 
     template: '<div class="alert alert-info" role="alert" ref="welcomeAlert">\n' +
-        '               {{ greeting }} Arjen\n' +
+        '               {{ greeting }} Arjen!' +
         '                <button type="button" class="close" data-dismiss="alert" aria-label="Close" v-on:click="closeWelcomeAlert()">\n' +
         '                    <span aria-hidden="true">&times;</span>\n' +
         '                </button>\n' +
