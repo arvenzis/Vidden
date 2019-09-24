@@ -4,7 +4,7 @@
   height: 200px;
 }
 
-@include media-breakpoint-up(sm) {
+@media (max-width: 576px) {
   .header {
     top: 0;
     position: absolute;
