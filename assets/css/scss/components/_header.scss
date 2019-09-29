@@ -21,5 +21,10 @@
     top: 0;
     position: absolute;
     z-index: -999;
+
+    &__user {
+      bottom: 22px;
+      color: $color-white;
+    }
   }
 }
