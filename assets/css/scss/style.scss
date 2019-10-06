@@ -2,15 +2,29 @@
 @import "components/_components";
 @import "bootstrap";
 
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
 html {
   font: 0.875em/1.57143 "Roboto", sans-serif !important;
   color: $color-windesheim-black !important;
 }
 
 body {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#app {
+  flex: 1 0 auto;
 }
 
 .padding-right-0 {
   padding-right: 0;
+}
+
+.padding-left-0 {
+  padding-left: 0;
 }
