@@ -28,7 +28,14 @@ module.exports = function(grunt) {
                 options: {
                     livereload: true,
                 },
-            }
+            },
+            vueify: {
+                files: ['assets/js/components/**/*.vue'],
+                tasks: ['vueify'],
+                options: {
+                    livereload: true,
+                },
+            },
         },
         uglify: {
             options: {
@@ -42,8 +49,20 @@ module.exports = function(grunt) {
                 }
             }
         },
+        vueify: {
+            components: {
+                files: [
+                    {
+                        expand: false,
+                        src: 'assets/js/components/**/*.vue',
+                        dest: 'dist/js/',
+                        ext: '.vue.js'
+                    }
+                ]
+            }
+        },
     });
 
-    grunt.registerTask('build', ['sass', 'uglify']);
+    grunt.registerTask('build', ['sass', 'vueify', 'uglify']);
 
 };
