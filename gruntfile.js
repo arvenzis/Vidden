@@ -4,6 +4,7 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
+        clean: ['dist/'],
         sass: {
             options: {
                 implementation: sass
@@ -12,7 +13,7 @@ module.exports = function(grunt) {
                 files: {
                     'dist/css/vidden.css': 'assets/css/scss/style.scss'
                 }
-            }
+            },
         },
         watcher: {
             css: {
@@ -23,15 +24,8 @@ module.exports = function(grunt) {
                 },
             },
             js: {
-                files: ['assets/js/components/*.js', 'assets/js/*.js'],
-                tasks: ['uglify'],
-                options: {
-                    livereload: true,
-                },
-            },
-            vueify: {
-                files: ['assets/js/components/**/*.vue'],
-                tasks: ['vueify'],
+                files: 'assets/js/components/**/*.vue',
+                tasks: ['clean', 'vueify', 'browserify', 'uglify'],
                 options: {
                     livereload: true,
                 },
@@ -44,8 +38,18 @@ module.exports = function(grunt) {
             dist: {
                 files: {
                     'dist/js/vidden.min.js': [
-                       ['assets/js/components/*.js', 'assets/js/*.js']
+                       ['dist/js/bundle.js']
                     ],
+                }
+            }
+        },
+        browserify: {
+            dist: {
+                files: {
+                    'dist/js/bundle.js': ['dist/js/**/*.js']
+                },
+                options: {
+                    transform: ['vueify']
                 }
             }
         },
@@ -60,9 +64,8 @@ module.exports = function(grunt) {
                     }
                 ]
             }
-        },
+        }
     });
 
-    grunt.registerTask('build', ['sass', 'vueify', 'uglify']);
-
+    grunt.registerTask('build', ['clean', 'sass', 'vueify', 'browserify', 'uglify']);
 };
