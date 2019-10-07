@@ -1,1 +1,0 @@
-Vue.component('current-user', CurrentUserComponent);
