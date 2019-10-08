@@ -22,6 +22,7 @@
     "load-grunt-tasks": "^5.1.0",
     "node-sass": "^4.12.0",
     "postcss-sorting": "^5.0.1",
+    "vue-search-select": "^2.9.1",
     "vueify": "^9.4.1"
   },
   "dependencies": {

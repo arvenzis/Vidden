@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import CurrentUser from "./components/CurrentUser.vue";
+import CurrentUser from './components/CurrentUser.vue'
 
 import routes from './routes';
 
