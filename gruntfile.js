@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         clean: {
-            first: ['dist/'],
+            first: ['dist/js/'],
             last: ['dist/js/*.vue.js', 'dist/js/bundle.js']
         },
         sass: {
@@ -49,7 +49,7 @@ module.exports = function(grunt) {
         browserify: {
             dist: {
                 files: {
-                    'dist/js/bundle.js': ['assets/js/app.js', 'dist/js/**/*.js']
+                    'dist/js/bundle.js': ['assets/js/*.js', 'dist/js/**/*.js']
                 },
                 options: {
                     transform: ["babelify", "vueify"]

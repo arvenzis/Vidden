@@ -10,8 +10,6 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet">
     <link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-
     <title>Vidden</title>
 </head>
 <body>
@@ -77,38 +75,7 @@
             </div>
             <div class="header"></div>
 
-            <div class="container dashboard-container">
-                <div class="row m-0">
-                    <div class="col flex-column padding-left-0 padding-right-0">
-                        <router-link to="/about">
-                            <div class="action__container">
-                                <i class="fa fa-3x fa-plus"></i><br>
-                                NIEUW
-                            </div>
-                        </router-link>
-                    </div>
-                    <div class="col flex-column padding-right-0">
-                        <div class="action__container">
-                            <i class="fa fa-3x fa-archive"></i><br>
-                            BLADEREN
-                        </div>
-                    </div>
-                </div>
-                <div class="row m-0">
-                    <div class="col flex-column padding-left-0 padding-right-0">
-                        <div class="action__container">
-                            <i class="fa fa-3x fa-cog"></i><br>
-                            INSTELLINGEN
-                        </div>
-                    </div>
-                    <div class="col flex-column padding-right-0">
-                        <div class="action__container">
-                            <i class="fa fa-3x fa-sign-out"></i><br>
-                            UITLOGGEN
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <router-view />
         </div>
     </div>
     <footer class="footer">
