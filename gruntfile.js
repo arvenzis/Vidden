@@ -4,7 +4,10 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
-        clean: ['dist/'],
+        clean: {
+            first: ['dist/'],
+            last: ['dist/js/*.vue.js', 'dist/js/bundle.js']
+        },
         sass: {
             options: {
                 implementation: sass
@@ -24,7 +27,7 @@ module.exports = function(grunt) {
                 },
             },
             js: {
-                files: 'assets/js/components/**/*.vue',
+                files: 'assets/js/**/*.vue',
                 tasks: ['clean', 'vueify', 'browserify', 'uglify'],
                 options: {
                     livereload: true,
@@ -46,12 +49,15 @@ module.exports = function(grunt) {
         browserify: {
             dist: {
                 files: {
-                    'dist/js/bundle.js': ['dist/js/**/*.js']
+                    'dist/js/bundle.js': ['assets/js/app.js', 'dist/js/**/*.js']
                 },
                 options: {
-                    transform: ['vueify']
+                    transform: ["babelify", "vueify"]
                 }
             }
+        },
+        babel: {
+            "presets": ["vueify"]
         },
         vueify: {
             components: {
@@ -64,8 +70,8 @@ module.exports = function(grunt) {
                     }
                 ]
             }
-        }
+        },
     });
 
-    grunt.registerTask('build', ['clean', 'sass', 'vueify', 'browserify', 'uglify']);
+    grunt.registerTask('build', ['clean:first', 'sass', 'vueify', 'browserify', 'uglify', 'clean:last']);
 };
