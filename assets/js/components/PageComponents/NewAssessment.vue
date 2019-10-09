@@ -1,34 +1,56 @@
 <template>
     <div class="container dashboard-container">
-        <div class="row">
-            <div class="col-4">
-                <router-link to="/"><i class="fa fa-arrow-left"></i> Terug naar dashboard</router-link>
-            </div>
-            <div class="col-8">
-                <h2>Nieuwe beoordeling</h2>
-            </div>
-        </div>
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-        <div class="form-group">
-            <label>Soort beoordeling</label>
-            <select class="form-control">
-                <option value="Stage en afstuderen">Stage en afstuderen</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Student</label>
-            <model-select :options="options"
-                          v-model="student"
-                          placeholder="Selecteer een student">
-            </model-select>
+        <router-link to="/" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar dashboard</router-link>
+        <!-- ToDo: check if we can use this -->
+<!--        <div class="spinner-border" role="status">-->
+<!--            <span class="sr-only">Loading...</span>-->
+<!--        </div>-->
+        <div class="mt-5 mb-5">
+            <vue-good-wizard
+                    :steps="steps"
+                    :onNext="nextClicked"
+                    :onBack="backClicked">
+                <div slot="step-1">
+                    <h2 class="mb-3">Nieuwe beoordeling</h2>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Soort beoordeling</label>
+                        <select class="form-control">
+                            <option value="Stage en afstuderen">Stage en afstuderen</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Student</label>
+                        <model-select :options="options"
+                                      v-model="student"
+                                      placeholder="Selecteer een student">
+                        </model-select>
+                    </div>
+                </div>
+                <div slot="step-2">
+                    <h2 class="mb-3">Details</h2>
+                    <div class="form-group">
+                        <label class="font-weight-bold">Periode</label>
+                        <div class="col-6">
+                            <input type="date" name="start-date" class="form-control" />
+                        </div>
+                        <div class="col-6">
+                            <input type="date" name="end-date" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+                <div slot="step-3">
+                    <h4>Step 3</h4>
+                    <p>This is step 3</p>
+                </div>
+            </vue-good-wizard>
         </div>
     </div>
 </template>
 
 <script>
     import { ModelSelect } from 'vue-search-select'
+    import { GoodWizard } from 'vue-good-wizard';
+
     export default {
         name: 'new-assessment',
         data () {
@@ -44,10 +66,35 @@
                     value: '',
                     text: ''
                 },
+                steps: [
+                    {
+                        label: 'Algemene informatie',
+                        slot: 'step-1',
+                    },
+                    {
+                        label: 'Details',
+                        slot: 'step-2',
+                    },
+                    {
+                        label: 'Overzicht',
+                        slot: 'step-3',
+                    }
+                ],
+            }
+        },
+        methods: {
+            nextClicked(currentPage) {
+                console.log('next clicked', currentPage);
+                return true; //return false if you want to prevent moving to next page
+            },
+            backClicked(currentPage) {
+                console.log('back clicked', currentPage);
+                return true; //return false if you want to prevent moving to previous page
             }
         },
         components: {
-            ModelSelect
+            ModelSelect,
+            'vue-good-wizard': GoodWizard,
         }
     };
 </script>

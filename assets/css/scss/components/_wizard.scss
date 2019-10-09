@@ -1,0 +1,41 @@
+.wizard {
+  &__body {
+    border-radius: 2px !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+
+    &__actions {
+      background-color: $color-white !important;
+
+      &:hover {
+        color: $color-white !important;
+      }
+    }
+  }
+
+  &__next {
+    background-color: $color-windesheim-green !important;
+
+    &:hover {
+      background-color: $color-windesheim-green-hover !important;
+    }
+  }
+
+  &__back {
+    background-color: $color-windesheim-green !important;
+
+    &:hover {
+      background-color: $color-windesheim-green-hover !important;
+    }
+  }
+
+  &__step {
+    &__indicator {
+      background-color: $color-windesheim-light-blue !important;
+    }
+  }
+}
+
+.wizard__step.active .wizard__step__indicator {
+  background-color: $color-windesheim-green !important;
+}
