@@ -27,7 +27,7 @@ module.exports = function(grunt) {
                 },
             },
             js: {
-                files: 'assets/js/**/*.vue',
+                files: ['assets/js/**/*.vue', 'assets/js/**/*.js'],
                 tasks: ['clean:first', 'vueify', 'browserify', 'uglify', 'clean:last'],
                 options: {
                     livereload: true,
