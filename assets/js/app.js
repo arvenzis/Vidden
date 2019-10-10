@@ -25,7 +25,7 @@ new Vue({
         CurrentUser
     },
     methods: {
-        checkForm: function (e) {
+        validateCredentials: function (e) {
             const Url = 'https://vidden-api.azurewebsites.net/api/User/Authenticate/';
             e.preventDefault();
             axios.post(Url, {
