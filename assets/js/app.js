@@ -34,6 +34,7 @@ new Vue({
             }).then((response) => {
                 alert("Welkom, "+response.data.firstName+"!");
                 this.loggedIn = true;
+                router.push({ path: 'dashboard' });
             })
                 .catch((e) => {
                     console.error(e);
