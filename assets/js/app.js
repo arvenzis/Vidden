@@ -26,7 +26,7 @@ new Vue({
     },
     methods: {
         checkForm: function (e) {
-            const Url = 'http://vidden-api.azurewebsites.net/api/User/Authenticate/';
+            const Url = 'https://vidden-api.azurewebsites.net/api/User/Authenticate/';
             e.preventDefault();
             axios.post(Url, {
                 emailaddress: this.emailaddress,
