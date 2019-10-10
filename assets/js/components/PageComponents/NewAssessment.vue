@@ -8,18 +8,21 @@
         <div class="mt-5 mb-5">
             <vue-good-wizard
                     :steps="steps"
+                    :nextStepLabel="nextStepLabel"
+                    :previousStepLabel="previousStepLabel"
+                    :finalStepLabel="finalStepLabel"
                     :onNext="nextClicked"
                     :onBack="backClicked">
                 <div slot="step-1">
                     <h2 class="mb-3">Nieuwe beoordeling</h2>
                     <div class="form-group">
-                        <label class="font-weight-bold">Soort beoordeling</label>
+                        <label>Soort beoordeling</label>
                         <select class="form-control">
                             <option value="Stage en afstuderen">Stage en afstuderen</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="font-weight-bold">Student</label>
+                        <label>Student</label>
                         <model-select :options="options"
                                       v-model="student"
                                       placeholder="Selecteer een student">
@@ -29,7 +32,7 @@
                 <div slot="step-2">
                     <h2 class="mb-3">Details</h2>
                     <div class="form-group">
-                        <label class="font-weight-bold">Periode</label>
+                        <label>Periode</label>
                         <div class="col-6">
                             <input type="date" name="start-date" class="form-control" />
                         </div>
@@ -37,10 +40,19 @@
                             <input type="date" name="end-date" class="form-control" />
                         </div>
                     </div>
+                    <strong>Stage/afstudeerbedrijf</strong>
+                    <div class="form-group">
+                        <label>Naam</label>
+                        <input type="text" name="company" placeholder="IMPRES" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label>Adres</label>
+                        <input type="text" name="address" placeholder="Dokter van Deenweg 162, 8025 BM Zwolle" class="form-control" />
+                    </div>
                 </div>
                 <div slot="step-3">
-                    <h4>Step 3</h4>
-                    <p>This is step 3</p>
+                    <h2 class="mb-3">Overzicht</h2>
+
                 </div>
             </vue-good-wizard>
         </div>
@@ -60,25 +72,28 @@
                     { value: '2', text: 'Bernard Bos (S1111111)' },
                     { value: '3', text: 'Diederick Prins (S1111111)' },
                     { value: '4', text: 'Klaas Hakvoort (S1111111)' },
-                    { value: '5', text: 'Joost Reijmer (S1111111)' }
+                    { value: '5', text: 'Joost Reijmer (S1111111)' },
                 ],
                 student: {
                     value: '',
                     text: ''
                 },
+                previousStepLabel: 'Vorige',
+                nextStepLabel: 'Volgende',
+                finalStepLabel: 'Bevestigen',
                 steps: [
                     {
                         label: 'Algemene informatie',
-                        slot: 'step-1',
+                        slot: 'step-1'
                     },
                     {
                         label: 'Details',
-                        slot: 'step-2',
+                        slot: 'step-2'
                     },
                     {
                         label: 'Overzicht',
-                        slot: 'step-3',
-                    }
+                        slot: 'step-3'
+                    },
                 ],
             }
         },
