@@ -32,27 +32,34 @@
                 <div slot="step-2">
                     <h2 class="mb-3">Details</h2>
                     <div class="form-group">
-                        <label>Periode</label>
-                        <div class="col-6">
-                            <input type="date" name="start-date" class="form-control" />
-                        </div>
-                        <div class="col-6">
-                            <input type="date" name="end-date" class="form-control" />
+                        <label class="font-weight-bold">Periode</label>
+                        <div class="row">
+                            <div class="col-6">
+                                Van <input type="date" name="start-date" class="form-control" />
+                            </div>
+                            <div class="col-6">
+                                Tot <input type="date" name="end-date" class="form-control" />
+                            </div>
                         </div>
                     </div>
                     <strong>Stage/afstudeerbedrijf</strong>
                     <div class="form-group">
                         <label>Naam</label>
-                        <input type="text" name="company" placeholder="IMPRES" class="form-control" />
+                        <input type="text" name="company" placeholder="Windesheim" class="form-control" />
                     </div>
                     <div class="form-group">
                         <label>Adres</label>
-                        <input type="text" name="address" placeholder="Dokter van Deenweg 162, 8025 BM Zwolle" class="form-control" />
+                        <input type="text" name="address" placeholder="Campus 2, 8017 CA Zwolle" class="form-control" />
                     </div>
                 </div>
                 <div slot="step-3">
-                    <h2 class="mb-3">Overzicht</h2>
+                    <h2 class="mb-3">Overzicht beoordeling</h2>
+                    <strong>Karen Bosch (S1120990)</strong><br>
+                    <span>1 Sept. 2019 - 2 Feb. 2020</span><br><br>
 
+                    <strong>Stage/afstudeerbedrijf</strong><br>
+                    <span>Windesheim</span><br>
+                    <span>Campus 2, 8017 CA Zwolle</span><br>
                 </div>
             </vue-good-wizard>
         </div>
@@ -99,11 +106,9 @@
         },
         methods: {
             nextClicked(currentPage) {
-                console.log('next clicked', currentPage);
                 return true; //return false if you want to prevent moving to next page
             },
             backClicked(currentPage) {
-                console.log('back clicked', currentPage);
                 return true; //return false if you want to prevent moving to previous page
             }
         },
