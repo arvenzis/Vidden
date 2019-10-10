@@ -36,10 +36,10 @@ new Vue({
                 this.loggedIn = true;
                 router.push({ path: 'dashboard' });
             })
-                .catch((e) => {
-                    console.error(e);
-                    alert(e);
-                })
+            .catch((e) => {
+                console.error(e);
+                alert(e);
+            })
         }
     }
 });
