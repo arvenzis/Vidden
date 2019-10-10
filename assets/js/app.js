@@ -11,13 +11,35 @@ const router = new VueRouter({routes});
 new Vue({
     router,
     el: '#app',
-    data: function() {
-        return {
-            loggedIn: true
-        };
+    data: {
+        emailaddress: "",
+        password: "",
+        loggedIn: false,
+        function() {
+            return {
+                loggedIn
+            };
+        }
     },
     components: {
         CurrentUser
+    },
+    methods: {
+        checkForm: function (e) {
+            const Url = 'http://vidden-api.azurewebsites.net/api/User/Authenticate/';
+            e.preventDefault();
+            axios.post(Url, {
+                emailaddress: this.emailaddress,
+                password: this.password
+            }).then((response) => {
+                alert("Welkom, "+response.data.firstName+"!");
+                this.loggedIn = true;
+            })
+                .catch((e) => {
+                    console.error(e);
+                    alert(e);
+                })
+        }
     }
 });
 

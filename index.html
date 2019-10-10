@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,13 +22,14 @@
                             <div class="card-header">Inloggen</div>
 
                             <div class="card-body">
-                                <form method="POST">
+                                <form id="app" @submit="checkForm" method="post">
+                                    <!--action="/dashboard"-->
 
                                     <div class="form-group row">
-                                        <label for="email" class="col-md-4 col-form-label text-md-right">Gebruikernaam</label>
+                                        <label for="emailaddress" class="col-md-4 col-form-label text-md-right">Gebruikernaam</label>
 
                                         <div class="col-md-6">
-                                            <input id="email" type="email" class="form-control" name="email" required autocomplete="email" autofocus>
+                                            <input id="emailaddress" v-model="emailaddress" type="email" class="form-control" name="emailaddress" required autocomplete="email" autofocus>
                                         </div>
                                     </div>
 
@@ -36,7 +37,7 @@
                                         <label for="password" class="col-md-4 col-form-label text-md-right">Wachtwoord</label>
 
                                         <div class="col-md-6">
-                                            <input id="password" type="password" class="form-control" name="password" required autocomplete="current-password">
+                                            <input id="password" v-model="password" type="password" class="form-control" name="password" required autocomplete="current-password">
                                         </div>
                                     </div>
 
@@ -52,7 +53,7 @@
                                         <div class="col-md-8 offset-md-4">
                                             <button type="submit" class="btn btn-primary btn-windesheim">
                                                 Inloggen
-                                            </button>
+                                            </button>                                            
                                         </div>
                                     </div>
                                 </form>
@@ -78,9 +79,11 @@
             <router-view />
         </div>
     </div>
+
     <footer class="footer">
         Copyright © 2019 <a href="#">Vidden.nl</a>
     </footer>
 </body>
 <script src="dist/js/vidden.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </html>
