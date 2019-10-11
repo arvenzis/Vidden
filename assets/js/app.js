@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import CurrentUser from './components/CurrentUser.vue'
-
 import routes from './routes';
 
 Vue.use(VueRouter);
@@ -17,6 +16,7 @@ new Vue({
         loggedIn: false,
         loggedInUnsuccessfull: false,
         currentUser: "",
+        role: "",
         errorMessage: "",
         loggedInWaiting: false,
         waitMessage: "Moment geduld a.u.b.\nUw gegevens worden gecontroleerd...",
@@ -37,27 +37,25 @@ new Vue({
             axios.post(Url, {
                 emailaddress: this.emailaddress,
                 password: this.password
+            }).then((response) => {
+                this.loggedInWaiting = false;
+                this.loggedIn = true;
+                router.push({ path: 'dashboard' });
+                this.currentUser = response.data.fullName;
+                if (response.data.role == 0) { this.role = "Docent" };
+                if (response.data.role == 1) { this.role = "Student" };
             })
-                .then((response) => {
-                    this.loggedInWaiting = false;
-                    this.loggedIn = true;
-                    router.push({ path: 'dashboard' });
-                    this.currentUser = response.data.fullName;
-                })
                 .catch((e) => {
                     this.loggedInWaiting = false;
                     this.loggedInUnsuccessfull = true;
                     if (e == "Error: Request failed with status code 400") {
-                        this.errorMessage = "Uw gebruikersnaam en / of wachtwoord is onjuist.";                        
+                        this.errorMessage = "Uw gebruikersnaam en / of wachtwoord is onjuist.";
                     } else if (e == "Error: Request failed with status code 404") {
                         this.errorMessage = "Problemen met server, probeer het nog eens."
                     } else {
                         this.errorMessage = e;
                     }
                 })
-        },
-        someMethod() {
-            alert(this.currentUser);
         }
     }
 });
