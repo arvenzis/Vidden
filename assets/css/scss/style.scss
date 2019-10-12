@@ -36,3 +36,12 @@ a {
 a:hover {
   color: $color-windesheim-light-blue-hover;
 }
+
+#buttonLoader {
+  display: -webkit-flex; 
+  -webkit-align-items: center;
+}
+
+#spinner {
+  width:70px;
+}

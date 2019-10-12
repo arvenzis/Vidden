@@ -1,5 +1,5 @@
 <template id="current-user">
-    <span class="header__user">{{this.$parent.currentUser}} ({{this.$parent.role}})</span>
+    <span class="header__user">{{this.$parent.currentUser}} ({{this.$parent.accountNumber}})</span>
 </template>
 
 <script>

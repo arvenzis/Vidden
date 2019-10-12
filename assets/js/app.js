@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import CurrentUser from './components/CurrentUser.vue'
 import routes from './routes';
+import Spinner from 'vue-simple-spinner'
 
 Vue.use(VueRouter);
 
@@ -16,9 +17,9 @@ new Vue({
         loggedIn: false,
         loggedInUnsuccessfull: false,
         currentUser: "",
-        role: "",
+        accountNumber: "",
         errorMessage: "",
-        loggedInWaiting: false,
+        loading: false,
         waitMessage: "Moment geduld a.u.b.\nUw gegevens worden gecontroleerd...",
         function() {
             return {
@@ -27,30 +28,30 @@ new Vue({
         }
     },
     components: {
-        CurrentUser
+        CurrentUser,
+        Spinner
     },
     methods: {
         validateCredentials: function (e) {
             const Url = 'https://vidden-api.azurewebsites.net/api/User/Authenticate/';
             e.preventDefault();
-            this.loggedInWaiting = true;
+            this.loading = true;
             axios.post(Url, {
                 emailaddress: this.emailaddress,
                 password: this.password
             }).then((response) => {
-                this.loggedInWaiting = false;
+                this.loading = false;
                 this.loggedIn = true;
                 router.push({ path: 'dashboard' });
                 this.currentUser = response.data.fullName;
-                if (response.data.role == 0) { this.role = "Docent" };
-                if (response.data.role == 1) { this.role = "Student" };
+                this.accountNumber = response.data.emailAddress.substring(0,8);
             })
                 .catch((e) => {
-                    this.loggedInWaiting = false;
+                    this.loading = false;
                     this.loggedInUnsuccessfull = true;
                     if (e == "Error: Request failed with status code 400") {
                         this.errorMessage = "Uw gebruikersnaam en / of wachtwoord is onjuist.";
-                    } else if (e == "Error: Request failed with status code 404") {
+                    } else if (e == "Error: Request failed with status code 500") {
                         this.errorMessage = "Problemen met server, probeer het nog eens."
                     } else {
                         this.errorMessage = e;
@@ -63,6 +64,3 @@ new Vue({
 Vue.component('current-user', {
     template: '#current-user',
 });
-
-
-
