@@ -1,6 +1,7 @@
 .footer {
   flex-shrink: 0;
   background-color: $color-windesheim-grey;
-  padding: 10px;
-  text-align: center;
+  color: $color-windesheim-black;
+  padding: 15px;
+  min-height: 50px; 
 }
