@@ -2,29 +2,31 @@
   background-image: url("../../assets/img/190523-308_home_desktop.jpg");
   width: 100%;
   height: 200px;
+  position: absolute;
+  top: 0;
+  z-index: -999;
 
   &__user {
     position: absolute;
+    bottom: 25px;
+    color: $color-white;
     right: 0;
-    bottom: 10px;
-    color: $color-windesheim-light-blue;
-
-    &:hover {
-      color: $color-windesheim-light-blue-hover;
-      cursor: pointer;
-    }
   }
 }
 
-@media (max-width: 576px) {
+@media (min-width: 576px) {
   .header {
-    top: 0;
-    position: absolute;
-    z-index: -999;
+    top: 140px;
+    position: inherit;
 
     &__user {
-      bottom: 22px;
-      color: $color-white;
+      bottom: 20px;
+      color: $color-windesheim-light-blue;
+  
+      &:hover {
+        color: $color-windesheim-light-blue-hover;
+        cursor: pointer;
+      }
     }
   }
 }
