@@ -20,7 +20,6 @@ new Vue({
         accountNumber: "",
         errorMessage: "",
         loading: false,
-        waitMessage: "Moment geduld a.u.b.\nUw gegevens worden gecontroleerd...",
         function() {
             return {
                 loggedIn
@@ -44,7 +43,7 @@ new Vue({
                 this.loggedIn = true;
                 router.push({ path: 'dashboard' });
                 this.currentUser = response.data.fullName;
-                this.accountNumber = response.data.emailAddress.substring(0,8);
+                this.accountNumber = response.data.accountNumber;
             })
                 .catch((e) => {
                     this.loading = false;
