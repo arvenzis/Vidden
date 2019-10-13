@@ -18,13 +18,11 @@
     <div id="app">
 
         <div id="header-section">
-            <div class="row">
-                <div class="col-1">
-                    <div class="logo-container"></div>
-                </div>
-                <div class="col-10" v-if="loggedIn">
-                    <current-user></current-user>
-                </div>
+            <div class="col-1">
+                <div class="logo-container"></div>
+            </div>
+            <div class="col-10" v-if="loggedIn">
+                <current-user></current-user>
             </div>
             <div class="header"></div>    
         </div>
