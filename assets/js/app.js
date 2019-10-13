@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import CurrentUser from './components/CurrentUser.vue'
-
 import routes from './routes';
+import Spinner from 'vue-simple-spinner'
 
 Vue.use(VueRouter);
 
@@ -15,6 +15,11 @@ new Vue({
         emailaddress: "",
         password: "",
         loggedIn: false,
+        loggedInUnsuccessfull: false,
+        currentUser: "",
+        accountNumber: "",
+        errorMessage: "",
+        loading: false,
         function() {
             return {
                 loggedIn
@@ -22,25 +27,39 @@ new Vue({
         }
     },
     components: {
-        CurrentUser
+        CurrentUser,
+        Spinner
     },
     methods: {
         validateCredentials: function (e) {
             const Url = 'https://vidden-api.azurewebsites.net/api/User/Authenticate/';
             e.preventDefault();
+            this.loading = true;
             axios.post(Url, {
                 emailaddress: this.emailaddress,
                 password: this.password
             }).then((response) => {
-                alert("Welkom, "+response.data.firstName+"!");
+                this.loading = false;
                 this.loggedIn = true;
                 router.push({ path: 'dashboard' });
+                this.currentUser = response.data.fullName;
+                this.accountNumber = response.data.accountNumber;
             })
-            .catch((e) => {
-                console.error(e);
-                alert(e);
-            })
+                .catch((e) => {
+                    this.loading = false;
+                    this.loggedInUnsuccessfull = true;
+                    if (e == "Error: Request failed with status code 400") {
+                        this.errorMessage = "Uw gebruikersnaam en / of wachtwoord is onjuist.";
+                    } else if (e == "Error: Request failed with status code 500") {
+                        this.errorMessage = "Problemen met server, probeer het nog eens."
+                    } else {
+                        this.errorMessage = e;
+                    }
+                })
         }
     }
 });
 
+Vue.component('current-user', {
+    template: '#current-user',
+});
