@@ -24,7 +24,7 @@
             <div class="col-10" v-if="loggedIn">
                 <current-user></current-user>
             </div>
-            <div class="header"></div>    
+            <div class="header"></div>
         </div>
 
         <div v-if="!loggedIn">
@@ -37,7 +37,7 @@
                             <div class="card-body">
                                 <form id="app" @submit="validateCredentials" method="post">
                                     <div class="form-group row">
-                                        <label for="emailaddress" class="col-md-4 col-form-label text-md-right">Gebruikernaam</label>
+                                        <label for="emailaddress" class="col-md-4 col-form-label text-md-right">Gebruikersnaam</label>
 
                                         <div class="col-md-6">
                                             <input id="emailaddress" v-model="emailaddress" type="email" class="form-control" name="emailaddress" required autocomplete="email" autofocus>
@@ -52,6 +52,12 @@
                                         </div>
                                     </div>
 
+                                    <div v-if="loggedInUnsuccessfull" class="form-group row">
+                                        <label class="alert alert-danger col-md-6 offset-md-4" role="alert">
+                                            {{errorMessage}}
+                                        </label>
+                                    </div>
+
                                     <div class="form-group row">
                                         <div class="col-md-6 offset-md-4">
                                             <a href="#">
@@ -61,10 +67,11 @@
                                     </div>
 
                                     <div class="form-group row mb-0">
-                                        <div class="col-md-8 offset-md-4">
+                                        <div class="col-md-8 offset-md-4" id="buttonLoader">
                                             <button type="submit" class="btn btn-primary btn-windesheim">
                                                 Inloggen
                                             </button>
+                                            <spinner id="spinner" v-if="loading"></spinner>
                                         </div>
                                     </div>
                                 </form>
