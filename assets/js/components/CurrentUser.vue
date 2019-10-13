@@ -1,5 +1,5 @@
-<template>
-    <span class="header__user">Arjen Korevaar (docent)</span>
+<template id="current-user">
+    <span class="header__user">{{this.$parent.currentUser}} ({{this.$parent.accountNumber}})</span>
 </template>
 
 <script>

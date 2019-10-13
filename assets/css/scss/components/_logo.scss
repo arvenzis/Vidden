@@ -1,0 +1,16 @@
+.logo-container {
+  margin: 20px 0px 30px 20px;
+  background-image: url("../../assets/img/w.svg");
+  width: 104px;
+  height: 100px;
+  padding: 15px;
+}
+
+@media screen and (min-width: 576px) {
+  .logo-container {
+    margin: 20px 0px 20px 60px;
+    background-image: url("../../assets/img/logo-windesheim.svg");
+    width: 173px;
+    height: 111px;
+  }
+}
