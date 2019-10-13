@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import CurrentUser from './components/CurrentUser.vue'
-import routes from './routes';
+import routes from './routes'
 import Spinner from 'vue-simple-spinner'
+import VueSession from 'vue-session'
 
 Vue.use(VueRouter);
+Vue.use(VueSession);
 
 const router = new VueRouter({routes});
 
@@ -39,6 +41,10 @@ new Vue({
                 emailaddress: this.emailaddress,
                 password: this.password
             }).then((response) => {
+                if (response.status === 200 && 'token' in response.data) {
+                    this.$session.start();
+                    this.$session.set('jwt', response.data.token);
+                }
                 this.loading = false;
                 this.loggedIn = true;
                 router.push({ path: 'dashboard' });
