@@ -72,12 +72,11 @@
         name: 'new-assessment',
         data () {
             return {
-                options: [ //ToDo: Dynamische invulling
-                    { value: '1', text: 'Karen Bosch (S1120990)' },
-                    { value: '2', text: 'Bernard Bos (S1111111)' },
-                    { value: '3', text: 'Diederick Prins (S1111111)' },
-                    { value: '4', text: 'Klaas Hakvoort (S1111111)' },
-                    { value: '5', text: 'Joost Reijmer (S1111111)' },
+                options: [
+                    console.log(this.getStudents()),
+                    // this.getStudents().forEach(function(item) {
+                    //     return { value: item.id, text: item.fullName + '(' + item.accountNumber + ')'}
+                    // }),
                 ],
                 student: {
                     value: '',
@@ -115,8 +114,12 @@
                     return this.validateStepTwo();
                 }
             },
-            backClicked(currentPage) {
-                return true;
+            getStudents() {
+                const Url = 'https://vidden-api.azurewebsites.net/api/Student/GetStudents';
+                axios.get(Url, { headers: {"Authorization" : this.$session.get('jwt')} })
+                     .then(function (response) {
+                         return response.data;
+                     });
             },
             getTemplateType() {
                 // const Url = 'https://vidden-api.azurewebsites.net/api/template/';
