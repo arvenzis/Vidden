@@ -16,7 +16,7 @@ new Vue({
     data: {
         emailaddress: "",
         password: "",
-        loggedIn: false,
+        loggedIn: true,
         loggedInUnsuccessfull: false,
         currentUser: "",
         accountNumber: "",
