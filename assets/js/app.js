@@ -17,7 +17,7 @@ new Vue({
         emailaddress: "",
         password: "",
         loggedIn: false,
-        loggedInUnsuccessfull: false,
+        loggedInUnsuccessful: false,
         currentUser: "",
         accountNumber: "",
         errorMessage: "",
@@ -53,7 +53,7 @@ new Vue({
             })
                 .catch((e) => {
                     this.loading = false;
-                    this.loggedInUnsuccessfull = true;
+                    this.loggedInUnsuccessful = true;
                     if (e == "Error: Request failed with status code 400") {
                         this.errorMessage = "Uw gebruikersnaam en / of wachtwoord is onjuist.";
                     } else if (e == "Error: Request failed with status code 500") {
