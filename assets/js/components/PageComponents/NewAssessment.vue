@@ -19,7 +19,7 @@
                     </div>
                     <div class="form-group">
                         <label>Student</label>
-                        <model-select :options="options"
+                        <model-select :options="studentOptions"
                                       v-model="student"
                                       placeholder="Selecteer een student">
                         </model-select>
@@ -72,12 +72,7 @@
         name: 'new-assessment',
         data () {
             return {
-                options: [
-                    console.log(this.getStudents()),
-                    // this.getStudents().forEach(function(item) {
-                    //     return { value: item.id, text: item.fullName + '(' + item.accountNumber + ')'}
-                    // }),
-                ],
+                studentOptions: [],
                 student: {
                     value: '',
                     text: ''
@@ -114,13 +109,6 @@
                     return this.validateStepTwo();
                 }
             },
-            getStudents() {
-                const Url = 'https://vidden-api.azurewebsites.net/api/Student/GetStudents';
-                axios.get(Url, { headers: {"Authorization" : this.$session.get('jwt')} })
-                     .then(function (response) {
-                         return response.data;
-                     });
-            },
             getTemplateType() {
                 // const Url = 'https://vidden-api.azurewebsites.net/api/template/';
                 // axios.get(Url).then((response) => {
@@ -148,6 +136,18 @@
 
                 return true;
             },
+        },
+        mounted () {
+            const Url = 'https://vidden-api.azurewebsites.net/api/Student/GetStudents';
+            axios
+                .get(Url, { headers: {"Authorization" : this.$session.get('jwt')} })
+                .then(response => {
+                    let students = [];
+                    response.data.forEach(function(student) {
+                        students.push({ value: student.id, text: student.fullName + ' (' + student.accountNumber + ')'});
+                    });
+                    this.studentOptions = students;
+                });
         },
         components: {
             ModelSelect,
