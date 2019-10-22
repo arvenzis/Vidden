@@ -67,6 +67,9 @@
 <script>
     import { ModelSelect } from 'vue-search-select'
     import { GoodWizard } from 'vue-good-wizard';
+    import axios from 'axios';
+
+    const Url = "https://vidden-api.azurewebsites.net/api/";
 
     export default {
         name: 'new-assessment',
@@ -99,6 +102,17 @@
                     },
                 ],
             }
+        },
+        mounted () {
+            const Url = `${this.Url}api/Student/GetStudents`;
+            axios.get(Url, { headers: {"Authorization" : this.$session.get('jwt')} })
+                .then(response => {
+                    let students = [];
+                    response.data.forEach(function(student) {
+                        students.push({ value: student.id, text: student.fullName + ' (' + student.accountNumber + ')'});
+                    });
+                    this.studentOptions = students;
+                });
         },
         methods: {
             nextClicked(currentPage) {
@@ -136,18 +150,6 @@
 
                 return true;
             },
-        },
-        mounted () {
-            const Url = 'https://vidden-api.azurewebsites.net/api/Student/GetStudents';
-            axios
-                .get(Url, { headers: {"Authorization" : this.$session.get('jwt')} })
-                .then(response => {
-                    let students = [];
-                    response.data.forEach(function(student) {
-                        students.push({ value: student.id, text: student.fullName + ' (' + student.accountNumber + ')'});
-                    });
-                    this.studentOptions = students;
-                });
         },
         components: {
             ModelSelect,
