@@ -1,4 +1,4 @@
-<template>
+<template id="dashboard-template">
     <div class="container dashboard-container">
         <div class="row m-0">
             <div class="col flex-column padding-left-0 padding-right-0">
@@ -28,7 +28,7 @@
                 </router-link>
             </div>
             <div class="col flex-column padding-right-0">
-                <div class="action__container">
+                <div class="action__container" @click="this.$parent.logout">
                     <i class="fa fa-3x fa-sign-out"></i><br>
                     UITLOGGEN
                 </div>
