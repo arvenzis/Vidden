@@ -24,7 +24,7 @@ new Vue({
         accountNumber: "",
         errorMessage: "",
         succesMessage: "",
-        loaded: false,
+        loading: false,
         function() {
             return {
                 loggedIn
