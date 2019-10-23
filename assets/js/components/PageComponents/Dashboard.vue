@@ -9,7 +9,7 @@
                     </div>
                 </router-link>
             </div>
-            <div class="col flex-column padding-right-0" @click="getAssessments">
+            <div class="col flex-column padding-right-0">
                 <router-link to="/browse" class="action">
                     <div class="action__container">
                         <i class="fa fa-3x fa-archive"></i><br>
@@ -39,21 +39,6 @@
 
 <script>
     export default {
-        name: 'dashboard',
-        methods: {
-            getAssessments: function (e) {
-                const Url = 'https://vidden-api.azurewebsites.net/api/Assessment/GetAssessments/';
-                e.preventDefault();
-                const yourConfig = {
-                    headers: {
-                        Authorization: this.$session.get("jwt")
-                    }
-                }
-                axios.get(Url, yourConfig
-                ).then((response) => {
-                    const allAssessments = response.data;
-                })
-            }
-        }
+        name: 'dashboard'
     };
 </script>
