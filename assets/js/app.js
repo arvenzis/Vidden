@@ -71,32 +71,6 @@ new Vue({
                     }
                 })
         },
-        getStudents: function (e) {
-            const Url = 'https://vidden-api.azurewebsites.net/api/Student/GetStudents/';
-            e.preventDefault();
-            const yourConfig = {
-                headers: {
-                    Authorization: this.$session.get("jwt")
-                }
-            }
-            axios.get(Url, yourConfig
-            ).then((response) => {
-                const allStudents = response.data;
-            })
-        },
-        getAssessments: function (e) {
-            const Url = 'https://vidden-api.azurewebsites.net/api/Assessment/GetAssessments/';
-            e.preventDefault();
-            const yourConfig = {
-                headers: {
-                    Authorization: this.$session.get("jwt")
-                }
-            }
-            axios.get(Url, yourConfig
-            ).then((response) => {
-                const allAssessments = response.data;
-            })
-        },
         logout: function () {
             this.$session.destroy();
             this.loggedIn = false;
