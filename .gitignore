@@ -556,4 +556,7 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
+# Other files
+Web.config
+
 # End of https://www.gitignore.io/api/node,vuejs,grunt,visualstudiocode,visualstudio,phpstorm
