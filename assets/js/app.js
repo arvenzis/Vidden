@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import CurrentUser from './components/CurrentUser.vue'
-import routes from './routes';
+import Dashboard from './components/PageComponents/Dashboard.vue'
+import routes from './routes'
 import Spinner from 'vue-simple-spinner'
+import VueSession from 'vue-session'
 
-Vue.use(VueRouter);
+[VueRouter, VueSession].forEach((x) => Vue.use(x))
 
 const router = new VueRouter({routes});
 
@@ -16,9 +18,11 @@ new Vue({
         password: "",
         loggedIn: false,
         loggedInUnsuccessfull: false,
+        loggedOutSuccessfull: false,
         currentUser: "",
         accountNumber: "",
         errorMessage: "",
+        succesMessage: "",
         loading: false,
         function() {
             return {
@@ -26,9 +30,15 @@ new Vue({
             };
         }
     },
+    created: function () {
+        if (Vue.prototype.$session.exists()) {
+            this.loggedIn = true;
+        }
+    },
     components: {
         CurrentUser,
-        Spinner
+        Dashboard,
+        Spinner,
     },
     methods: {
         validateCredentials: function (e) {
@@ -39,11 +49,15 @@ new Vue({
                 emailaddress: this.emailaddress,
                 password: this.password
             }).then((response) => {
+                if (response.status === 200 && 'token' in response.data) {
+                    this.$session.start();
+                    this.$session.set('jwt', response.data.token);
+                }
                 this.loading = false;
-                this.loggedIn = true;
-                router.push({ path: 'dashboard' });
+                this.loggedIn = true;                
                 this.currentUser = response.data.fullName;
                 this.accountNumber = response.data.accountNumber;
+                router.push({ path: 'dashboard' });
             })
                 .catch((e) => {
                     this.loading = false;
@@ -56,8 +70,19 @@ new Vue({
                         this.errorMessage = e;
                     }
                 })
-        }
+        },
+        logout: function () {
+            this.$session.destroy();
+            this.loggedIn = false;
+            this.loggedOutSuccessfull = true;
+            this.succesMessage = "U bent uitgelogd."
+            this.$router.push('/');            
+        }   
     }
+});
+
+Vue.component('dashboard', {
+    template: '#dashboard-template'
 });
 
 Vue.component('current-user', {
