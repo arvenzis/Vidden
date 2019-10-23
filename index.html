@@ -15,7 +15,7 @@
     <title>Vidden</title>
 </head>
 <body>
-    <div id="app">
+    <div id="app" v-cloak>
 
         <div id="header-section">
             <div class="col-1">
@@ -27,9 +27,8 @@
             <div class="header"></div>
         </div>
 
-        <div v-if="!loggedIn">
-            <app-login></app-login>
-        </div>
+        <app-login v-if="!loggedIn"></app-login>
+
 
         <div v-if="loggedIn">
             <router-view />
@@ -38,7 +37,7 @@
     <footer class="footer">
         <div class="container">
             <span class="text-muted text-left">&copy; 2019 Vidden</span>
-          </div>
+        </div>
     </footer>
 </body>
 <script src="dist/js/bundle.min.js"></script>

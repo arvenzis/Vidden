@@ -28,6 +28,11 @@
                                     {{errorMessage}}
                                 </label>
                             </div>
+                            <div v-if="loggedOutSuccessful" class="form-group row">
+                                <label class="alert alert-success col-md-6 offset-md-4" role="alert">
+                                    {{successMessage}}
+                                </label>
+                            </div>
 
                             <div class="form-group row">
                                 <div class="col-md-6 offset-md-4">
@@ -54,12 +59,32 @@
 </template>
 
 <script>
+    import Vue from 'vue'
     import axios from 'axios'
-    console.log(router);
+    import VueSession from "vue-session";
+    import Spinner from 'vue-simple-spinner'
+
+    Vue.use(VueSession);
 
     export default {
         name: 'app-login',
 
+        data() {
+            return {
+                loggedInUnsuccessful: false,
+                loggedOutSuccessful: false,
+                currentUser: "",
+                accountNumber: "",
+                errorMessage: "",
+                successMessage: "",
+                loading: false,
+            }
+        },
+        created: function () {
+            if (Vue.prototype.$session.exists()) {
+                this.loggedIn = true;
+            }
+        },
         methods: {
             validateCredentials: function (e) {
                 const Url = 'https://vidden-api.azurewebsites.net/api/User/Authenticate/';
@@ -74,23 +99,25 @@
                         this.$session.set('jwt', response.data.token);
                     }
                     this.loading = false;
-                    this.loggedIn = true;
-                    this.router.push({ path: 'dashboard' });
+                    this.$root.loggedIn = true;
                     this.currentUser = response.data.fullName;
                     this.accountNumber = response.data.accountNumber;
                 })
-                    .catch((e) => {
-                        this.loading = false;
-                        this.loggedInUnsuccessful = true;
-                        if (e == "Error: Request failed with status code 400") {
-                            this.errorMessage = "Uw gebruikersnaam en / of wachtwoord is onjuist.";
-                        } else if (e == "Error: Request failed with status code 500") {
-                            this.errorMessage = "Problemen met server, probeer het nog eens."
-                        } else {
-                            this.errorMessage = e;
-                        }
-                    })
-            }
+                .catch((e) => {
+                    this.loading = false;
+                    this.loggedInUnsuccessfull = true;
+                    if (e === "Error: Request failed with status code 400") {
+                        this.errorMessage = "Uw gebruikersnaam en / of wachtwoord is onjuist.";
+                    } else if (e === "Error: Request failed with status code 500") {
+                        this.errorMessage = "Problemen met server, probeer het nog eens."
+                    } else {
+                        this.errorMessage = e;
+                    }
+                })
+            },
+        },
+        components: {
+            Spinner
         }
     };
 </script>
