@@ -11,7 +11,7 @@
             </div>
             <div class="col flex-column padding-right-0">
                 <router-link to="/browse" class="action">
-                    <div class="action__container">
+                    <div class="action__container" @click="this.$parent.getAssessments">
                         <i class="fa fa-3x fa-archive"></i><br>
                         BLADEREN
                     </div>
