@@ -6,8 +6,7 @@ import routes from './routes'
 import Spinner from 'vue-simple-spinner'
 import VueSession from 'vue-session'
 
-Vue.use(VueRouter);
-Vue.use(VueSession);
+[VueRouter, VueSession].forEach((x) => Vue.use(x))
 
 const router = new VueRouter({routes});
 
