@@ -1,10 +1,6 @@
 <template>
     <div class="container dashboard-container">
         <router-link to="/" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar dashboard</router-link>
-        <!-- ToDo: check if we can use this -->
-<!--        <div class="spinner-border" role="status">-->
-<!--            <span class="sr-only">Loading...</span>-->
-<!--        </div>-->
         <div class="mt-5 mb-5">
             <vue-good-wizard
                     :steps="steps"
@@ -17,13 +13,13 @@
                     <h2 class="mb-3">Nieuwe beoordeling</h2>
                     <div class="form-group">
                         <label>Soort beoordeling</label>
-                        <select class="form-control">
+                        <select class="form-control" v-bind="getTemplateType()">
                             <option value="Stage en afstuderen">Stage en afstuderen</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label>Student</label>
-                        <model-select :options="options"
+                        <model-select :options="studentOptions"
                                       v-model="student"
                                       placeholder="Selecteer een student">
                         </model-select>
@@ -35,21 +31,23 @@
                         <label class="font-weight-bold">Periode</label>
                         <div class="row">
                             <div class="col-6">
-                                Van <input type="date" name="start-date" class="form-control" />
+                                <label for="start-date">Van</label>
+                                <input type="date" name="start-date" id="start-date" class="form-control" v-model="startDate" />
                             </div>
                             <div class="col-6">
-                                Tot <input type="date" name="end-date" class="form-control" />
+                                <label for="end-date">Tot</label>
+                                <input type="date" name="end-date" id="end-date" class="form-control" v-model="endDate" />
                             </div>
                         </div>
                     </div>
                     <strong>Stage/afstudeerbedrijf</strong>
                     <div class="form-group">
-                        <label>Naam</label>
-                        <input type="text" name="company" placeholder="Windesheim" class="form-control" />
+                        <label for="company">Naam</label>
+                        <input type="text" name="company" id="company" placeholder="Windesheim" v-model="company" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label>Adres</label>
-                        <input type="text" name="address" placeholder="Campus 2, 8017 CA Zwolle" class="form-control" />
+                        <label for="address">Adres</label>
+                        <input type="text" name="address" id="address" placeholder="Campus 2, 8017 CA Zwolle" v-model="address" class="form-control" />
                     </div>
                 </div>
                 <div slot="step-3">
@@ -69,22 +67,21 @@
 <script>
     import { ModelSelect } from 'vue-search-select'
     import { GoodWizard } from 'vue-good-wizard';
+    import axios from 'axios';
 
     export default {
         name: 'new-assessment',
         data () {
             return {
-                options: [ //ToDo: Dynamische invulling
-                    { value: '1', text: 'Karen Bosch (S1120990)' },
-                    { value: '2', text: 'Bernard Bos (S1111111)' },
-                    { value: '3', text: 'Diederick Prins (S1111111)' },
-                    { value: '4', text: 'Klaas Hakvoort (S1111111)' },
-                    { value: '5', text: 'Joost Reijmer (S1111111)' },
-                ],
+                studentOptions: [],
                 student: {
                     value: '',
                     text: ''
                 },
+                startDate: '',
+                endDate: '',
+                company: '',
+                address: '',
                 previousStepLabel: 'Vorige',
                 nextStepLabel: 'Volgende',
                 finalStepLabel: 'Bevestigen',
@@ -104,13 +101,52 @@
                 ],
             }
         },
+        mounted () {
+            const ENDPOINTS = 'Student/GetStudents';
+            axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
+                .then(response => {
+                    let students = [];
+                    response.data.forEach(function(student) {
+                        students.push({ value: student.id, text: student.fullName + ' (' + student.accountNumber + ')'});
+                    });
+                    this.studentOptions = students;
+                });
+        },
         methods: {
             nextClicked(currentPage) {
-                return true; //return false if you want to prevent moving to next page
+                if (currentPage === 0) {
+                    return this.validateStepOne();
+                } else if (currentPage === 1) {
+                    return this.validateStepTwo();
+                }
             },
-            backClicked(currentPage) {
-                return true; //return false if you want to prevent moving to previous page
-            }
+            getTemplateType() {
+                // const Url = 'https://vidden-api.azurewebsites.net/api/template/';
+                // axios.get(Url).then((response) => {
+                //     console.log(response);
+                // });
+            },
+            validateStepOne() {
+                if (this.student.text === "") {
+                    window.alert("Je hebt geen student ingevuld.");
+                    return false;
+                }
+
+                return true;
+            },
+            validateStepTwo() {
+                if (this.startDate === "" || this.endDate === "" || this.company === "" || this.address === "") {
+                    window.alert("Niet alle gegevens zijn ingevuld.");
+                    return false;
+                }
+
+                if (new Date(this.startDate) > new Date(this.endDate)) {
+                    window.alert("De begindatum mag niet na de einddatum liggen.");
+                    return false;
+                }
+
+                return true;
+            },
         },
         components: {
             ModelSelect,

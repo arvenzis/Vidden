@@ -4,9 +4,18 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     grunt.initConfig({
-        clean: {
-            first: ['dist/js/'],
-            last: ['dist/js/*.vue.js', 'dist/js/bundle.js']
+        browserify: {
+            bundle: {
+                src: './assets/js/app.js',
+                dest: './dist/js/bundle.min.js'
+            },
+            options: {
+                browserifyOptions: {
+                    debug: true
+                },
+                transform: ["babelify", "vueify"]
+
+            }
         },
         sass: {
             options: {
@@ -14,7 +23,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    'dist/css/vidden.css': 'assets/css/scss/style.scss'
+                    'dist/css/vidden.min.css': 'assets/css/scss/style.scss'
                 }
             },
         },
@@ -28,50 +37,19 @@ module.exports = function(grunt) {
             },
             js: {
                 files: ['assets/js/**/*.vue', 'assets/js/**/*.js'],
-                tasks: ['clean:first', 'vueify', 'browserify', 'uglify', 'clean:last'],
+                tasks: ['browserify'],
                 options: {
                     livereload: true,
                 },
             },
         },
-        uglify: {
-            options: {
-                preserveComments: false
-            },
-            dist: {
-                files: {
-                    'dist/js/vidden.min.js': [
-                       ['dist/js/bundle.js']
-                    ],
-                }
-            }
-        },
-        browserify: {
-            dist: {
-                files: {
-                    'dist/js/bundle.js': ['assets/js/*.js', 'dist/js/**/*.js']
-                },
-                options: {
-                    transform: ["babelify", "vueify"]
-                }
-            }
-        },
-        babel: {
-            "presets": ["vueify"]
-        },
-        vueify: {
-            components: {
-                files: [
-                    {
-                        expand: false,
-                        src: 'assets/js/components/**/*.vue',
-                        dest: 'dist/js/',
-                        ext: '.vue.js'
-                    }
-                ]
-            }
-        },
     });
 
-    grunt.registerTask('build', ['clean:first', 'sass', 'vueify', 'browserify', 'uglify', 'clean:last']);
+    grunt.loadNpmTasks('grunt-browserify');
+    grunt.loadNpmTasks('node-sass');
+
+    grunt.registerTask('build', function() {
+        grunt.task.run('browserify');
+        grunt.task.run('sass');
+    });
 };

@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link rel="shortcut icon" type="image/png" href="assets/img/favicon.ico"/>
     <link rel="stylesheet" type="text/css" href="node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" type="text/css" href="node_modules/vue-search-select/dist/VueSearchSelect.css" />
-    <link rel="stylesheet" type="text/css" href="dist/css/vidden.css" />
+    <link rel="stylesheet" type="text/css" href="dist/css/vidden.min.css" />
+
     <link href="https://fonts.googleapis.com/css?family=Roboto&amp;display=swap" rel="stylesheet">
     <link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet">
 
@@ -19,73 +21,16 @@
             <div class="col-1">
                 <div class="logo-container"></div>
             </div>
-            <div class="col-10" v-if="loggedIn">
+            <div class="col-10" v-if="this.$store.state.loggedIn">
                 <current-user></current-user>
             </div>
             <div class="header"></div>
         </div>
 
-        <div v-if="!loggedIn">
-            <div class="container dashboard-container">
-                <div class="row justify-content-center">
-                    <div class="col-md-7">
-                        <div class="card">
-                            <div class="card-header">Inloggen</div>
+        <app-login v-if="!this.$store.state.loggedIn"></app-login>
 
-                            <div class="card-body">
-                                <form id="app" @submit="validateCredentials" method="post">
-                                    <div class="form-group row">
-                                        <label for="emailaddress" class="col-md-4 col-form-label text-md-right">Gebruikersnaam</label>
 
-                                        <div class="col-md-6">
-                                            <input id="emailaddress" v-model="emailaddress" type="email" class="form-control" name="emailaddress" required autocomplete="email" autofocus>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <label for="password" class="col-md-4 col-form-label text-md-right">Wachtwoord</label>
-
-                                        <div class="col-md-6">
-                                            <input id="password" v-model="password" type="password" class="form-control" name="password" required autocomplete="current-password">
-                                        </div>
-                                    </div>
-
-                                    <div v-if="loggedInUnsuccessfull" class="form-group row">
-                                        <label class="alert alert-danger col-md-6 offset-md-4" role="alert">
-                                            {{errorMessage}}
-                                        </label>
-                                    </div>
-                                    <div v-if="loggedOutSuccessfull" class="form-group row">
-                                        <label class="alert alert-success col-md-6 offset-md-4" role="alert">
-                                            {{succesMessage}}
-                                        </label>
-                                    </div>
-
-                                    <div class="form-group row">
-                                        <div class="col-md-6 offset-md-4">
-                                            <a href="#">
-                                                Wachtwoord vergeten?
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group row mb-0">
-                                        <div class="col-md-8 offset-md-4" id="buttonLoader">
-                                            <button type="submit" class="btn btn-primary btn-windesheim">
-                                                Inloggen
-                                            </button>
-                                            <spinner id="spinner" v-if="loading"></spinner>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div v-if="loggedIn">
+        <div v-if="this.$store.state.loggedIn">
             <router-view />
         </div>
     </div>
@@ -95,6 +40,5 @@
         </div>
     </footer>
 </body>
-<script src="dist/js/vidden.min.js"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="dist/js/bundle.min.js"></script>
 </html>

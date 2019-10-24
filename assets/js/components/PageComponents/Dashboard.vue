@@ -28,7 +28,7 @@
                 </router-link>
             </div>
             <div class="col flex-column padding-right-0">
-                <div class="action__container" @click="this.$parent.logout">
+                <div class="action__container" @click="this.logout">
                     <i class="fa fa-3x fa-sign-out"></i><br>
                     UITLOGGEN
                 </div>
@@ -38,7 +38,18 @@
 </template>
 
 <script>
+    import AppLogin from '../AppLogin.vue'
+
     export default {
-        name: 'dashboard'
+        name: 'dashboard',
+
+        methods: {
+            logout: function () {
+                this.$session.destroy();
+                this.$store.state.loggedIn = false;
+                AppLogin.loggedOutSuccessful = true;
+                AppLogin.successMessage = "U bent uitgelogd.";
+            }
+        }
     };
 </script>
