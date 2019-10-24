@@ -46,7 +46,7 @@
         methods: {
             logout: function () {
                 this.$session.destroy();
-                this.$root.loggedIn = false;
+                this.$store.state.loggedIn = false;
                 AppLogin.loggedOutSuccessful = true;
                 AppLogin.successMessage = "U bent uitgelogd.";
             }

@@ -21,16 +21,16 @@
             <div class="col-1">
                 <div class="logo-container"></div>
             </div>
-            <div class="col-10" v-if="loggedIn">
+            <div class="col-10" v-if="this.$store.state.loggedIn">
                 <current-user></current-user>
             </div>
             <div class="header"></div>
         </div>
 
-        <app-login v-if="!loggedIn"></app-login>
+        <app-login v-if="!this.$store.state.loggedIn"></app-login>
 
 
-        <div v-if="loggedIn">
+        <div v-if="this.$store.state.loggedIn">
             <router-view />
         </div>
     </div>

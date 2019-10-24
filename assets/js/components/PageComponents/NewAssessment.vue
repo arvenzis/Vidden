@@ -104,8 +104,8 @@
             }
         },
         mounted () {
-            const Url = `${this.Url}api/Student/GetStudents`;
-            axios.get(Url, { headers: {"Authorization" : this.$session.get('jwt')} })
+            const ENDPOINTS = 'Student/GetStudents';
+            axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
                 .then(response => {
                     let students = [];
                     response.data.forEach(function(student) {
@@ -118,8 +118,7 @@
             nextClicked(currentPage) {
                 if (currentPage === 0) {
                     return this.validateStepOne();
-                }
-                else if (currentPage === 1) {
+                } else if (currentPage === 1) {
                     return this.validateStepTwo();
                 }
             },

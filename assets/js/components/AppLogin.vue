@@ -82,10 +82,10 @@
         },
         methods: {
             validateCredentials: function (e) {
-                const Url = 'https://vidden-api.azurewebsites.net/api/User/Authenticate/';
+                const ENDPOINTS = 'User/Authenticate/';
                 e.preventDefault();
                 this.loading = true;
-                axios.post(Url, {
+                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
                     emailaddress: this.emailaddress,
                     password: this.password
                 }).then((response) => {
@@ -94,9 +94,9 @@
                         this.$session.set('jwt', response.data.token);
                     }
                     this.loading = false;
-                    this.$root.loggedIn = true;
-                    this.currentUser = response.data.fullName;
-                    this.accountNumber = response.data.accountNumber;
+                    this.$store.state.loggedIn = true;
+                    this.$store.state.currentUser = response.data.fullName;
+                    this.$store.state.accountNumber = response.data.accountNumber;
                 })
                 .catch((e) => {
                     this.loading = false;

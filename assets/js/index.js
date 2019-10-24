@@ -1,6 +1,8 @@
+import 'es6-promise/auto'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import routes from './routes'
+import { store } from './store';
 import AppLogin from './components/AppLogin.vue'
 import CurrentUser from './components/CurrentUser.vue'
 
@@ -10,15 +12,15 @@ const router = new VueRouter({routes});
 
 new Vue({
     router,
+    store,
     el: '#app',
     data: {
         emailaddress: "",
         password: "",
-        loggedIn: false
     },
     created: function () {
         if (Vue.prototype.$session.exists()) {
-            this.loggedIn = true;
+            this.$store.state.loggedIn = true;
         }
     },
     components: {
