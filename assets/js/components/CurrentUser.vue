@@ -3,7 +3,6 @@
 </template>
 
 <script>
-    // console.log(store.state.count);
     export default {
         name: 'current-user'
     };
