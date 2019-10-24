@@ -14,10 +14,19 @@ new Vue({
     data: {
         emailaddress: "",
         password: "",
-        loggedIn: false,
+        loggedIn: false
+    },
+    created: function () {
+        if (Vue.prototype.$session.exists()) {
+            this.loggedIn = true;
+        }
     },
     components: {
         AppLogin,
         CurrentUser
     },
+});
+
+Vue.component('current-user', {
+    template: '#current-user',
 });

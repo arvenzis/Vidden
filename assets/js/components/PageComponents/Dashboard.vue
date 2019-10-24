@@ -48,7 +48,7 @@
                 this.$session.destroy();
                 this.$root.loggedIn = false;
                 AppLogin.loggedOutSuccessful = true;
-                AppLogin.succesMessage = "U bent uitgelogd.";
+                AppLogin.successMessage = "U bent uitgelogd.";
             }
         }
     };

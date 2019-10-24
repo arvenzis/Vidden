@@ -80,11 +80,6 @@
                 loading: false,
             }
         },
-        created: function () {
-            if (Vue.prototype.$session.exists()) {
-                this.loggedIn = true;
-            }
-        },
         methods: {
             validateCredentials: function (e) {
                 const Url = 'https://vidden-api.azurewebsites.net/api/User/Authenticate/';
