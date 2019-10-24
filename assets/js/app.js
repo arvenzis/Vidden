@@ -72,11 +72,22 @@ new Vue({
                 })
         },
         logout: function () {
-            this.$session.destroy();
-            this.loggedIn = false;
-            this.loggedOutSuccessfull = true;
-            this.succesMessage = "U bent uitgelogd."
-            this.$router.push('/');            
+            const Url = 'https://vidden-api.azurewebsites.net/api/User/Logout/';
+            const yourConfig = {
+                headers: {
+                    Authorization: this.$session.get("jwt")
+                }
+            }
+            axios.get(Url, yourConfig
+            ).then((response) => {
+                if (response.status === 200) {
+                    this.$session.destroy();
+                    this.loggedIn = false;
+                    this.loggedOutSuccessfull = true;
+                    this.succesMessage = "U bent uitgelogd."
+                    this.$router.push('/');
+                }
+            })
         }   
     }
 });
