@@ -69,8 +69,6 @@
     import { GoodWizard } from 'vue-good-wizard';
     import axios from 'axios';
 
-    const Url = "https://vidden-api.azurewebsites.net/api/";
-
     export default {
         name: 'new-assessment',
         data () {
