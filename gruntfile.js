@@ -6,7 +6,7 @@ module.exports = function(grunt) {
     grunt.initConfig({
         browserify: {
             bundle: {
-                src: './assets/js/index.js',
+                src: './assets/js/app.js',
                 dest: './dist/js/bundle.min.js'
             },
             options: {
