@@ -7,8 +7,7 @@
                     :nextStepLabel="nextStepLabel"
                     :previousStepLabel="previousStepLabel"
                     :finalStepLabel="finalStepLabel"
-                    :onNext="nextClicked"
-                    :onBack="backClicked">
+                    :onNext="nextClicked">
                 <div slot="step-1">
                     <h2 class="mb-3">Nieuwe beoordeling</h2>
                     <div class="form-group">
@@ -53,12 +52,12 @@
                 </div>
                 <div slot="step-3">
                     <h2 class="mb-3">Overzicht beoordeling</h2>
-                    <strong>Karen Bosch (S1120990)</strong><br>
-                    <span>1 Sept. 2019 - 2 Feb. 2020</span><br><br>
+                    <strong>{{this.student.text}}</strong><br>
+                    <span>{{ this.startDate }} - {{ this.endDate }}</span><br><br>
 
                     <strong>Stage/afstudeerbedrijf</strong><br>
-                    <span>Windesheim</span><br>
-                    <span>Campus 2, 8017 CA Zwolle</span><br>
+                    <span>{{ this.company }}</span><br>
+                    <span>{{ this.address }}</span><br>
                 </div>
             </vue-good-wizard>
         </div>
@@ -123,7 +122,6 @@
                          this.templateOptions = templates;
                      });
             },
-
             getStudents() {
                 const ENDPOINTS = 'Student/GetStudents';
                 axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
@@ -135,16 +133,45 @@
                         this.studentOptions = students;
                      });
             },
+            createAssessmentMetaData() {
+                const ENDPOINTS = 'assessment';
+                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
+                    "Name": this.template.text,
+                    "IsActive": 1,
+                    "CreatedAt": new Date().toISOString().slice(0,10),
+                    "CreatedbyId": this.$store.state.currentUserId,
+                    "UpdatedAt": new Date().toISOString().slice(0,10),
+                    "UpdatedbyId": this.$store.state.currentUserId,
+                    "TemplateId": this.template.value,
+                    "StudentId": this.student.value,
+                    "CompanyId": 1,
+                    "FirstTeacherId": this.$store.state.currentUserId,
+                    "OeCode": "ICT.AFSTSE.D17 (dt)",
+                    "AssessmentDate": new Date().toISOString().slice(0,10),
+                    "StartDatePeriod": this.startDate,
+                    "EndDatePeriod": this.endDate
+                    },
+                    {
+                        headers: {"Authorization" : this.$session.get('jwt')}
+                    }).then((response) => {
+                        if (response.status === 200) {
+                            window.alert("Je beoordeling is opgeslagen!");
+                            this.$router.push('/');
+                        }
+                    })
+            },
             nextClicked(currentPage) {
                 if (currentPage === 0) {
                     return this.validateStepOne();
                 } else if (currentPage === 1) {
                     return this.validateStepTwo();
+                } else if (currentPage === 2) { //final step
+                    this.createAssessmentMetaData();
                 }
             },
             validateStepOne() {
-                if (this.student.text === "") {
-                    window.alert("Je hebt geen student ingevuld.");
+                if (this.student.text === "" || this.template.text === "") {
+                    window.alert("Je hebt geen template of geen student ingevuld.");
                     return false;
                 }
 
