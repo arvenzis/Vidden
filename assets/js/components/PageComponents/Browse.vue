@@ -48,35 +48,54 @@
 </template>
 
 <script>
-export default {
-  name: "browse",
-  data() {
-    return {
-      items: [
-        {
-          id: 1,
-          status: "Draft",
-          vak: "Afstuderen",
-          code: "ICT.AFSTSE.V19",
-          student: [{ account: "S1019744", naam: "Bernard Bos" }],
-          date_created: "09-10-2019 22:12",
-          date_last_modified: "09-10-2019 22:16",
-          examinator: [{ account: "BV0111996", naam: "Arjen Korevaar" }]
+    import axios from 'axios'
+
+    export default {
+        name: "browse",
+        data() {
+            return {
+                items: [
+                    {
+                        id: 1,
+                        status: "Draft",
+                        vak: "Afstuderen",
+                        code: "ICT.AFSTSE.V19",
+                        student: [{ account: "S1019744", naam: "Bernard Bos" }],
+                        date_created: "09-10-2019 22:12",
+                        date_last_modified: "09-10-2019 22:16",
+                        examinator: [{ account: "BV0111996", naam: "Arjen Korevaar" }]
+                    },
+                    {
+                        id: 2,
+                        status: "Draft",
+                        vak: "Stage",
+                        code: "ICT.STAGE.V19",
+                        student: [{ account: "S1120990", naam: "Karen Bosch" }],
+                        date_created: "06-10-2019 08:13",
+                        date_last_modified: "06-10-2019 08:18",
+                        examinator: [{ account: "BV0111996", naam: "Arjen Korevaar" }]
+                    }
+                ]
+            };
         },
-        {
-          id: 2,
-          status: "Draft",
-          vak: "Stage",
-          code: "ICT.STAGE.V19",
-          student: [{ account: "S1120990", naam: "Karen Bosch" }],
-          date_created: "06-10-2019 08:13",
-          date_last_modified: "06-10-2019 08:18",
-          examinator: [{ account: "BV0111996", naam: "Arjen Korevaar" }]
+        methods: {
+            getAssessments: function () {
+                const Url = 'https://vidden-api.azurewebsites.net/api/Assessment/GetAssessments/';
+                const yourConfig = {
+                    headers: {
+                        Authorization: this.$session.get("jwt")
+                    }
+                }
+                axios.get(Url, yourConfig
+                ).then((response) => {
+                    const allAssessments = response.data;
+                })
+            }
+        },
+        created: function () {
+            this.getAssessments();
         }
-      ]
     };
-  }
-};
 </script>
 
 <style scoped>
