@@ -38,18 +38,26 @@
 </template>
 
 <script>
-    import AppLogin from '../AppLogin.vue'
+    import axios from 'axios'
 
     export default {
         name: 'dashboard',
-
         methods: {
             logout: function () {
-                this.$session.destroy();
-                this.$store.state.loggedIn = false;
-                AppLogin.loggedOutSuccessful = true;
-                AppLogin.successMessage = "U bent uitgelogd.";
+                const ENDPOINTS = 'User/Logout/';
+                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, {
+                    headers: {
+                        Authorization: this.$session.get("jwt")
+                    }
+                }
+                ).then((response) => {
+                    if (response.status === 200) {
+                        this.$session.destroy();
+                        this.$store.state.loggedIn = false;
+                        this.$store.state.loggedOutSuccessful = true;
+                    }
+                })
             }
         }
-    };
+    }
 </script>
