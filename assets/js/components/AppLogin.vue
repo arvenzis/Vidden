@@ -96,7 +96,6 @@
                     this.loading = false;
                     this.$store.state.loggedIn = true;
                     this.$store.state.currentUser = response.data.fullName;
-                    this.$store.commit(currentUser);
                     this.$store.state.currentUserId = response.data.id;
                     this.$store.state.accountNumber = response.data.accountNumber;
                 })
