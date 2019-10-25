@@ -13,9 +13,10 @@
                     <h2 class="mb-3">Nieuwe beoordeling</h2>
                     <div class="form-group">
                         <label>Soort beoordeling</label>
-                        <select class="form-control" v-bind="getTemplateType()">
-                            <option value="Stage en afstuderen">Stage en afstuderen</option>
-                        </select>
+                        <model-select :options="templateOptions"
+                                      v-model="template"
+                                      placeholder="Selecteer een template">
+                        </model-select>
                     </div>
                     <div class="form-group">
                         <label>Student</label>
@@ -74,7 +75,12 @@
         data () {
             return {
                 studentOptions: [],
+                templateOptions: [],
                 student: {
+                    value: '',
+                    text: ''
+                },
+                template: {
                     value: '',
                     text: ''
                 },
@@ -102,29 +108,39 @@
             }
         },
         mounted () {
-            const ENDPOINTS = 'Student/GetStudents';
-            axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
-                .then(response => {
-                    let students = [];
-                    response.data.forEach(function(student) {
-                        students.push({ value: student.id, text: student.fullName + ' (' + student.accountNumber + ')'});
-                    });
-                    this.studentOptions = students;
-                });
+            this.getTemplateType();
+            this.getStudents();
         },
         methods: {
+            getTemplateType() {
+                const ENDPOINTS = 'Template/';
+                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
+                     .then(response => {
+                         let templates = [];
+                         response.data.forEach(function(template) {
+                             templates.push({ value: template.id, text: template.name});
+                         });
+                         this.templateOptions = templates;
+                     });
+            },
+
+            getStudents() {
+                const ENDPOINTS = 'Student/GetStudents';
+                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
+                     .then(response => {
+                        let students = [];
+                        response.data.forEach(function(student) {
+                            students.push({ value: student.id, text: student.fullName + ' (' + student.accountNumber + ')'});
+                        });
+                        this.studentOptions = students;
+                     });
+            },
             nextClicked(currentPage) {
                 if (currentPage === 0) {
                     return this.validateStepOne();
                 } else if (currentPage === 1) {
                     return this.validateStepTwo();
                 }
-            },
-            getTemplateType() {
-                // const Url = 'https://vidden-api.azurewebsites.net/api/template/';
-                // axios.get(Url).then((response) => {
-                //     console.log(response);
-                // });
             },
             validateStepOne() {
                 if (this.student.text === "") {
