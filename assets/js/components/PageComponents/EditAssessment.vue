@@ -1,7 +1,10 @@
 <template>
     <div class="container dashboard-container">
         <router-link to="/" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar dashboard</router-link>
-        <div class="mt-5 mb-5">
+        <div class="card">
+            <h1 class="mb3">Competentie: {{ this.group }} - {{ this.category }}</h1>
+            </div>
+        <div class="mt-5 mb-5" v-for="item in assertions" v-bind:key="item.assertion">
             <vue-good-wizard
                     :steps="steps"
                     :nextStepLabel="nextStepLabel"
@@ -9,24 +12,17 @@
                     :finalStepLabel="finalStepLabel"
                     :onNext="nextClicked"
                     :onBack="backClicked">
-                <div slot="step-1">
-                    <h2 class="mb-3">Bewerken beoordeling {{ $route.params.id }}</h2>
-                    <div class="form-group">
-                        <label>Sample label</label>
-                        <input type="text" name="sampleInput" id="sampleInput" placeholder="sampleInput" v-model="sampleInput" class="form-control" />
-                    </div>
-                </div>
-                <div slot="step-2">
-                    <h2 class="mb-3">Details</h2>
-                    <div class="form-group">
-                        <label>Sample label</label>
-                        <input type="text" name="sampleInput" id="sampleInput" placeholder="sampleInput" v-model="sampleInput" class="form-control" />
-                    </div>
-                </div>
-                <div slot="step-3">
-                   <div class="form-group">
-                        <label>Sample label</label>
-                        <input type="text" name="sampleInput" id="sampleInput" placeholder="sampleInput" v-model="sampleInput" class="form-control" />
+                <div v-bind:slot="item.assertion">
+                    <h2 class="mb-3">{{ item.assertion }}</h2>
+                    <small class="text-muted">
+                        <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
+                    </small>
+                    <h3>{{ item.question }}</h3>
+                    <div class="form-group" v-for="option in item.answer" v-bind:key="option.result">
+                        <input type="radio" v-bind:name="option.grade" v-bind:id="option.grade" v-model="mark" class="form-check-input" />
+                        <label class="form-check-label" v-bind:for="option.grade">
+                            {{ option.description }}
+                        </label>
                     </div>
                 </div>
             </vue-good-wizard>
@@ -41,95 +37,133 @@
 
     export default {
         name: 'edit',
-        data () {
-            return {
-                id: this.$route.params.id,
-                //TODO: get this information from the api
-                // assessment: {
-                //     metadata: {
-                //         student: {
-
-                //         },
-                //         startDate: '',
-                //         endDate: '',
-                //         company: '',
-                //         address: '',
-                //     },
-                //     template: 1,
-                //     templateGroups: [],
-                //     groups: [],
-                //     categoryGroups: [],
-                //     categories: [],
-                //     questionAnswers: [],
-                //     questions: [],
-                //     answers: []
-                // },
-                assessment: [],
-                previousStepLabel: 'Previous',
-                nextStepLabel: 'Next',
-                finalStepLabel: 'Confirm',
-                saveStepLabel: 'Save',
-                steps: [
-                    {
-                        label: 'Algemene informatie',
-                        slot: 'step-1'
-                    },
-                    {
-                        label: 'Details',
-                        slot: 'step-2'
-                    },
-                    {
-                        label: 'Overzicht',
-                        slot: 'step-3'
-                    },
-                ],
-            }
-        },
-        mounted () {
+        created () {
             const ENDPOINTS = 'Assessment/' + this.id;
             axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
                 .then(response => {
-                    // let tmpAssessment = [];
-                    // response.data.forEach(function(assessment) {
-                    //     tmpAssessment.push({ template: templateID });
-                    // });
-                    // this.assessment = tmpAssessment;
                     this.assessment = response.data;
                     console.log(this.assessment);
                 });
         },
+        data () {
+            return {
+                id: this.$route.params.id,
+                // TODO: get this information from the api
+                assessment: [],
+                // For now, let's create a mock version
+                group: 'Analyseren',
+                category: 'Zelfstandigheid',
+                assertions: [
+                    {
+                    assertion: 'Aanpak',
+                    children: ['Gestructureerdheid', 'Samenhang', 'Flexibiliteit'],
+                    question: 'De student heeft een gestructeerde beheeraanpak, wat leidt tot geplande stappen met als doel toewerken naar een mijlpaal. Nieuwe inzichten worden hierbij verwerkt. En de beheeraanpak wordt blijvend gevalideerd.',
+                    answers: {
+                        excellent: {
+                            grade: 'Excellent',
+                            result: 9,
+                            description: 'Werkt volgens geplande stappen naar een mijlpaal, verwerkt nieuwe inzichten; blijft beheeraanpak valideren.'
+                        },
+                        good: {
+                            grade: 'Good',
+                            result: 8,
+                            description: 'Werkt volgens geplande stappen naar een mijlpaal en verwerkt nieuwe inzichten.'
+                        },
+                        proficient: {
+                            grade: 'proficient',
+                            result: 6,
+                            description: 'Werkt volgens geplande stappen naar een mijlpaal.'
+                        },
+                        poor: {
+                            grade: 'poor',
+                            result: 4,
+                            description: 'Ongestructureerde beheeraanpak leidt tot weinig grip en sturing.'
+                        }
+                    }
+                },
+                {
+                    assertion: 'Initiatief',
+                    children: ['Grip', 'Sturing','Omgaan met risico\'s'],
+                    question: 'De student beheert eigen proces en project. Daarnaast wordt er gereageerd op knelpunten en meevallers. Daarbij wordt hierop geanticipeert en worden onverwachte situaties opgevangen.',
+                    answers: {
+                        excellent: {
+                            grade: 'Excellent',
+                            result: 9,
+                            description: 'Reageert en anticipeert uit zichzelf op knelpunten en meevallers en vangt onverwachte situaties op.'
+                        },
+                        good: {
+                            grade: 'Good',
+                            result: 8,
+                            description: 'Reageert en anticipeert uit zichzelf op knelpunten en meevallers.'
+                        },
+                        proficient: {
+                            grade: 'proficient',
+                            result: 6,
+                            description: 'Reageert uit zichzelf op knelpunten en meevallers.'
+                        },
+                        poor: {
+                            grade: 'poor',
+                            result: 4,
+                            description: 'Is uit zichzelf weinig geneigd eigen project en proces te beheren.'
+                        }
+                    }
+                },
+                {
+                    assertion: 'Keuzes maken',
+                    children: ['Bronnen', 'Methoden', 'Technieken'],
+                    question: 'De student verzamelt alternatieven, onderzoekt de impact. Daarbij maakt hij keuzes en kan deze onderbouwen.Daarnaast worden routes en kaders blijvend gevalideerd.',
+                    answers: {
+                        excellent: {
+                            grade: 'Excellent',
+                            result: 9,
+                            description: 'Verzamelt alternatieven, onderzoekt de impact, maakt onderbouwde keuzes; blijft gekozen routes en kaders valideren.'
+                        },
+                        good: {
+                            grade: 'Good',
+                            result: 8,
+                            description: 'Verzamelt alternatieven, onderzoekt de impact en maakt goed onderbouwde keuzes.'
+                        },
+                        proficient: {
+                            grade: 'proficient',
+                            result: 6,
+                            description: 'Verzamelt alternatieven, onderzoekt de impact en maakt keuzes.'
+                        },
+                        poor: {
+                            grade: 'poor',
+                            result: 4,
+                            description: 'Toont weinig vaardigheid in het maken van geschikte keuzes.'
+                        }
+                    }
+                }],
+                previousStepLabel: 'Previous',
+                nextStepLabel: 'Next',
+                finalStepLabel: 'Confirm',
+            }
+        },
+        computed: {
+            steps: function() {
+                let array = [];
+                let tmpAssertions = this.assertions;
+                
+                for(var i = 0; i < tmpAssertions.length; i++) {
+                    array.push({ label: tmpAssertions[i].assertion, slot: tmpAssertions[i].assertion });
+                }
+
+                return array;
+
+                console.log(array);
+            }
+        },
         methods: {
             nextClicked(currentPage) {
-                if (currentPage === 0) {
-                    return this.validateStepOne();
-                } else if (currentPage === 1) {
-                    return this.validateStepTwo();
-                }
+                // validateStep()
             },
             getTemplateGroups() {
                 //
             },
-            validateStepOne() {
-                if (this.student.text === "") {
-                    window.alert("Je hebt geen student ingevuld.");
-                    return false;
-                }
-
-                return true;
-            },
-            validateStepTwo() {
-                if (this.startDate === "" || this.endDate === "" || this.company === "" || this.address === "") {
-                    window.alert("Niet alle gegevens zijn ingevuld.");
-                    return false;
-                }
-
-                if (new Date(this.startDate) > new Date(this.endDate)) {
-                    window.alert("De begindatum mag niet na de einddatum liggen.");
-                    return false;
-                }
-
-                return true;
-            },
+            validateStep() {
+                //
+            }
         },
         components: {
             ModelSelect,
@@ -137,3 +171,8 @@
         }
     };
 </script>
+<style>
+.keyword + .keyword:before {
+  content: ", ";
+}
+</style>
