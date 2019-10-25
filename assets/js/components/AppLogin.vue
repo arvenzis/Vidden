@@ -9,7 +9,7 @@
                         <form id="app" @submit="validateCredentials" method="post">
                             <div class="form-group row">
                                 <label for="emailaddress" class="col-md-4 col-form-label text-md-right">Gebruikersnaam</label>
-
+                                                                                                                          
                                 <div class="col-md-6">
                                     <input id="emailaddress" v-model="emailaddress" type="email" class="form-control" name="emailaddress" required autocomplete="email" autofocus>
                                 </div>
@@ -28,7 +28,7 @@
                                     {{errorMessage}}
                                 </label>
                             </div>
-                            <div v-if="loggedOutSuccessful" class="form-group row">
+                            <div v-if="this.$store.state.loggedOutSuccessful" class="form-group row">
                                 <label class="alert alert-success col-md-6 offset-md-4" role="alert">
                                     {{successMessage}}
                                 </label>
@@ -61,7 +61,7 @@
 <script>
     import Vue from 'vue'
     import axios from 'axios'
-    import VueSession from "vue-session";
+    import VueSession from "vue-session"
     import Spinner from 'vue-simple-spinner'
 
     Vue.use(VueSession);
@@ -72,11 +72,10 @@
         data() {
             return {
                 loggedInUnsuccessful: false,
-                loggedOutSuccessful: false,
                 currentUser: "",
                 accountNumber: "",
                 errorMessage: "",
-                successMessage: "",
+                successMessage: "U bent uitgelogd.",
                 loading: false,
             }
         },
@@ -98,11 +97,17 @@
                     this.$store.state.currentUser = response.data.fullName;
                     this.$store.state.accountNumber = response.data.accountNumber;
                 })
-                .catch((e) => {
-                    this.loading = false;
-                    this.loggedInUnsuccessful = true;
-                    this.errorMessage = e.response.data;
-                })
+                    .catch((e) => {
+                        this.loading = false;
+                        this.loggedInUnsuccessful = true;
+                        if (e == "Error: Request failed with status code 400") {
+                            this.errorMessage = "Uw gebruikersnaam en / of wachtwoord is onjuist.";
+                        } else if (e == "Error: Request failed with status code 500") {
+                            this.errorMessage = "Problemen met server, probeer het nog eens."
+                        } else {
+                            this.errorMessage = e;
+                        }
+                    })
             },
         },
         components: {

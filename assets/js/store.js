@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export const store = new Vuex.Store({
     state: {
         loggedIn: false,
+        loggedOutSuccessful: false,
         currentUser: "",
         accountNumber: "",
         apiBaseUrl: "https://vidden-api.azurewebsites.net/api/"
