@@ -17,7 +17,7 @@ const routes = [{
 		component: NewAssessment
 	},
 	{
-		path: '/edit',
+		path: '/edit/:id',
 		component: EditAssessment
 	},
 	{
