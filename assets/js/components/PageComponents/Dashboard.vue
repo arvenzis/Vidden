@@ -28,7 +28,7 @@
                 </router-link>
             </div>
             <div class="col flex-column padding-right-0">
-                <div class="action__container" @click="this.$parent.logout">
+                <div class="action__container" @click="this.logout">
                     <i class="fa fa-3x fa-sign-out"></i><br>
                     UITLOGGEN
                 </div>
@@ -38,7 +38,28 @@
 </template>
 
 <script>
+    import axios from 'axios'
+
     export default {
-        name: 'dashboard'
-    };
+        name: 'dashboard',
+
+        methods: {
+            logout: function () {
+                const Url = 'https://vidden-api.azurewebsites.net/api/User/Logout/';
+                const yourConfig = {
+                    headers: {
+                        Authorization: this.$session.get("jwt")
+                    }
+                }
+                axios.get(Url, yourConfig
+                ).then((response) => {
+                    if (response.status === 200) {
+                        this.$session.destroy();
+                        this.$store.state.loggedIn = false;
+                        this.$store.state.loggedOutSuccessful = true;
+                    }
+                })
+            }
+        }
+    }
 </script>
