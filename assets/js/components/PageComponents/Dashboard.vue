@@ -44,13 +44,12 @@
         name: 'dashboard',
         methods: {
             logout: function () {
-                const Url = 'https://vidden-api.azurewebsites.net/api/User/Logout/';
-                const yourConfig = {
+                const ENDPOINTS = 'User/Logout/';
+                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, {
                     headers: {
                         Authorization: this.$session.get("jwt")
                     }
                 }
-                axios.get(Url, yourConfig
                 ).then((response) => {
                     if (response.status === 200) {
                         this.$session.destroy();
