@@ -100,14 +100,8 @@
                 })
                 .catch((e) => {
                     this.loading = false;
-                    this.loggedInUnsuccessfull = true;
-                    if (e === "Error: Request failed with status code 400") {
-                        this.errorMessage = "Uw gebruikersnaam en / of wachtwoord is onjuist.";
-                    } else if (e === "Error: Request failed with status code 500") {
-                        this.errorMessage = "Problemen met server, probeer het nog eens."
-                    } else {
-                        this.errorMessage = e;
-                    }
+                    this.loggedInUnsuccessful = true;
+                    this.errorMessage = e.response.data;
                 })
             },
         },
