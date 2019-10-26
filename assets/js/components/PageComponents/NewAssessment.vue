@@ -2,20 +2,21 @@
     <div class="container dashboard-container">
         <router-link to="/" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar dashboard</router-link>
         <div class="mt-5 mb-5">
+            <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
             <vue-good-wizard
                     :steps="steps"
                     :nextStepLabel="nextStepLabel"
                     :previousStepLabel="previousStepLabel"
                     :finalStepLabel="finalStepLabel"
-                    :onNext="nextClicked"
-                    :onBack="backClicked">
+                    :onNext="nextClicked">
                 <div slot="step-1">
                     <h2 class="mb-3">Nieuwe beoordeling</h2>
                     <div class="form-group">
                         <label>Soort beoordeling</label>
-                        <select class="form-control" v-bind="getTemplateType()">
-                            <option value="Stage en afstuderen">Stage en afstuderen</option>
-                        </select>
+                        <model-select :options="templateOptions"
+                                      v-model="template"
+                                      placeholder="Selecteer een template">
+                        </model-select>
                     </div>
                     <div class="form-group">
                         <label>Student</label>
@@ -52,12 +53,12 @@
                 </div>
                 <div slot="step-3">
                     <h2 class="mb-3">Overzicht beoordeling</h2>
-                    <strong>Karen Bosch (S1120990)</strong><br>
-                    <span>1 Sept. 2019 - 2 Feb. 2020</span><br><br>
+                    <strong>{{this.student.text}}</strong><br>
+                    <span>{{ this.startDate }} - {{ this.endDate }}</span><br><br>
 
                     <strong>Stage/afstudeerbedrijf</strong><br>
-                    <span>Windesheim</span><br>
-                    <span>Campus 2, 8017 CA Zwolle</span><br>
+                    <span>{{ this.company }}</span><br>
+                    <span>{{ this.address }}</span><br>
                 </div>
             </vue-good-wizard>
         </div>
@@ -74,7 +75,12 @@
         data () {
             return {
                 studentOptions: [],
+                templateOptions: [],
                 student: {
+                    value: '',
+                    text: ''
+                },
+                template: {
                     value: '',
                     text: ''
                 },
@@ -99,52 +105,95 @@
                         slot: 'step-3'
                     },
                 ],
+                errorMessage: null
             }
         },
         mounted () {
-            const ENDPOINTS = 'Student/GetStudents';
-            axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
-                .then(response => {
-                    let students = [];
-                    response.data.forEach(function(student) {
-                        students.push({ value: student.id, text: student.fullName + ' (' + student.accountNumber + ')'});
-                    });
-                    this.studentOptions = students;
-                });
+            this.getTemplateType();
+            this.getStudents();
         },
         methods: {
+            getTemplateType() {
+                const ENDPOINTS = 'Template/';
+                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
+                     .then(response => {
+                         let templates = [];
+                         response.data.forEach(function(template) {
+                             templates.push({ value: template.id, text: template.name});
+                         });
+                         this.templateOptions = templates;
+                     });
+            },
+            getStudents() {
+                const ENDPOINTS = 'Student/GetStudents';
+                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
+                     .then(response => {
+                        let students = [];
+                        response.data.forEach(function(student) {
+                            students.push({ value: student.id, text: student.fullName + ' (' + student.accountNumber + ')'});
+                        });
+                        this.studentOptions = students;
+                     });
+            },
+            createAssessmentMetaData() {
+                const ENDPOINTS = 'assessment';
+                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
+                    "Name": this.template.text,
+                    "IsActive": 1,
+                    "CreatedAt": new Date().toISOString().slice(0,10),
+                    "CreatedbyId": this.$store.state.currentUserId,
+                    "UpdatedAt": new Date().toISOString().slice(0,10),
+                    "UpdatedbyId": this.$store.state.currentUserId,
+                    "TemplateId": this.template.value,
+                    "StudentId": this.student.value,
+                    "CompanyId": 1,
+                    "FirstTeacherId": this.$store.state.currentUserId,
+                    "OeCode": "ICT.AFSTSE.D17 (dt)",
+                    "AssessmentDate": new Date().toISOString().slice(0,10),
+                    "StartDatePeriod": this.startDate,
+                    "EndDatePeriod": this.endDate
+                    },
+                    {
+                        headers: {"Authorization" : this.$session.get('jwt')}
+                    }).then((response) => {
+                        if (response.status === 200) {
+                            window.alert("Je beoordeling is opgeslagen!");
+                            this.$router.push('/');
+                        }
+                    }).catch(() => {
+                    this.errorMessage = "Er is iets misgegaan bij het opslaan van de beoordeling.";
+                });
+            },
             nextClicked(currentPage) {
                 if (currentPage === 0) {
                     return this.validateStepOne();
                 } else if (currentPage === 1) {
                     return this.validateStepTwo();
+                } else if (currentPage === 2) { //final step
+                    this.createAssessmentMetaData();
                 }
             },
-            getTemplateType() {
-                // const Url = 'https://vidden-api.azurewebsites.net/api/template/';
-                // axios.get(Url).then((response) => {
-                //     console.log(response);
-                // });
-            },
             validateStepOne() {
-                if (this.student.text === "") {
-                    window.alert("Je hebt geen student ingevuld.");
+                if (this.student.text === "" || this.template.text === "") {
+                    this.errorMessage = "Je hebt geen template of geen student ingevuld.";
                     return false;
                 }
 
+                this.errorMessage = null;
                 return true;
             },
             validateStepTwo() {
                 if (this.startDate === "" || this.endDate === "" || this.company === "" || this.address === "") {
-                    window.alert("Niet alle gegevens zijn ingevuld.");
+                    this.errorMessage = "Niet alle gegevens zijn ingevuld.";
                     return false;
                 }
 
                 if (new Date(this.startDate) > new Date(this.endDate)) {
-                    window.alert("De begindatum mag niet na de einddatum liggen.");
+                    this.errorMessage = "De begindatum mag niet na de einddatum liggen.";
                     return false;
                 }
 
+                this.errorMessage = null;
                 return true;
             },
         },
