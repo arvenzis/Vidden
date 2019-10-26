@@ -8,6 +8,7 @@ export const store = new Vuex.Store({
     plugins: [createPersistedState()],
     state: {
         loggedIn: false,
+        loggedOutSuccessful: false,
         currentUser: "",
         currentUserId: null,
         accountNumber: "",
