@@ -2,6 +2,7 @@
     <div class="container dashboard-container">
         <router-link to="/" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar dashboard</router-link>
         <div class="mt-5 mb-5">
+            <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
             <vue-good-wizard
                     :steps="steps"
                     :nextStepLabel="nextStepLabel"
@@ -104,6 +105,7 @@
                         slot: 'step-3'
                     },
                 ],
+                errorMessage: null
             }
         },
         mounted () {
@@ -158,7 +160,9 @@
                             window.alert("Je beoordeling is opgeslagen!");
                             this.$router.push('/');
                         }
-                    })
+                    }).catch(() => {
+                    this.errorMessage = "Er is iets misgegaan bij het opslaan van de beoordeling.";
+                });
             },
             nextClicked(currentPage) {
                 if (currentPage === 0) {
@@ -171,23 +175,25 @@
             },
             validateStepOne() {
                 if (this.student.text === "" || this.template.text === "") {
-                    window.alert("Je hebt geen template of geen student ingevuld.");
+                    this.errorMessage = "Je hebt geen template of geen student ingevuld.";
                     return false;
                 }
 
+                this.errorMessage = null;
                 return true;
             },
             validateStepTwo() {
                 if (this.startDate === "" || this.endDate === "" || this.company === "" || this.address === "") {
-                    window.alert("Niet alle gegevens zijn ingevuld.");
+                    this.errorMessage = "Niet alle gegevens zijn ingevuld.";
                     return false;
                 }
 
                 if (new Date(this.startDate) > new Date(this.endDate)) {
-                    window.alert("De begindatum mag niet na de einddatum liggen.");
+                    this.errorMessage = "De begindatum mag niet na de einddatum liggen.";
                     return false;
                 }
 
+                this.errorMessage = null;
                 return true;
             },
         },
