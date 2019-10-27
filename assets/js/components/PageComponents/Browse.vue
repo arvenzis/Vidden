@@ -1,13 +1,13 @@
 <template>
     <div class="container dashboard-container">
         <div class="row">
-            <div class="col-4">
+            <div class="col-6">
                 <router-link to="/">
                     <i class="fa fa-arrow-left"></i> Terug naar dashboard
                 </router-link>
             </div>
-            <div class="col-8">
-                <h2>Blader door beoordelingen</h2>
+            <div class="col-6">
+                <h2>Bladeren</h2>
             </div>
         </div>
         <!--
