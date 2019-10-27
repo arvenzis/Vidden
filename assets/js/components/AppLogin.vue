@@ -4,25 +4,9 @@
             <div class="col-md-7">
                 <div class="card">
                     <div class="card-header">Inloggen</div>
-
-                    <div class="card-body">
+                    <spinner id="spinner" v-if="loading"></spinner>
+                    <div class="card-body" v-bind:class="{ overlay : loading}">
                         <form id="app" @submit="validateCredentials" method="post">
-                            <div class="form-group row">
-                                <label for="emailaddress" class="col-md-4 col-form-label text-md-right">Gebruikersnaam</label>
-                                                                                                                          
-                                <div class="col-md-6">
-                                    <input id="emailaddress" v-model="emailaddress" type="email" class="form-control" name="emailaddress" required autocomplete="email" autofocus>
-                                </div>
-                            </div>
-
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">Wachtwoord</label>
-
-                                <div class="col-md-6">
-                                    <input id="password" v-model="password" type="password" class="form-control" name="password" required autocomplete="current-password">
-                                </div>
-                            </div>
-
                             <div v-if="loggedInUnsuccessful" class="form-group row">
                                 <label class="alert alert-danger col-md-6 offset-md-4" role="alert">
                                     {{errorMessage}}
@@ -32,6 +16,21 @@
                                 <label class="alert alert-success col-md-6 offset-md-4" role="alert">
                                     {{successMessage}}
                                 </label>
+                            </div>
+                            <div class="form-group row">
+                                <label for="emailaddress" class="col-md-4 col-form-label text-md-right">Gebruikersnaam</label>
+                                                                                                                          
+                                <div class="col-md-6">
+                                    <input id="emailaddress" v-model="emailaddress" type="email" class="form-control" name="emailaddress" required autocomplete="email" :disabled="loading" autofocus>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Wachtwoord</label>
+
+                                <div class="col-md-6">
+                                    <input id="password" v-model="password" type="password" class="form-control" name="password" required :disabled="loading" autocomplete="current-password">
+                                </div>
                             </div>
 
                             <div class="form-group row">
@@ -47,7 +46,6 @@
                                     <button type="submit" class="btn btn-primary btn-windesheim">
                                         Inloggen
                                     </button>
-                                    <spinner id="spinner" v-if="loading"></spinner>
                                 </div>
                             </div>
                         </form>

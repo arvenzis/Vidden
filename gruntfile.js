@@ -23,7 +23,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    'dist/css/vidden.min.css': 'assets/css/scss/style.scss'
+                    './dist/css/vidden.min.css': './assets/css/scss/style.scss'
                 }
             },
         },
