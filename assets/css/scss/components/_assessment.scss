@@ -1,0 +1,61 @@
+$excellent: $color-windesheim-green;
+$good: #B1D249;
+$proficient: #D5E05B;
+$poor: #F16682;
+
+.assessment {
+    &__question {
+        margin-top: 15px;
+        font-weight: 400;
+        font-style: italic;
+    }
+    &__answer {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid;
+        border-radius: 1px;
+        margin: 15px;
+        opacity: 0.7;
+        z-index: 1;
+        &-body {
+            -ms-flex: 1 1 auto;
+            flex: 1 1 auto;
+            padding: 1.25rem;
+        }
+        &-radio {
+            position: absolute;
+            margin-top: .3rem;
+            margin-left: -1.25rem;
+        }
+        &:hover {
+            opacity: 1;
+        }
+        &:active {
+            opacity: 1;
+        }
+    }
+}
+
+.excellent {
+    background-color: $excellent;
+    border-color: darken($excellent, 10%);
+}
+.good {
+    background-color: $good;
+    border-color: darken($good, 10%);
+}
+.proficient {
+    background-color: $proficient;
+    border-color: darken($proficient, 10%);
+}
+.poor {
+    background-color: $poor;
+    border-color: darken($poor, 10%);
+}

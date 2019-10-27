@@ -17,16 +17,22 @@
                 <div v-bind:slot="this.steps[this.currentStep].slot">
                     <div v-for="item in this.assertions" v-bind:key="item.assertion">
                         <!-- TODO: only show the question belonging to this assertion -->
-                        <h2 class="mb-3">{{ item.assertion }}</h2>
-                        <small class="text-muted">
-                            <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
-                        </small>
-                        <h3>{{ item.question }}</h3>
-                        <div class="form-group" v-for="option in item.answers" v-bind:key="option.result">
-                            <input type="radio" v-bind:name="option.grade" v-bind:id="option.grade" v-model="mark" class="form-check-input" />
-                            <label class="form-check-label" v-bind:for="option.grade">
-                                {{ option.description }}
-                            </label>
+                        <h3>
+                            {{ item.assertion }}
+                            <small class="text-muted">
+                                <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
+                            </small>
+                        </h3>
+                        <h4 class="assessment__question d-none d-sm-block">{{ item.question }}</h4>
+                        <div v-for="option in item.answers" v-bind:key="option.result">
+                            <div class="assessment__answer" v-bind:class="option.grade">
+                                <div class="assessment__answer-body">
+                                    <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="checked" class="assessment__answer-radio" />
+                                    <label class="form-check-label" v-bind:for="option.grade">
+                                        {{ option.description }}
+                                    </label>
+                                </div>    
+                            </div>
                         </div>
                     </div>   
                 </div>
@@ -42,12 +48,12 @@
     export default {
         name: 'edit',
         created () {
-            const ENDPOINTS = 'Assessment/' + this.id;
-            axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
-                .then(response => {
-                    this.assessment = response.data;
-                    console.log(this.assessment);
-                });
+            // const ENDPOINTS = 'Assessment/' + this.id;
+            // axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
+            //     .then(response => {
+            //         this.assessment = response.data;
+            //         console.log(this.assessment);
+            //     });
         },
         data () {
             return {
@@ -66,12 +72,12 @@
                     question: 'De student heeft een gestructeerde beheeraanpak, wat leidt tot geplande stappen met als doel toewerken naar een mijlpaal. Nieuwe inzichten worden hierbij verwerkt. En de beheeraanpak wordt blijvend gevalideerd.',
                     answers: {
                         excellent: {
-                            grade: 'Excellent',
+                            grade: 'excellent',
                             result: 9,
                             description: 'Werkt volgens geplande stappen naar een mijlpaal, verwerkt nieuwe inzichten; blijft beheeraanpak valideren.'
                         },
                         good: {
-                            grade: 'Good',
+                            grade: 'good',
                             result: 8,
                             description: 'Werkt volgens geplande stappen naar een mijlpaal en verwerkt nieuwe inzichten.'
                         },
@@ -93,12 +99,12 @@
                     question: 'De student beheert eigen proces en project. Daarnaast wordt er gereageerd op knelpunten en meevallers. Daarbij wordt hierop geanticipeert en worden onverwachte situaties opgevangen.',
                     answers: {
                         excellent: {
-                            grade: 'Excellent',
+                            grade: 'excellent',
                             result: 9,
                             description: 'Reageert en anticipeert uit zichzelf op knelpunten en meevallers en vangt onverwachte situaties op.'
                         },
                         good: {
-                            grade: 'Good',
+                            grade: 'good',
                             result: 8,
                             description: 'Reageert en anticipeert uit zichzelf op knelpunten en meevallers.'
                         },
@@ -120,12 +126,12 @@
                     question: 'De student verzamelt alternatieven, onderzoekt de impact. Daarbij maakt hij keuzes en kan deze onderbouwen.Daarnaast worden routes en kaders blijvend gevalideerd.',
                     answers: {
                         excellent: {
-                            grade: 'Excellent',
+                            grade: 'excellent',
                             result: 9,
                             description: 'Verzamelt alternatieven, onderzoekt de impact, maakt onderbouwde keuzes; blijft gekozen routes en kaders valideren.'
                         },
                         good: {
-                            grade: 'Good',
+                            grade: 'good',
                             result: 8,
                             description: 'Verzamelt alternatieven, onderzoekt de impact en maakt goed onderbouwde keuzes.'
                         },
@@ -163,6 +169,7 @@
         },
         methods: {
             nextClicked(currentPage) {
+                console.log('next clicked', currentPage)
                 return true;
             },
             getTemplateGroups() {
