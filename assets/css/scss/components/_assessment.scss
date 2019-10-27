@@ -20,9 +20,9 @@ $poor: #F16682;
         background-color: #fff;
         background-clip: border-box;
         border: 1px solid;
+        border-left-width: .25rem;
         border-radius: 1px;
         margin: 15px;
-        opacity: 0.7;
         z-index: 1;
         &-body {
             -ms-flex: 1 1 auto;
@@ -31,31 +31,35 @@ $poor: #F16682;
         }
         &-radio {
             position: absolute;
-            margin-top: .3rem;
-            margin-left: -1.25rem;
-        }
-        &:hover {
-            opacity: 1;
-        }
-        &:active {
-            opacity: 1;
+            width: 100%;
+            height: 100%;
+            display: block;
+            cursor: pointer;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            opacity: 0;
         }
     }
 }
 
 .excellent {
-    background-color: $excellent;
+    border-left-color: $excellent;
     border-color: darken($excellent, 10%);
 }
 .good {
-    background-color: $good;
+    border-left-color: $good;
     border-color: darken($good, 10%);
 }
 .proficient {
-    background-color: $proficient;
+    border-left-color: lighten($proficient, 10%);
     border-color: darken($proficient, 10%);
 }
 .poor {
-    background-color: $poor;
+    border-left-color: $poor;
     border-color: darken($poor, 10%);
+}
+
+.keyword + .keyword:before {
+    content: ", ";
 }

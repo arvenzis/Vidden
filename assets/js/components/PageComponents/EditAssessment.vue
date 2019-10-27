@@ -6,7 +6,7 @@
                 <h1 class="mb3">Competentie: {{ this.group }} - {{ this.category }}</h1>
             </div>
         </div>
-        <div class="mt-5 mb-5">
+        <section class="mt-5 mb-5">
             <vue-good-wizard
                     :steps="steps"
                     :nextStepLabel="nextStepLabel"
@@ -14,30 +14,35 @@
                     :finalStepLabel="finalStepLabel"
                     :onNext="nextClicked"
                     :onBack="backClicked">
-                <div v-bind:slot="this.steps[this.currentStep].slot">
+                <article v-bind:slot="this.steps[this.currentStep].slot">
                     <div v-for="item in this.assertions" v-bind:key="item.assertion">
                         <!-- TODO: only show the question belonging to this assertion -->
-                        <h3>
-                            {{ item.assertion }}
-                            <small class="text-muted">
-                                <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
-                            </small>
-                        </h3>
-                        <h4 class="assessment__question d-none d-sm-block">{{ item.question }}</h4>
-                        <div v-for="option in item.answers" v-bind:key="option.result">
-                            <div class="assessment__answer" v-bind:class="option.grade">
-                                <div class="assessment__answer-body">
-                                    <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="checked" class="assessment__answer-radio" />
-                                    <label class="form-check-label" v-bind:for="option.grade">
-                                        {{ option.description }}
-                                    </label>
-                                </div>    
+                        <header>
+                            <h3>
+                                {{ item.assertion }}
+                                <small class="text-muted">
+                                    <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
+                                </small>
+                            </h3>
+                        </header>
+                        <section>
+                            <h4 class="assessment__question d-none d-sm-block">{{ item.question }}</h4>
+                            <div v-for="option in item.answers" v-bind:key="option.result">
+                                <!-- TODO: when clicked, fill the div in the right color -->
+                                <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="option.grade">
+                                    <div class="assessment__answer-body">
+                                        <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="checked" v-on:change="check(option.grade)" v-bind:value="option.grade" class="assessment__answer-radio" />
+                                        <label class="form-check-label" v-bind:for="option.grade">
+                                            {{ option.description }}
+                                        </label>
+                                    </div>    
+                                </div>
                             </div>
-                        </div>
+                        </section>
                     </div>   
-                </div>
+                </article>
             </vue-good-wizard>
-        </div>
+        </section>
     </div>
 </template>
 
@@ -184,6 +189,9 @@
             },
             currentLabel() {
                 return this.steps[this.currentPage].label;
+            },
+            check(option) {
+                console.log(option + ' checked.');
             }
         },
         components: {
@@ -191,8 +199,3 @@
         }
     };
 </script>
-<style>
-.keyword + .keyword:before {
-  content: ", ";
-}
-</style>
