@@ -1,4 +1,4 @@
-<template>
+<template id="browse">
     <div class="container dashboard-container">
         <div class="row">
             <div class="col-4">
@@ -10,18 +10,26 @@
                 <h2>Blader door beoordelingen</h2>
             </div>
         </div>
-        <!--
-        <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
-        </div>
-    -->
+
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-info">Alle beoordelingen</button>
-            <button type="button" class="btn btn-info active">Mijn beoordelingen</button>
+            <button type="button" v-on:click="showAll = true" v-bind:class="{ 'btn btn-info active': showAll, 'btn btn-info': !showAll }">Alle beoordelingen</button>
+            <button type="button" v-on:click="showAll = false" v-bind:class="{ 'btn btn-info active': !showAll, 'btn btn-info': showAll }">Mijn beoordelingen</button>
         </div>
-        
+
+        <div class="container" v-if="pages.length>1">
+            <ul class="pagination">
+                <li class="page-item"><a class="page-link" @click="page=1" href="#">First</a></li>
+                <li class="page-item"><a class="page-link" @click="page>1 ? page-- : page=page " href="#"><<</a></li>
+                <li v-bind:class="{ 'page-item active': page==pageNumber, 'page-item': page!=pageNumber }" @click="page=pageNumber"
+                    v-for="pageNumber in pages.slice(getFirstNavigationButton(), getFirstNavigationButton()+3)"><a class="page-link" href="#">{{pageNumber}}</a></li>
+                <li class="page-item"><a class="page-link" @click="page<pages.length ? page++ : page=page" href="#">>></a></li>
+                <li class="page-item"><a class="page-link" @click="page=pages.length" href="#">Last</a></li>
+            </ul>
+        </div>
+        <div v-if="items.length>0">Items {{ (page-1)*perPage + 1 }} t/m {{ (page-1)*perPage + currentPageItems.length }} van {{ items.length }}</div>
+
         <div id="assessment-list">
-            <div class="card" v-for="item in items" v-bind:key="item.id">
+            <div class="card" v-for="item in currentPageItems" v-bind:key="item.id">
                 <div class="card-body">
                     <h5 class="card-title">
                         Beoordeling {{ item.vak }}
@@ -50,56 +58,82 @@
         name: "browse",
         data() {
             return {
-                items: [
-                    {
-                        id: 1,
-                        status: "Draft",
-                        vak: "Afstuderen",
-                        code: "ICT.AFSTSE.V19",
-                        student: [{ account: "S1019744", naam: "Bernard Bos" }],
-                        date_created: "09-10-2019 22:12",
-                        date_last_modified: "09-10-2019 22:16",
-                        examinator: [{ account: "BV0111996", naam: "Arjen Korevaar" }]
-                    },
-                    {
-                        id: 2,
-                        status: "Draft",
-                        vak: "Stage",
-                        code: "ICT.STAGE.V19",
-                        student: [{ account: "S1120990", naam: "Karen Bosch" }],
-                        date_created: "06-10-2019 08:13",
-                        date_last_modified: "06-10-2019 08:18",
-                        examinator: [{ account: "BV0111996", naam: "Arjen Korevaar" }]
-                    }
-                ]
+                showAll: true,
+                posts: [''],
+                page: 1,
+                perPage: 5,
+                pages: [],                
+                items: [],
+                currentPageItems: []
             };
         },
         methods: {
             getAssessments: function () {
-                const ENDPOINTS = 'Assessment/GetAssessments/';                
+                const ENDPOINTS = 'Assessment/GetAssessments/';
                 axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, {
                     headers: {
                         Authorization: this.$session.get("jwt")
                     }
                 }
                 ).then((response) => {
-                    for (var x in response.data) {
+                    this.items = [];
+                    for (var x in response.data) {                        
                         var createdAt = new Date(response.data[x].createdAt);
                         var updatedAt = new Date(response.data[x].updatedAt);
-                        this.items.push(
-                            {
-                                id: response.data[x].id,
-                                status: "onbekend",
-                                vak: "onbekend",
-                                code: response.data[x].OeCode,
-                                student: [{ account: response.data[x].student.accountNumber, naam: response.data[x].student.fullName }],
-                                date_created: createdAt.toLocaleString().slice(0, -3),
-                                date_last_modified: updatedAt.toLocaleString().slice(0, -3),
-                                examinator: [{ account: response.data[x].firstTeacher.accountNumber, naam: response.data[x].firstTeacher.fullName }]
-                            });
+                        if (this.showAll || this.$store.state.accountNumber == response.data[x].firstTeacher.accountNumber) {
+                            this.items.push(
+                                {
+                                    id: response.data[x].id,
+                                    status: "onbekend",
+                                    vak: "onbekend",
+                                    code: response.data[x].OeCode,
+                                    student: [{ account: response.data[x].student.accountNumber, naam: response.data[x].student.fullName }],
+                                    date_created: createdAt.toLocaleString().slice(0, -3),
+                                    date_last_modified: updatedAt.toLocaleString().slice(0, -3),
+                                    examinator: [{ account: response.data[x].firstTeacher.accountNumber, naam: response.data[x].firstTeacher.fullName }]
+                                });
+                        }                           
                     }
-                    const allAssessments = response.data;
+                    this.setPages();                    
                 })
+            },
+            setPages() {
+                this.pages = [];
+                let numberOfPages = Math.ceil(this.items.length / this.perPage);                
+                for (let index = 1; index <= numberOfPages; index++) {
+                    this.pages.push(index);
+                }
+                this.paginate();
+            },
+            paginate() {
+                let page = this.page;
+                let perPage = this.perPage;
+                let from = (page * perPage) - perPage;
+                let to = (page * perPage);
+                this.currentPageItems = this.items.slice(from, to);
+            },
+            getFirstNavigationButton() {
+                if (this.pages.length > 2) {
+                    if (this.page == 1) {
+                        return 0;
+                    } else if (this.page == this.pages.length) {
+                        return this.page - 3;
+                    } else {
+                        return this.page - 2;
+                    }
+                } else if (this.pages.length == 2) {
+                    return 0;
+                }
+            }
+        },
+        watch: {            
+            page: function () {
+                this.paginate();
+            },
+            showAll: function () {
+                this.page = 1;
+                this.setPages();
+                this.getAssessments();
             }
         },
         created: function () {
