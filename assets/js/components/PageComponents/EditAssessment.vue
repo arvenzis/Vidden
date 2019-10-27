@@ -1,6 +1,6 @@
 <template>
     <div class="container dashboard-container">
-        <router-link to="/" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar dashboard</router-link>
+        <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
         <div class="card">
             <div class="card-body">
                 <h1 class="mb3">Competentie: {{ this.group }} - {{ this.category }}</h1>
