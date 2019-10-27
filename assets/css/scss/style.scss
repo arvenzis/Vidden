@@ -1,6 +1,9 @@
 @import "settings/_settings";
-@import "components/_components";
+@import "./node_modules/bootstrap/scss/_functions.scss";
+@import "./node_modules/bootstrap/scss/_variables.scss";
+@import "./node_modules/bootstrap/scss/mixins/_breakpoints.scss";
 @import "bootstrap";
+@import "components/_components";
 
 html, body {
   width: 100%;
@@ -43,7 +46,16 @@ a:hover {
 }
 
 #spinner {
-  width:70px;
+  z-index: 999;
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.overlay {
+  opacity: 0.3;
 }
 
 [v-cloak] {
