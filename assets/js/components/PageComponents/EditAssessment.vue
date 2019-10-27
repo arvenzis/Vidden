@@ -2,9 +2,11 @@
     <div class="container dashboard-container">
         <router-link to="/" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar dashboard</router-link>
         <div class="card">
-            <h1 class="mb3">Competentie: {{ this.group }} - {{ this.category }}</h1>
+            <div class="card-body">
+                <h1 class="mb3">Competentie: {{ this.group }} - {{ this.category }}</h1>
             </div>
-        <div class="mt-5 mb-5" v-for="item in assertions" v-bind:key="item.assertion">
+        </div>
+        <div class="mt-5 mb-5">
             <vue-good-wizard
                     :steps="steps"
                     :nextStepLabel="nextStepLabel"
@@ -12,18 +14,21 @@
                     :finalStepLabel="finalStepLabel"
                     :onNext="nextClicked"
                     :onBack="backClicked">
-                <div v-bind:slot="item.assertion">
-                    <h2 class="mb-3">{{ item.assertion }}</h2>
-                    <small class="text-muted">
-                        <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
-                    </small>
-                    <h3>{{ item.question }}</h3>
-                    <div class="form-group" v-for="option in item.answer" v-bind:key="option.result">
-                        <input type="radio" v-bind:name="option.grade" v-bind:id="option.grade" v-model="mark" class="form-check-input" />
-                        <label class="form-check-label" v-bind:for="option.grade">
-                            {{ option.description }}
-                        </label>
-                    </div>
+                <div v-bind:slot="this.steps[this.currentStep].slot">
+                    <div v-for="item in this.assertions" v-bind:key="item.assertion">
+                        <!-- TODO: only show the question belonging to this assertion -->
+                        <h2 class="mb-3">{{ item.assertion }}</h2>
+                        <small class="text-muted">
+                            <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
+                        </small>
+                        <h3>{{ item.question }}</h3>
+                        <div class="form-group" v-for="option in item.answers" v-bind:key="option.result">
+                            <input type="radio" v-bind:name="option.grade" v-bind:id="option.grade" v-model="mark" class="form-check-input" />
+                            <label class="form-check-label" v-bind:for="option.grade">
+                                {{ option.description }}
+                            </label>
+                        </div>
+                    </div>   
                 </div>
             </vue-good-wizard>
         </div>
@@ -31,7 +36,6 @@
 </template>
 
 <script>
-    import { ModelSelect } from 'vue-search-select'
     import { GoodWizard } from 'vue-good-wizard';
     import axios from 'axios';
 
@@ -47,6 +51,8 @@
         },
         data () {
             return {
+                // This is the id in the parameter of the URL
+                // TODO: check if id is set, else, redirect to browse
                 id: this.$route.params.id,
                 // TODO: get this information from the api
                 assessment: [],
@@ -135,9 +141,10 @@
                         }
                     }
                 }],
+                currentStep: 0,
                 previousStepLabel: 'Previous',
                 nextStepLabel: 'Next',
-                finalStepLabel: 'Confirm',
+                finalStepLabel: 'Confirm'
             }
         },
         computed: {
@@ -146,27 +153,33 @@
                 let tmpAssertions = this.assertions;
                 
                 for(var i = 0; i < tmpAssertions.length; i++) {
-                    array.push({ label: tmpAssertions[i].assertion, slot: tmpAssertions[i].assertion });
+                    let label = tmpAssertions[i].assertion;
+                    let slot = tmpAssertions[i].assertion;
+
+                    array.push({ label: label, slot: slot.toLowerCase().replace(' ', '-') });
                 }
-
                 return array;
-
-                console.log(array);
-            }
+            },
         },
         methods: {
             nextClicked(currentPage) {
-                // validateStep()
+                return true;
             },
             getTemplateGroups() {
                 //
             },
             validateStep() {
                 //
+            },
+            // Below methods don't work as of yet
+            currentSlot() {
+                return this.steps[this.currentPage].slot;
+            },
+            currentLabel() {
+                return this.steps[this.currentPage].label;
             }
         },
         components: {
-            ModelSelect,
             'vue-good-wizard': GoodWizard,
         }
     };
