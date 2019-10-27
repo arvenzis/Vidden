@@ -6,4 +6,8 @@
     background-color: $color-windesheim-green-hover;
     border: $color-windesheim-green-hover 1px solid;
   }
+
+  @include media-breakpoint-down(sm) {
+    width: 100%;
+  }
 }
