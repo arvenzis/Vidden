@@ -39,6 +39,12 @@
                                 </div>
                             </div>
                         </section>
+                        <section>
+                             <div class="form-group">
+                                <label for="opmerkingen">Aanvullende opmerkingen</label>
+                                <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"/>
+                            </div>
+                        </section>
                     </div>   
                 </article>
             </vue-good-wizard>
