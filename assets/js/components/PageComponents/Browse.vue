@@ -24,18 +24,21 @@
             <div class="card" v-for="item in items" v-bind:key="item.id">
                 <div class="card-body">
                     <h5 class="card-title">
-                        Beoordeling {{ item.vak }}
+                        Beoordeling {{ item.code }}
                         <span v-for="student in item.student"
-                              v-bind:key="student.account">{{ student.naam }}({{student.account}})</span>
+                              v-bind:key="student.account">{{ student.naam }} ({{student.account}})</span>
                     </h5>
                     <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
-                    <a href="#" class="btn btn-info">Open beoordeling</a>
+                    <!-- Apparently we have to construct the link like this, per https://stackoverflow.com/a/50413822 -->
+                    <router-link :to="'/edit/' + item.id">
+                        <button class="btn btn-info">Open beoordeling</button>
+                    </router-link>
                 </div>
                 <div class="card-footer">
                     <small class="text-muted">
                         Laatst bijgewerkt: {{ item.date_last_modified }} door
                         <span v-for="examinator in item.examinator"
-                              v-bind:key="examinator.account">{{ examinator.naam }}({{examinator.account}})</span>
+                              v-bind:key="examinator.account">{{ examinator.naam }} ({{examinator.account}})</span>
                     </small>
                 </div>
             </div>
@@ -50,28 +53,7 @@
         name: "browse",
         data() {
             return {
-                items: [
-                    {
-                        id: 1,
-                        status: "Draft",
-                        vak: "Afstuderen",
-                        code: "ICT.AFSTSE.V19",
-                        student: [{ account: "S1019744", naam: "Bernard Bos" }],
-                        date_created: "09-10-2019 22:12",
-                        date_last_modified: "09-10-2019 22:16",
-                        examinator: [{ account: "BV0111996", naam: "Arjen Korevaar" }]
-                    },
-                    {
-                        id: 2,
-                        status: "Draft",
-                        vak: "Stage",
-                        code: "ICT.STAGE.V19",
-                        student: [{ account: "S1120990", naam: "Karen Bosch" }],
-                        date_created: "06-10-2019 08:13",
-                        date_last_modified: "06-10-2019 08:18",
-                        examinator: [{ account: "BV0111996", naam: "Arjen Korevaar" }]
-                    }
-                ]
+                items: []
             };
         },
         methods: {
