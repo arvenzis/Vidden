@@ -14,36 +14,38 @@
                     :finalStepLabel="finalStepLabel"
                     :onNext="nextClicked"
                     :onBack="backClicked">
-                <article v-bind:slot="this.steps[this.currentStep].slot">
+                <article v-bind:slot="this.steps[this.currentStep].slot" v-bind:ref="wizard">
                     <div v-for="item in this.assertions" v-bind:key="item.assertion">
                         <!-- TODO: only show the question belonging to this assertion -->
-                        <header>
-                            <h3>
-                                {{ item.assertion }}
-                                <small class="text-muted">
-                                    <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
-                                </small>
-                            </h3>
-                        </header>
-                        <section>
-                            <h4 class="assessment__question d-none d-sm-block">{{ item.question }}</h4>
-                            <div v-for="option in item.answers" v-bind:key="option.result">
-                                <!-- TODO: when clicked, fill the div in the right color -->
-                                <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="option.grade">
-                                    <div class="assessment__answer-body">
-                                        <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="checked" v-on:change="check(option.grade)" v-bind:value="option.grade" class="assessment__answer-radio" />
-                                        <label class="form-check-label" v-bind:for="option.grade">
-                                            {{ option.description }}
-                                        </label>
-                                    </div>    
+                        <section v-bind:id="item.assertion" v-if="this.currentAssertion === this.currentSlot" ref="assertion">
+                            <header>
+                                <h3>
+                                    {{ item.assertion }}
+                                    <small class="text-muted">
+                                        <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
+                                    </small>
+                                </h3>
+                            </header>
+                            <section>
+                                <h4 class="assessment__question d-none d-sm-block">{{ item.question }}</h4>
+                                <div v-for="option in item.answers" v-bind:key="option.result">
+                                    <!-- TODO: when clicked, fill the div in the right color -->
+                                    <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="option.grade">
+                                        <div class="assessment__answer-body">
+                                            <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="checked" v-on:change="check(option.grade)" v-bind:value="option.grade" class="assessment__answer-radio" />
+                                            <label class="form-check-label" v-bind:for="option.grade">
+                                                {{ option.description }}
+                                            </label>
+                                        </div>    
+                                    </div>
                                 </div>
-                            </div>
-                        </section>
-                        <section>
-                             <div class="form-group">
-                                <label for="opmerkingen">Aanvullende opmerkingen</label>
-                                <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"/>
-                            </div>
+                            </section>
+                            <footer>
+                                <div class="form-group">
+                                    <label for="opmerkingen">Aanvullende opmerkingen</label>
+                                    <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"/>
+                                </div>
+                            </footer>
                         </section>
                     </div>   
                 </article>
@@ -177,6 +179,14 @@
                 }
                 return array;
             },
+            currentSlot: function() {
+                return this.$refs.wizard.getAttribute('slot');
+                console.log(this.$refs.wizard.getAttribute('slot'));
+            },
+            currentAssertion: function() {
+                return this.$refs.assertion.getAttribute('id').toLowerCase().replace(' ', '-');
+                console.log(this.$refs.assertion.getAttribute('id').toLowerCase().replace(' ', '-'));
+            }
         },
         methods: {
             nextClicked(currentPage) {
@@ -190,12 +200,13 @@
                 //
             },
             // Below methods don't work as of yet
-            currentSlot() {
-                return this.steps[this.currentPage].slot;
-            },
+            // currentSlot() {
+            //     return this.$refs.wizard.getAttribute('slot');
+            // },
             currentLabel() {
                 return this.steps[this.currentPage].label;
             },
+            // This one does
             check(option) {
                 console.log(option + ' checked.');
             }
