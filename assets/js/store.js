@@ -5,13 +5,36 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
-    plugins: [createPersistedState()],
-    state: {
-        loggedIn: false,
-        loggedOutSuccessful: false,
-        currentUser: "",
-        currentUserId: null,
-        accountNumber: "",
-        apiBaseUrl: "https://vidden-api.azurewebsites.net/api/"
-    }
+	plugins: [createPersistedState({
+		storage: window.sessionStorage
+	})],
+	state: {
+		loggedIn: false,
+		loggedOutSuccessful: false,
+		currentUser: "",
+		currentUserId: null,
+		accountNumber: "",
+		apiBaseUrl: "https://vidden-api.azurewebsites.net/api/"
+	},
+	mutations: {
+		login: state => {
+			state.loggedIn = true
+		},
+		logout: state => {
+			state.loggedIn = false,
+				state.loggedOutSuccessful = true,
+				state.currentUser = '',
+				state.currentUserId = null,
+				state.accountNumber = ''
+		},
+		setCurrentUser: (state, payload) => {
+			state.currentUser = payload
+		},
+		setCurrentUserId: (state, payload) => {
+			state.currentUserId = payload
+		},
+		setAccountNumber: (state, payload) => {
+			state.accountNumber = payload
+		}
+	}
 });
