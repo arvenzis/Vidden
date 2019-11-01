@@ -12,8 +12,7 @@
                     :nextStepLabel="nextStepLabel"
                     :previousStepLabel="previousStepLabel"
                     :finalStepLabel="finalStepLabel"
-                    :onNext="nextClicked"
-                    :onBack="backClicked">
+                    :onNext="nextClicked">
                 <article v-bind:slot="this.steps[this.currentStep].slot" v-bind:ref="wizard">
                     <div v-for="item in this.assertions" v-bind:key="item.assertion">
                         <!-- TODO: only show the question belonging to this assertion -->
@@ -21,9 +20,13 @@
                             <header>
                                 <h3>
                                     {{ item.assertion }}
-                                    <small class="text-muted">
-                                        <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
-                                    </small>
+                                    <popper trigger="hover" :options="{placement: 'top'}">
+                                        <div class="popper">
+                                            <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
+                                        </div>
+
+                                        <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
+                                    </popper>
                                 </h3>
                             </header>
                             <section>
@@ -55,12 +58,17 @@
 </template>
 
 <script>
+    import Vue from "vue";
     import { GoodWizard } from 'vue-good-wizard';
     import axios from 'axios';
+    import Popper from 'vue-popperjs';
+
+    Vue.use(Popper);
 
     export default {
         name: 'edit',
         created () {
+
             // const ENDPOINTS = 'Assessment/' + this.id;
             // axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
             //     .then(response => {
@@ -213,6 +221,7 @@
         },
         components: {
             'vue-good-wizard': GoodWizard,
+            'popper': Popper
         }
     };
 </script>
