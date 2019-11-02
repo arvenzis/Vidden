@@ -9,6 +9,7 @@ $poor: #F16682;
         font-weight: 400;
         font-style: italic;
     }
+
     &__answer {
         position: relative;
         display: -ms-flexbox;
@@ -24,11 +25,13 @@ $poor: #F16682;
         border-radius: 1px;
         margin: 15px;
         z-index: 1;
+
         &-body {
             -ms-flex: 1 1 auto;
             flex: 1 1 auto;
             padding: 1.25rem;
         }
+
         &-radio {
             position: absolute;
             width: 100%;
@@ -47,17 +50,49 @@ $poor: #F16682;
     border-left-color: $excellent;
     border-color: darken($excellent, 10%);
 }
+
+#excellent {
+    &.active {
+        background-color: $excellent;
+        color: $color-white;
+    }
+}
+
 .good {
     border-left-color: $good;
     border-color: darken($good, 10%);
 }
+
+#good {
+    &.active {
+        background-color: $good;
+        color: $color-white;
+    }
+}
+
 .proficient {
     border-left-color: lighten($proficient, 10%);
     border-color: darken($proficient, 10%);
 }
+
+#proficient {
+    &.active {
+        background-color: $proficient;
+        color: $color-white;
+    }
+}
+
+
 .poor {
     border-left-color: $poor;
     border-color: darken($poor, 10%);
+}
+
+#poor {
+    &.active {
+        background-color: $poor;
+        color: $color-white;
+    }
 }
 
 .keyword + .keyword:before {

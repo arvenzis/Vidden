@@ -1,11 +1,6 @@
 <template>
     <div class="container dashboard-container">
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
-        <div class="card">
-            <div class="card-body">
-                <h1 class="mb3">Competentie: {{ this.group }} - {{ this.category }}</h1>
-            </div>
-        </div>
         <section class="mt-5 mb-5">
             <vue-good-wizard
                     :steps="steps"
@@ -14,6 +9,7 @@
                     :finalStepLabel="finalStepLabel"
                     :onNext="nextClicked">
                 <article v-bind:slot="this.steps[this.currentStep].slot" v-bind:ref="wizard">
+                    <h4 class="mb3">{{ this.group }} - {{ this.category }}</h4>
                     <div v-for="item in this.assertions" v-bind:key="item.assertion">
                         <!-- TODO: only show the question belonging to this assertion -->
                         <section v-bind:id="item.assertion" v-if="this.currentAssertion === this.currentSlot" ref="assertion">
@@ -33,9 +29,9 @@
                                 <h4 class="assessment__question d-none d-sm-block">{{ item.question }}</h4>
                                 <div v-for="option in item.answers" v-bind:key="option.result">
                                     <!-- TODO: when clicked, fill the div in the right color -->
-                                    <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="option.grade">
+                                    <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
                                         <div class="assessment__answer-body">
-                                            <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="checked" v-on:change="check(option.grade)" v-bind:value="option.grade" class="assessment__answer-radio" />
+                                            <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="item.checked" v-on:change="check(option.grade)" v-bind:value="option.grade" class="assessment__answer-radio" />
                                             <label class="form-check-label" v-bind:for="option.grade">
                                                 {{ option.description }}
                                             </label>
@@ -46,7 +42,7 @@
                             <footer>
                                 <div class="form-group">
                                     <label for="opmerkingen">Aanvullende opmerkingen</label>
-                                    <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"/>
+                                    <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"></textarea>
                                 </div>
                             </footer>
                         </section>
@@ -112,7 +108,8 @@
                             result: 4,
                             description: 'Ongestructureerde beheeraanpak leidt tot weinig grip en sturing.'
                         }
-                    }
+                    },
+                    checked: false
                 },
                 {
                     assertion: 'Initiatief',
@@ -139,7 +136,8 @@
                             result: 4,
                             description: 'Is uit zichzelf weinig geneigd eigen project en proces te beheren.'
                         }
-                    }
+                    },
+                    checked: false
                 },
                 {
                     assertion: 'Keuzes maken',
@@ -166,7 +164,8 @@
                             result: 4,
                             description: 'Toont weinig vaardigheid in het maken van geschikte keuzes.'
                         }
-                    }
+                    },
+                    checked: false
                 }],
                 currentStep: 0,
                 previousStepLabel: 'Previous',
@@ -179,7 +178,7 @@
                 let array = [];
                 let tmpAssertions = this.assertions;
                 
-                for(var i = 0; i < tmpAssertions.length; i++) {
+                for (let i = 0; i < tmpAssertions.length; i++) {
                     let label = tmpAssertions[i].assertion;
                     let slot = tmpAssertions[i].assertion;
 
