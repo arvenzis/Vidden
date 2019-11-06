@@ -1,5 +1,5 @@
 <template id="browse">
-  <div class="container dashboard-container">  
+  <div class="container dashboard-container">
     <div class="row">
       <div class="col-6">
         <router-link to="/">
@@ -11,6 +11,13 @@
       </div>
     </div>
 
+    <!--De title die ik aan b-tab hieronder meegeef wordt niet gerenderd in html, als ik dezelfde code in codepen/fiddle probeer lukt het wel. Weet jij waarom?-->
+    <!--Er verschijnen 10 vue-errors bij het laden van deze pagina:-->
+    <!--5 x [Vue warn]: $attrs is readonly-->
+    <!--5 x [Vue warn]: $listeners is readonly-->
+    <!--Deze verschijnen paarsgewijs bij 1 x b-tabs, 3 x b-tab en 1 x b-pagination: weet jij hoe dit te voorkomen is?-->
+    <!--Er verschijnt nog een 11e vue-error bij totalRows: weet jij hoe ik dit kan oplossen?-->
+    <!--Er verschijnt nog een 12e vue-error als je van pagina wisselt: value (wat verwijst naar currentPageAll). Weet jij hoe ik dit zou kunnen oplossen?-->
     <div>
       <b-card no-body>
         <b-tabs pills card>
@@ -21,112 +28,92 @@
       </b-card>
     </div>
 
-    <div class="btn-group" role="group">
-      <button type="button"
-              v-on:click="showAll = true"
-              v-bind:class="{ 'btn btn-info active': showAll, 'btn btn-info': !showAll }">
-        Alle beoordelingen
-      </button>
-      <!--btn btn-info in class zetten, active kan apart in deze v-bind-->
-      <button type="button"
-              v-on:click="showAll = false"
-              v-bind:class="{ 'btn btn-info active': !showAll, 'btn btn-info': showAll }">
-        Mijn beoordelingen
-      </button>
-    </div>
+    <div v-if="navigationToggle">
+      <b-pagination v-model="currentPageAll"
+                    :total-rows="rowsAll"
+                    :per-page="perPage"
+                    aria-controls="assessment-listAll"></b-pagination>
 
-    <paginate :page-count="20"
-              :page-range="3"
-              :margin-pages="2"
-              :click-handler="clickCallback"
-              :prev-text="'Prev'"
-              :next-text="'Next'"
-              :container-class="'pagination'"
-              :page-class="'page-item'"></paginate>
+      <p class="mt-3">Current Page: {{ currentPageAll }}</p>
 
-    <div class="container" v-if="pages.length>1">
-      <ul class="pagination">
-        <li class="page-item">
-          <a class="page-link" @click="page=1" href="#">First</a>
-        </li>
-        <!-- << hieronder vervangen -->
-        <li class="page-item">
-          <a class="page-link" @click="page>1 ? page-- : page=page " href="#"><<</a>
-        </li>
-        <!-- page>1 vervangen door page > 1 -->
-        <!-- hier wat comment toevoegen over hoe getFirstNavigationButton werkt -->
-        <li v-bind:class="{ 'page-item active': page==pageNumber, 'page-item': page!=pageNumber }"
-            @click="page=pageNumber"
-            v-for="pageNumber in pages.slice( getFirstNavigationButton(), getFirstNavigationButton() + 3 )">
-          <a class="page-link" href="#">{{pageNumber}}</a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" @click="page<pages.length ? page++ : page=page" href="#">>></a>
-        </li>
-        <li class="page-item">
-          <a class="page-link" @click="page=pages.length" href="#">Last</a>
-        </li>
-      </ul>
-    </div>
-    <!-- spul hieronder wat tussen dubbele {} staat in computed zetten -->
-    <div v-if="items.length>0">Items{{ (page-1)*perPage + 1 }}t/m{{ (page-1)*perPage + currentPageItems.length }}van{{ items.length }}</div>
-
-    <div id="assessment-list">
-      <div class="card" v-for="item in currentPageItems" v-bind:key="item.id">
-        <div class="card-body">
-          <h5 class="card-title">
-            Beoordeling {{ item.vak }}
-            <span v-for="student in item.student"
-                  v-bind:key="student.account">{{ student.naam }}({{student.account}})</span>
-          </h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
-          <a href="#" class="btn btn-info">Open beoordeling</a>
+      <div id="assessment-listAll">
+        <div class="card" v-for="item in itemsAll" v-bind:key="item.id">
+          <div class="card-body">
+            <h5 class="card-title">
+              Beoordeling {{ item.vak }}
+              <span v-for="student in item.student"
+                    v-bind:key="student.account">{{ student.naam }}({{ student.account }})</span>
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
+            <a href="#" class="btn btn-info">Open beoordeling</a>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">
+              Laatst bijgewerkt: {{ item.date_last_modified }} door
+              <span v-for="examinator in item.examinator"
+                    v-bind:key="examinator.account">{{ examinator.naam }}({{ examinator.account }})</span>
+            </small>
+          </div>
         </div>
-        <div class="card-footer">
-          <small class="text-muted">
-            Laatst bijgewerkt: {{ item.date_last_modified }} door
-            <span v-for="examinator in item.examinator"
-                  v-bind:key="examinator.account">{{ examinator.naam }}({{examinator.account}})</span>
-          </small>
+      </div>
+    </div>
+
+    <div v-if="!navigationToggle">
+      <b-pagination v-model="currentPageAccount"
+                    :total-rows="rowsAccount"
+                    :per-page="perPage"
+                    aria-controls="assessment-listAccount"></b-pagination>
+
+      <p class="mt-3">Current Page: {{ currentPageAccount }}</p>
+
+      <div id="assessment-listAccount">
+        <div class="card" v-for="item in itemsAccount" v-bind:key="item.id">
+          <div class="card-body">
+            <h5 class="card-title">
+              Beoordeling {{ item.vak }}
+              <span v-for="student in item.student"
+                    v-bind:key="student.account">{{ student.naam }}({{ student.account }})</span>
+            </h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
+            <a href="#" class="btn btn-info">Open beoordeling</a>
+          </div>
+          <div class="card-footer">
+            <small class="text-muted">
+              Laatst bijgewerkt: {{ item.date_last_modified }} door
+              <span v-for="examinator in item.examinator"
+                    v-bind:key="examinator.account">{{ examinator.naam }}({{ examinator.account }})</span>
+            </small>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 
-<style lang="css">
-  .pagination {
-  }
-
-  .page-item {
-  }
-</style>
-
 <script>
-  import Vue from 'vue'
   import axios from "axios";
-  import Paginate from 'vuejs-paginate'
-  import { BTabs, BTab, BCard, BCardText } from 'bootstrap-vue'
-
-  Vue.component("paginate", Paginate);
+  import { BTabs, BTab, BCard, BCardText, BPagination } from 'bootstrap-vue'
 
   export default {
     name: "browse",
     data() {
       return {
-        showAll: true,
-        posts: [""] /*<!-- weghalen want niet gebruikt -->*/,
-        page: 1,
-        perPage: 5,
-        pages: [],
-        items: [],
-        currentPageItems: []
+        // algemeen
+        navigationToggle: true,
+        perPage: 1,
+
+        // voor lijst met alle beoordelingen
+        currentPageAll: 1,
+        rowsAll: null,
+        itemsAll: [],  
+
+        // voor lijst met beoordelingen van beoordelaar met ingelogde account
+        currentPageAccount: 1,
+        rowsAccount: null,
+        itemsAccount: [],
       };
     },
-    methods: {
-      clickCallback: function (pageNum) {
-        console.log(pageNum);
-      },
+    methods: {      
       getAssessments: function () {
         const ENDPOINTS = "Assessment/GetAssessments/";
         axios
@@ -136,17 +123,15 @@
             }
           })
           .then(response => {
-            this.items = [];
+            this.itemsAll = [];
             for (var x in response.data) {
               var createdAt = new Date(response.data[x].createdAt);
               var updatedAt = new Date(response.data[x].updatedAt);
-              // api wordt onnodig vaak aangeroepen
               if (
-                this.showAll ||
                 this.$store.state.accountNumber ==
                 response.data[x].firstTeacher.accountNumber
               ) {
-                this.items.push({
+                this.itemsAll.push({
                   id: response.data[x].id,
                   status: "onbekend",
                   vak: "onbekend",
@@ -168,64 +153,19 @@
                 });
               }
             }
-            this.setPages();
+            this.rowsAll = this.itemsAll.length;
           });
-      },
-      setPages() {
-        this.pages = [];
-        let numberOfPages = Math.ceil(this.items.length / this.perPage);
-        for (let index = 1; index <= numberOfPages; index++) {
-          this.pages.push(index);
-        }
-        this.paginate();
-      },
-      paginate() {
-        let page = this.page;
-        let perPage = this.perPage;
-        let from = page * perPage - perPage;
-        let to = page * perPage;
-        this.currentPageItems = this.items.slice(from, to);
-      },
-      getFirstNavigationButton() {
-        if (this.pages.length > 2) {
-          if (this.page == 1) {
-            return 0;
-          } else if (this.page == this.pages.length) {
-            return this.page - 3;
-          } else {
-            return this.page - 2;
-          }
-        } else if (this.pages.length == 2) {
-          return 0;
-        }
       }
     },
     components: {
-      'paginate': Paginate,
       'b-tabs': BTabs,
       'b-tab': BTab,
       'b-card': BCard,
-      'b-card-text': BCardText
-    },
-    watch: {
-      page: function () {
-        this.paginate();
-      },
-      showAll: function () {
-        this.page = 1;
-        this.setPages();
-        this.getAssessments();
-      }
+      'b-card-text': BCardText,
+      'b-pagination': BPagination
     },
     created: function () {
       this.getAssessments();
     }
   };
 </script>
-
-<style scoped>
-  .card {
-    border-radius: none;
-    margin: 15px 0px;
-  }
-</style>
