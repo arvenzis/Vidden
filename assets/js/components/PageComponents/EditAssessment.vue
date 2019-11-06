@@ -28,7 +28,6 @@
                             <section>
                                 <h4 class="assessment__question d-none d-sm-block">{{ item.question }}</h4>
                                 <div v-for="option in item.answers" v-bind:key="option.result">
-                                    <!-- TODO: when clicked, fill the div in the right color -->
                                     <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
                                         <div class="assessment__answer-body">
                                             <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="item.checked" v-on:change="check(option.grade)" v-bind:value="option.grade" class="assessment__answer-radio" />
@@ -64,109 +63,58 @@
     export default {
         name: 'edit',
         created () {
-
-            // const ENDPOINTS = 'Assessment/' + this.id;
-            // axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
-            //     .then(response => {
-            //         this.assessment = response.data;
-            //         console.log(this.assessment);
-            //     });
+            const ENDPOINTS = 'assessment/' + this.id + '/start/' + this.$store.state.currentUserId;
+            axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, null,
+                {
+                    headers: {"Authorization" : this.$session.get('jwt')}
+                })
+                .then(response => {
+                    console.log(response.data);
+                    this.assertions[0].children = [response.data.keywords];
+                    this.assertions[0].question = response.data.question;
+                    this.assertions[0].answers.excellent.description = response.data.answers[0].text;
+                    this.assertions[0].answers.good.description = response.data.answers[1].text;
+                    this.assertions[0].answers.proficient.description = response.data.answers[2].text;
+                    this.assertions[0].answers.poor.description = response.data.answers[3].text;
+                }); //ToDo: catch die bende
         },
         data () {
             return {
                 // This is the id in the parameter of the URL
-                // TODO: check if id is set, else, redirect to browse
                 id: this.$route.params.id,
                 // TODO: get this information from the api
                 assessment: [],
-                // For now, let's create a mock version
                 group: 'Analyseren',
                 category: 'Zelfstandigheid',
                 assertions: [
                     {
-                    assertion: 'Aanpak',
-                    children: ['Gestructureerdheid', 'Samenhang', 'Flexibiliteit'],
-                    question: 'De student heeft een gestructeerde beheeraanpak, wat leidt tot geplande stappen met als doel toewerken naar een mijlpaal. Nieuwe inzichten worden hierbij verwerkt. En de beheeraanpak wordt blijvend gevalideerd.',
-                    answers: {
-                        excellent: {
-                            grade: 'excellent',
-                            result: 9,
-                            description: 'Werkt volgens geplande stappen naar een mijlpaal, verwerkt nieuwe inzichten; blijft beheeraanpak valideren.'
+                        assertion: 'Aanpak', //ToDo: nog niet beschikbaar in de api
+                        children: [],
+                        question: '',
+                        answers: {
+                            excellent: {
+                                grade: 'excellent',
+                                result: 9,
+                                description: ''
+                            },
+                            good: {
+                                grade: 'good',
+                                result: 8,
+                                description: ''
+                            },
+                            proficient: {
+                                grade: 'proficient',
+                                result: 6,
+                                description: ''
+                            },
+                            poor: {
+                                grade: 'poor',
+                                result: 4,
+                                description: ''
+                            }
                         },
-                        good: {
-                            grade: 'good',
-                            result: 8,
-                            description: 'Werkt volgens geplande stappen naar een mijlpaal en verwerkt nieuwe inzichten.'
-                        },
-                        proficient: {
-                            grade: 'proficient',
-                            result: 6,
-                            description: 'Werkt volgens geplande stappen naar een mijlpaal.'
-                        },
-                        poor: {
-                            grade: 'poor',
-                            result: 4,
-                            description: 'Ongestructureerde beheeraanpak leidt tot weinig grip en sturing.'
-                        }
-                    },
-                    checked: false
-                },
-                {
-                    assertion: 'Initiatief',
-                    children: ['Grip', 'Sturing','Omgaan met risico\'s'],
-                    question: 'De student beheert eigen proces en project. Daarnaast wordt er gereageerd op knelpunten en meevallers. Daarbij wordt hierop geanticipeert en worden onverwachte situaties opgevangen.',
-                    answers: {
-                        excellent: {
-                            grade: 'excellent',
-                            result: 9,
-                            description: 'Reageert en anticipeert uit zichzelf op knelpunten en meevallers en vangt onverwachte situaties op.'
-                        },
-                        good: {
-                            grade: 'good',
-                            result: 8,
-                            description: 'Reageert en anticipeert uit zichzelf op knelpunten en meevallers.'
-                        },
-                        proficient: {
-                            grade: 'proficient',
-                            result: 6,
-                            description: 'Reageert uit zichzelf op knelpunten en meevallers.'
-                        },
-                        poor: {
-                            grade: 'poor',
-                            result: 4,
-                            description: 'Is uit zichzelf weinig geneigd eigen project en proces te beheren.'
-                        }
-                    },
-                    checked: false
-                },
-                {
-                    assertion: 'Keuzes maken',
-                    children: ['Bronnen', 'Methoden', 'Technieken'],
-                    question: 'De student verzamelt alternatieven, onderzoekt de impact. Daarbij maakt hij keuzes en kan deze onderbouwen.Daarnaast worden routes en kaders blijvend gevalideerd.',
-                    answers: {
-                        excellent: {
-                            grade: 'excellent',
-                            result: 9,
-                            description: 'Verzamelt alternatieven, onderzoekt de impact, maakt onderbouwde keuzes; blijft gekozen routes en kaders valideren.'
-                        },
-                        good: {
-                            grade: 'good',
-                            result: 8,
-                            description: 'Verzamelt alternatieven, onderzoekt de impact en maakt goed onderbouwde keuzes.'
-                        },
-                        proficient: {
-                            grade: 'proficient',
-                            result: 6,
-                            description: 'Verzamelt alternatieven, onderzoekt de impact en maakt keuzes.'
-                        },
-                        poor: {
-                            grade: 'poor',
-                            result: 4,
-                            description: 'Toont weinig vaardigheid in het maken van geschikte keuzes.'
-                        }
-                    },
-                    checked: false
-                }],
+                        checked: false
+                    }],
                 currentStep: 0,
                 previousStepLabel: 'Previous',
                 nextStepLabel: 'Next',
@@ -177,27 +125,26 @@
             steps: function() {
                 let array = [];
                 let tmpAssertions = this.assertions;
-                
+
                 for (let i = 0; i < tmpAssertions.length; i++) {
                     let label = tmpAssertions[i].assertion;
                     let slot = tmpAssertions[i].assertion;
 
                     array.push({ label: label, slot: slot.toLowerCase().replace(' ', '-') });
                 }
+                console.log(array);
                 return array;
             },
             currentSlot: function() {
                 return this.$refs.wizard.getAttribute('slot');
-                console.log(this.$refs.wizard.getAttribute('slot'));
             },
             currentAssertion: function() {
                 return this.$refs.assertion.getAttribute('id').toLowerCase().replace(' ', '-');
-                console.log(this.$refs.assertion.getAttribute('id').toLowerCase().replace(' ', '-'));
             }
         },
         methods: {
             nextClicked(currentPage) {
-                console.log('next clicked', currentPage)
+                console.log('next clicked', currentPage);
                 return true;
             },
             getTemplateGroups() {
