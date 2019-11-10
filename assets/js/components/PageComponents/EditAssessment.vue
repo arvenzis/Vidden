@@ -8,16 +8,16 @@
                     :nextStepLabel="nextStepLabel"
                     :previousStepLabel="previousStepLabel"
                     :finalStepLabel="finalStepLabel"
-                    :onNext="nextClicked">
+                    :onNext="nextClicked"
+                    :onBack="backClicked">
 
-                    <article :slot="this.steps[this.currentStep].slot"  :data-currentslot="this.steps[this.currentStep].label" ref="slot">
+                    <article :slot="this.steps[this.currentStep].slot">
                         <h4 class="mb3">{{ this.group }} - {{ this.category }}</h4>
-                        <div v-for="item in this.assertions" v-bind:key="item.assertion">
-                            {{item.assertionName.toLowerCase()}} {{ currentSlot()}}
-                            <section v-bind:id="item.assertion" v-if="item.assertionName.toLowerCase() === currentSlot()" ref="assertion">
+                        <h3>{{this.steps[this.currentStep].label}}</h3>
+                        <div v-for="item in this.assertions" v-bind:key="item.assertion" v-bind:property="this.currentSlot">
+                            <section v-bind:id="item.assertion" v-if="item.assertionName.toLowerCase().replace(' ', '-') === currentSlot" ref="assertion">
                                 <header>
                                     <h3>
-                                        {{ item.assertion }}
                                         <popper trigger="hover" :options="{placement: 'top'}">
                                             <div class="popper">
                                                 <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
@@ -78,6 +78,7 @@
                 nextStepLabel: 'Next',
                 finalStepLabel: 'Confirm',
                 currentStep: 0,
+                currentSlot: "",
                 dataReady: false
             }
         },
@@ -134,22 +135,22 @@
                     }
 
                     this.steps = array;
-
+                    this.currentSlot = this.getCurrentSlot();
                     this.dataReady = true;
                 }); //ToDo: catch die bende
         },
         methods: {
-            currentSlot: function() {
-                if (!this.$refs.slot)
-                    return;
-                return this.$refs.slot.dataset.currentslot.toLowerCase();
+            getCurrentSlot() {
+                return this.steps[this.currentStep].slot;
             },
-            nextClicked(currentPage) {
+            nextClicked() {
                 this.currentStep = this.currentStep + 1;
+                this.currentSlot = this.getCurrentSlot();
                 return true;
             },
-            previousClicked() {
+            backClicked() {
                 this.currentStep = this.currentStep - 1;
+                this.currentSlot = this.getCurrentSlot();
                 return true;
             },
             getTemplateGroups() {
