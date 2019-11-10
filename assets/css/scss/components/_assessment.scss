@@ -32,6 +32,28 @@ $poor: #F16682;
             padding: 1.25rem;
         }
 
+        &-mark {
+            vertical-align: middle;
+            display: inline;
+            margin-right: 4px;
+
+            &.excellent {
+                color: $excellent;
+            }
+            &.good {
+                color: $good;
+            }
+            &.proficient {
+                color: $proficient;
+            }
+            &.poor {
+                color: $poor;
+            }
+            &.active {
+            	color: $color-white;
+            }
+        }
+
         &-radio {
             position: absolute;
             width: 100%;

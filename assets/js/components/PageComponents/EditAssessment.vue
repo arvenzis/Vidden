@@ -34,6 +34,9 @@
                                             <div class="assessment__answer-body">
                                                 <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="item.checked" v-on:change="check(option.grade)" v-bind:value="option.grade" class="assessment__answer-radio" />
                                                 <label class="form-check-label" v-bind:for="option.grade">
+                                                    <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
+                                                        {{ option.result }}
+                                                    </h1> 
                                                     {{ option.description }}
                                                 </label>
                                             </div>
