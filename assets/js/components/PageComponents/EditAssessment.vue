@@ -9,6 +9,7 @@
                     :previousStepLabel="previousStepLabel"
                     :finalStepLabel="finalStepLabel"
                     :onNext="nextClicked">
+
                     <article :slot="this.steps[this.currentStep].slot"  :data-currentslot="this.steps[this.currentStep].label" ref="slot">
                         <h4 class="mb3">{{ this.group }} - {{ this.category }}</h4>
                         <div v-for="item in this.assertions" v-bind:key="item.assertion">
@@ -142,10 +143,13 @@
                 if (!this.$refs.slot)
                     return;
                 return this.$refs.slot.dataset.currentslot.toLowerCase();
-                // return "hoer";
             },
             nextClicked(currentPage) {
-                // console.log('next clicked', currentPage);
+                this.currentStep = this.currentStep + 1;
+                return true;
+            },
+            previousClicked() {
+                this.currentStep = this.currentStep - 1;
                 return true;
             },
             getTemplateGroups() {
