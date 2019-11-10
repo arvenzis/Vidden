@@ -1,6 +1,6 @@
 $excellent: $color-windesheim-green;
 $good: #B1D249;
-$proficient: #D5E05B;
+$proficient: $color-windesheim-yellow;
 $poor: #F16682;
 
 .assessment {
@@ -71,7 +71,7 @@ $poor: #F16682;
 }
 
 .proficient {
-    border-left-color: lighten($proficient, 10%);
+    border-left-color: $proficient;
     border-color: darken($proficient, 10%);
 }
 
