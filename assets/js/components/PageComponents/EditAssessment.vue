@@ -3,28 +3,29 @@
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
         <section class="mt-5 mb-5">
             <div v-if="dataReady">
-            <vue-good-wizard
-                    :steps="steps"
-                    :nextStepLabel="nextStepLabel"
-                    :previousStepLabel="previousStepLabel"
-                    :finalStepLabel="finalStepLabel"
-                    :onNext="nextClicked"
-                    :onBack="backClicked">
+                <vue-good-wizard
+                        :steps="steps"
+                        :nextStepLabel="nextStepLabel"
+                        :previousStepLabel="previousStepLabel"
+                        :finalStepLabel="finalStepLabel"
+                        :onNext="nextClicked"
+                        :onBack="backClicked">
 
-                    <article :slot="this.steps[this.currentStep].slot">
-                        <h4 class="mb3">{{ this.group }} - {{ this.category }}</h4>
-                        <h3>{{this.steps[this.currentStep].label}}</h3>
-                        <div v-for="item in this.assertions" v-bind:key="item.assertion" v-bind:property="this.currentSlot">
-                            <section v-bind:id="item.assertion" v-if="item.assertionName.toLowerCase().replace(' ', '-') === currentSlot" ref="assertion">
-                                <header>
-                                    <h3>
-                                        <popper trigger="hover" :options="{placement: 'top'}">
-                                            <div class="popper">
-                                                <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
-                                            </div>
+                        <article :slot="this.steps[this.currentStep].slot">
+                            <div v-for="item in this.assertions" v-bind:key="item.assertion">
+                                <section v-bind:id="item.assertion" v-if="item.assertionName.toLowerCase().replace(' ', '-') === currentSlot" ref="assertion">
+                                   <header>
+                                    <!-- ToDo: find a way to only show this for the first item in the slot -->
+                                    <!-- We can't do this with an index, because the first item in this slot doesn't always have an index of 0 -->
+                                    <h4 class="mb3">{{ item.categoryName }} - {{ item.groupName }}</h4>
+                                    <h3>{{item.assertionName}}
+                                    <popper trigger="hover" :options="{ placement: 'top' }">
+                                        <div class="popper">
+                                            <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
+                                        </div>
 
-                                            <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
-                                        </popper>
+                                        <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
+                                    </popper>
                                     </h3>
                                 </header>
                                 <section>
@@ -36,7 +37,7 @@
                                                 <label class="form-check-label" v-bind:for="option.grade">
                                                     <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
                                                         {{ option.result }}
-                                                    </h1> 
+                                                    </h1>
                                                     {{ option.description }}
                                                 </label>
                                             </div>
@@ -97,6 +98,8 @@
                     response.data.forEach(function(subject) {
                         let obj = {
                             "assertionName": subject.question.name,
+                            "groupName": subject.groupName,
+                            "categoryName": subject.name,
                             "children": [subject.question.keywords],
                             "question": subject.question.question,
                             "answers": {
@@ -146,10 +149,14 @@
             getCurrentSlot() {
                 return this.steps[this.currentStep].slot;
             },
-            nextClicked() {
-                this.currentStep = this.currentStep + 1;
-                this.currentSlot = this.getCurrentSlot();
-                return true;
+            nextClicked(currentPage) {
+                if (currentPage !== this.steps.length - 1) {
+                    this.currentStep = this.currentStep + 1;
+                    this.currentSlot = this.getCurrentSlot();
+                    return true;
+                }
+
+                this.saveAssessment();
             },
             backClicked() {
                 this.currentStep = this.currentStep - 1;
@@ -175,6 +182,9 @@
                     }
                 }
                 return false;
+            },
+            saveAssessment() {
+                console.log('confirm');
             }
         },
         components: {
