@@ -6,87 +6,73 @@
           <i class="fa fa-arrow-left"></i> Terug naar dashboard
         </router-link>
       </div>
-
+      <div class="col-6">
+        <h2>Bladeren</h2>
+      </div>
     </div>
 
-    <tabs :onSelect="showTab"> 
+    <tabs :onSelect="showTab">
+      
       <tab title="Alle beoordelingen">
-        <paginate v-model="pageAll"
-                  :page-count="totalPagesAll"
-                  :page-range="3"
-                  :margin-pages="2"
-                  :prev-text="'&lsaquo;'"
-                  :next-text="'&rsaquo;'"
-                  :container-class="'pagination'"
-                  :page-class="'page-item'"
-                  :first-last-button="true"
-                  :first-button-text="'&laquo;'"
-                  :last-button-text="'&raquo;'">
+        <div id="assessment-listAll" v-if="showAll">
+          <p class="mt-3">Pagina: {{ pageAll }} van {{ totalPagesAll }}</p>
+          <div class="card" v-for="item in itemsCurrentPageAll" v-bind:key="item.id">
+            <div class="card-body">
+              <h5 class="card-title">
+                Beoordeling
+                <span v-for="student in item.student" v-bind:key="student.account">{{ student.naam }}
+                  ({{ student.account }})</span>
+              </h5>
+              <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
+              <a href="#" class="btn btn-info">Open beoordeling</a>
+            </div>
+            <div class="card-footer">
+              <small class="text-muted">
+                Laatst bijgewerkt: {{ item.date_last_modified }} door
+                <span v-for="examinator in item.examinator" v-bind:key="examinator.account">{{ examinator.naam }}
+                  ({{ examinator.account }})</span>
+              </small>
+            </div>
+          </div>
+        </div>
+        <paginate v-model="pageAll" :page-count="totalPagesAll" :page-range="3" :margin-pages="2"
+          :prev-text="'&lsaquo;'" :next-text="'&rsaquo;'" :container-class="'pagination'" :page-class="'page-item'"
+          :first-last-button="true" :first-button-text="'&laquo;'" :last-button-text="'&raquo;'">
         </paginate>
       </tab>
+      
       <tab title="Mijn beoordelingen">
-        <paginate v-model="pageAccount"
-                  :page-count="totalPagesAccount"
-                  :page-range="3"
-                  :margin-pages="2"
-                  :prev-text="'&lsaquo;'"
-                  :next-text="'&rsaquo;'"
-                  :container-class="'pagination'"
-                  :page-class="'page-item'"
-                  :first-last-button="true"
-                  :first-button-text="'&laquo;'"
-                  :last-button-text="'&raquo;'">
+        <div id="assessment-listAll" v-if="!showAll">
+          <p class="mt-3">Pagina: {{ pageAccount }} van {{ totalPagesAccount }}</p>
+          <div id="assessment-listAll">
+            <div class="card" v-for="item in itemsCurrentPageAccount" v-bind:key="item.id">
+              <div class="card-body">
+                <h5 class="card-title">
+                  Beoordeling
+                  <span v-for="student in item.student" v-bind:key="student.account">{{ student.naam }}
+                    ({{ student.account }})</span>
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
+                <a href="#" class="btn btn-info">Open beoordeling</a>
+              </div>
+              <div class="card-footer">
+                <small class="text-muted">
+                  Laatst bijgewerkt: {{ item.date_last_modified }} door
+                  <span v-for="examinator in item.examinator" v-bind:key="examinator.account">{{ examinator.naam }}
+                    ({{ examinator.account }})</span>
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <paginate v-model="pageAccount" :page-count="totalPagesAccount" :page-range="3" :margin-pages="2"
+          :prev-text="'&lsaquo;'" :next-text="'&rsaquo;'" :container-class="'pagination'" :page-class="'page-item'"
+          :first-last-button="true" :first-button-text="'&laquo;'" :last-button-text="'&raquo;'">
         </paginate>
       </tab>
     </tabs>
-
-    <div id="assessment-listAll" v-if="showAll">
-      <p class="mt-3">Pagina: {{ pageAll }} van {{ totalPagesAll }}</p>
-      <div class="card" v-for="item in itemsCurrentPageAll" v-bind:key="item.id">
-        <div class="card-body">
-          <h5 class="card-title">
-            Beoordeling {{ item.vak }}
-            <span v-for="student in item.student"
-                  v-bind:key="student.account">{{ student.naam }}({{ student.account }})</span>
-          </h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
-          <a href="#" class="btn btn-info">Open beoordeling</a>
-        </div>
-        <div class="card-footer">
-          <small class="text-muted">
-            Laatst bijgewerkt: {{ item.date_last_modified }} door
-            <span v-for="examinator in item.examinator"
-                  v-bind:key="examinator.account">{{ examinator.naam }}({{ examinator.account }})</span>
-          </small>
-        </div>
-      </div>
-    </div>
-
-    <div id="assessment-listAll" v-if="!showAll">
-      <p class="mt-3">Pagina: {{ pageAccount }} van {{ totalPagesAccount }}</p>
-      <div id="assessment-listAll">
-        <div class="card" v-for="item in itemsCurrentPageAccount" v-bind:key="item.id">
-          <div class="card-body">
-            <h5 class="card-title">
-              Beoordeling {{ item.vak }}
-              <span v-for="student in item.student"
-                    v-bind:key="student.account">{{ student.naam }}({{ student.account }})</span>
-            </h5>
-            <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
-            <a href="#" class="btn btn-info">Open beoordeling</a>
-          </div>
-          <div class="card-footer">
-            <small class="text-muted">
-              Laatst bijgewerkt: {{ item.date_last_modified }} door
-              <span v-for="examinator in item.examinator"
-                    v-bind:key="examinator.account">{{ examinator.naam }}({{ examinator.account }})</span>
-            </small>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
-  
+
 </template>
 
 <script>
@@ -180,8 +166,7 @@
               var updatedAt = new Date(response.data[x].startDatePeriod);
               items.push({
                 id: x,
-                status: "onbekend",
-                vak: "onbekend",
+                status: response.data[x].status,
                 code: response.data[x].oeCode,
                 student: [
                   {
@@ -229,4 +214,9 @@
     }
   };
 </script>
-
+<style scoped>
+.card {
+  border-radius: none;
+  margin: 15px 0px;
+}
+</style>
