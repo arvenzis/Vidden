@@ -9,7 +9,7 @@
 
     </div>
 
-    <tabs :onSelect="showTab">
+    <tabs :onSelect="showTab"> 
       <tab title="Alle beoordelingen">
         <paginate v-model="pageAll"
                   :page-count="totalPagesAll"
