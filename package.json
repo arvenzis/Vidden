@@ -1,6 +1,17 @@
 {
-  "name": "Vidden",
+  "name": "vidden",
+  "description": "Judging application for HBO-ICT Windesheim",
+  "license": "MIT",
   "version": "0.1.0",
+  "scripts": {
+    "test": "npx cypress run",
+    "test:full": "npx cypress open"
+  },
+  "main": "index.html",
+  "repository": {
+    "type": "git",
+    "url": "https://boschbrakband@dev.azure.com/boschbrakband/Web%20Development%20Project/_git/vidden-client"
+  },
   "devDependencies": {
     "@babel/core": "^7.6.2",
     "@babel/preset-env": "^7.6.2",

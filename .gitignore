@@ -560,3 +560,7 @@ MigrationBackup/
 Web.config
 
 # End of https://www.gitignore.io/api/node,vuejs,grunt,visualstudiocode,visualstudio,phpstorm
+
+# Cypress test files
+cypress/videos
+cypress/screenshots
