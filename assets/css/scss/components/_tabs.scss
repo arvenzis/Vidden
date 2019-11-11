@@ -1,8 +1,8 @@
 .vue {
-  box-sizing: border-box;
-  display: block;
-  line-height: 24px;
-  overflow-wrap: break-word;
+    box-sizing: border-box;
+    display: block;
+    line-height: 24px;
+    overflow-wrap: break-word;
 
   &-tablist {
     border-top-left-radius: 3px;
@@ -15,13 +15,13 @@
   }
 
   &-tabpanel {
-    flex-basis: auto;
-    flex-grow: 1;
-    flex-shrink: 1;
-    padding-bottom: 20px;
-    padding-top: 20px;
-    text-size-adjust: 100%;
-    -webkit-tap-highlight-color: $color-black;
+  	flex-basis: auto;
+  	flex-grow: 1;
+  	flex-shrink: 1;
+  	padding-bottom: 20px;
+  	padding-top: 20px;
+  	text-size-adjust: 100%;
+  	-webkit-tap-highlight-color: $color-black;
   }
 
   &-tab {
@@ -42,7 +42,7 @@
     padding-right: 16px;
     padding-top: 8px;
     overflow-wrap: break-word;
-
+    
     &[aria-selected="true"] {
       background-color: $color-windesheim-light-blue;
       color: $color-white;
@@ -54,3 +54,4 @@
     }
   }
 }
+
