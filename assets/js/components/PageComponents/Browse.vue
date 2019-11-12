@@ -163,9 +163,9 @@
             var items = []
             for (var x in response.data) {
               var createdAt = new Date(response.data[x].assessmentDate);
-              var updatedAt = new Date(response.data[x].startDatePeriod);
+              var updatedAt = new Date(response.data[x].assessmentDate);
               items.push({
-                id: x,
+                id: response.data[x].id,
                 status: response.data[x].status,
                 code: response.data[x].oeCode,
                 student: [
