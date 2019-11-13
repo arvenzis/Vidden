@@ -2,22 +2,23 @@
     <div class="container dashboard-container">
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
         <article class="mt-5 mb-5">
-            <h3 class="mt-3">Beoordeling {{ response.oeCode }} voor {{ fullName(response) }}</h3>
+            <h3 class="mt-3">Beoordeling {{ response[0].oeCode }} voor {{ fullNameStudent(response) }}</h3>
+            <p><strong>Vak</strong><br> {{ response[0].oeCode }}</p>
+            <p><strong>Status</strong><br> {{ response[0].status }}</p>
+            <p class="mb-3"><strong>Eerste examinator</strong><br> {{ fullNameTeacher(response) }}</p>
 
             <section id="assessment-list">
                 <div v-for="item in response" v-bind:key="item.metadataId">
                     <div class="card" v-for="assessment in item.assessments" v-bind:key="assessment.id">
                         <div class="card-body">
-                            <router-link :to="'/summary/' + assessment.id">
-                                <button class="btn btn-info">Open beoordeling</button>
+                            <h5 class="card-title mb-3">Invulling van <span v-for="examinator in assessment.examinator" v-bind:key="examinator.account">{{ examinator.name }}
+                                ({{ examinator.account }})</span></h5>
+                            <router-link :to="'/edit/' + assessment.id">
+                                <button class="btn btn-info">Open invulling</button>
                             </router-link>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">
-                            Laatst bijgewerkt: {{ assessment.date_last_modified }} door
-                            <span v-for="examinator in assessment.examinator" v-bind:key="examinator.account">{{ examinator.name }}
-                                ({{ examinator.account }})</span>
-                            </small>
+                            <small class="text-muted">Laatst bijgewerkt: {{ assessment.date_last_modified }}</small>
                         </div>
                     </div>
                 </div>
@@ -29,9 +30,6 @@
 <script>
     import Vue from "vue";
     import axios from 'axios';
-    import Popper from 'vue-popperjs';
-
-    Vue.use(Popper);
 
     export default {
         name: 'edit',
@@ -89,18 +87,12 @@
         //         });
         // },
         methods: {
-            fullName(array) {
+            fullNameStudent(array) {
                 return array[0].student[0].name + ' (' + array[0].student[0].account + ')';
+            },
+            fullNameTeacher(array) {
+                return array[0].examinator[0].name + ' (' + array[0].examinator[0].account + ')';
             }    
         },
-        components: {
-            Popper
-        }
     };
 </script>
-<style scoped>
-.card {
-  border-radius: none;
-  margin: 15px 0px;
-}
-</style>
