@@ -24,7 +24,9 @@
                   ({{ student.account }})</span>
               </h5>
               <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
-              <a href="#" class="btn btn-info">Open beoordeling</a>
+              <router-link :to="'/summary/' + item.id">
+                <button class="btn btn-info">Open beoordeling</button>
+              </router-link>
             </div>
             <div class="card-footer">
               <small class="text-muted">
@@ -53,7 +55,9 @@
                     ({{ student.account }})</span>
                 </h5>
                 <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
-                <a href="#" class="btn btn-info">Open beoordeling</a>
+                <router-link :to="'/summary/' + item.id">
+                  <button class="btn btn-info">Open beoordeling</button>
+                </router-link>
               </div>
               <div class="card-footer">
                 <small class="text-muted">
