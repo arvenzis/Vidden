@@ -25,6 +25,13 @@
                                       placeholder="Selecteer een student">
                         </model-select>
                     </div>
+                    <div class="form-group">
+                        <label>Onderwijseenheid</label>
+                        <model-select :options="oecodeOptions"
+                                      v-model="oecode"
+                                      placeholder="Selecteer de onderwijseenheid">
+                        </model-select>
+                    </div>
                 </div>
                 <div slot="step-2">
                     <h2 class="mb-3">Details</h2>
@@ -76,6 +83,7 @@
             return {
                 studentOptions: [],
                 templateOptions: [],
+                oecodeOptions: [],
                 student: {
                     value: '',
                     text: ''
@@ -83,6 +91,10 @@
                 template: {
                     value: '',
                     text: ''
+                },
+                oecode: {
+                    value: '',
+                    text: '' 
                 },
                 startDate: '',
                 endDate: '',
@@ -111,6 +123,7 @@
         mounted () {
             this.getTemplateType();
             this.getStudents();
+            this.getOeCodes();
         },
         methods: {
             getTemplateType() {
@@ -135,6 +148,14 @@
                         this.studentOptions = students;
                      });
             },
+            getOeCodes() {
+                this.oecodeOptions = [
+                    {
+                        value: 'ICT.AFSTSE.D19',
+                        text: 'Afstudeeropdracht Software Engineering 2019-2020'
+                    }
+                ]
+            },
             createAssessmentMetaData() {
                 const ENDPOINTS = 'assessment';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
@@ -148,7 +169,7 @@
                     "StudentId": this.student.value,
                     "CompanyId": 1,
                     "FirstTeacherId": this.$store.state.currentUserId,
-                    "OeCode": "ICT.AFSTSE.D17 (dt)",
+                    "OeCode": this.oecode.value,
                     "AssessmentDate": new Date().toISOString().slice(0,10),
                     "StartDatePeriod": this.startDate,
                     "EndDatePeriod": this.endDate
@@ -158,7 +179,7 @@
                     }).then((response) => {
                         if (response.status === 200) {
                             window.alert("Je beoordeling is opgeslagen!");
-                            this.$router.push('/');
+                            this.$router.push('/browse');
                         }
                     }).catch(() => {
                     this.errorMessage = "Er is iets misgegaan bij het opslaan van de beoordeling.";
@@ -174,8 +195,8 @@
                 }
             },
             validateStepOne() {
-                if (this.student.text === "" || this.template.text === "") {
-                    this.errorMessage = "Je hebt geen template of geen student ingevuld.";
+                if (this.student.text === "" || this.template.text === "" || this.oecode.text === "") {
+                    this.errorMessage = "Je hebt geen template, student of onderwijseenheid gekozen.";
                     return false;
                 }
 
