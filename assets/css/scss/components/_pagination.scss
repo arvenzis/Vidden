@@ -5,7 +5,7 @@
   border-top-right-radius: 2px;
   box-sizing: border-box;
   cursor: pointer;
-  color: $color-windesheim-light-blue;
+  color: $color-windesheim-green;
   display: flex;
   margin-bottom: 8px;
   margin-top: 8px;
@@ -14,7 +14,6 @@
 
   > li {
     border: 1px solid $color-windesheim-grey;
-    color: darken($color-windesheim-grey, 20%);
     cursor: pointer;
     display: block;
     line-height: 20px;
@@ -22,10 +21,14 @@
     padding: 8px 12px;
     position: relative;
 
+    > a {
+      color: $color-windesheim-green;
+    }
+
     &.page-item {
       &.active {
-        background-color: $color-windesheim-light-blue;
-        border: 1px solid darken($color-windesheim-light-blue, 10%);
+        background-color: $color-windesheim-green;
+        border: 1px solid darken($color-windesheim-green, 10%);
 
         & > a {
           color: $color-white;
