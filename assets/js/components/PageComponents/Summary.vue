@@ -11,7 +11,7 @@
                 <div v-for="item in response" v-bind:key="item.metadataId">
                     <div class="card" v-for="assessment in item.assessments" v-bind:key="assessment.id">
                         <div class="card-body">
-                            <h5 class="card-title mb-3">Invulling van <span v-for="examinator in assessment.examinator" v-bind:key="examinator.account">{{ examinator.name }}
+                            <h5 class="card-title mb-3">Invulling door <span v-for="examinator in assessment.examinator" v-bind:key="examinator.account">{{ examinator.name }}
                                 ({{ examinator.account }})</span></h5>
                             <router-link :to="'/edit/' + assessment.id">
                                 <button class="btn btn-info">Open invulling</button>
@@ -93,6 +93,6 @@
             fullNameTeacher(array) {
                 return array[0].examinator[0].name + ' (' + array[0].examinator[0].account + ')';
             }    
-        },
+        }
     };
 </script>
