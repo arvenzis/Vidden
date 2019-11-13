@@ -1,7 +1,8 @@
 <template>
     <div class="container dashboard-container">
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
-        <article class="mt-5 mb-5">
+        <spinner id="spinner" v-if="loading"></spinner>
+        <article class="mt-5 mb-5" v-if="!loading">
             <h3 class="mt-3">Beoordeling {{ response[0].oeCode }} voor {{ fullNameStudent(response) }}</h3>
             <p><strong>Vak</strong><br> {{ response[0].oeCode }}</p>
             <p><strong>Status</strong><br> {{ response[0].status }}</p>
@@ -30,6 +31,7 @@
 <script>
     import Vue from "vue";
     import axios from 'axios';
+    import Spinner from "vue-simple-spinner";
 
     export default {
         name: 'edit',
@@ -72,10 +74,12 @@
                             }]
                         },
                     ]
-                }]
+                }],
+                loading: false
             }
         },
         // created() {
+        //     this.loading = true;
         //     const ENDPOINTS = 'Assessment/' + this.id;
         //     axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, {
         //             headers: {
@@ -83,7 +87,12 @@
         //             }
         //         })
         //         .then(response => {
+        //             this.loading = false;
         //             // Do something
+        //         })
+        //         .catch(error => {
+        //              .this.loading = false;
+        //              // Do something
         //         });
         // },
         methods: {
@@ -93,6 +102,9 @@
             fullNameTeacher(array) {
                 return array[0].examinator[0].name + ' (' + array[0].examinator[0].account + ')';
             }    
+        },
+        components: {
+            Spinner
         }
     };
 </script>
