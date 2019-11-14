@@ -18,7 +18,7 @@
                             </router-link>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">Laatst bijgewerkt: {{ assessment.date_last_modified }}</small>
+                            <small class="text-muted">Laatst bijgewerkt: {{ assessment.date_last_modified }} {Remove)</small>
                         </div>
                     </div>
                 </div>
