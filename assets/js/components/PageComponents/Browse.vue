@@ -218,9 +218,3 @@
     }
   };
 </script>
-<style scoped>
-.card {
-  border-radius: none;
-  margin: 15px 0px;
-}
-</style>

@@ -6,19 +6,21 @@
             <h3 class="mt-3">Beoordeling {{ response[0].oeCode }} voor {{ fullNameStudent(response) }}</h3>
             <p><strong>Vak</strong><br> {{ response[0].oeCode }}</p>
             <p><strong>Status</strong><br> {{ response[0].status }}</p>
-            <p class="mb-3"><strong>Eerste examinator</strong><br> {{ fullNameTeacher(response) }}</p>
+            <p><strong>Eerste examinator</strong><br> {{ fullNameTeacher(response) }}</p>
+            <p><strong>Resultaat</strong><br> {{ (response[0].mark.name ? response[0].mark.name : 'Nog geen resultaat berekend') }}</p>
 
-            <section id="assessment-list">
-                <div v-for="item in response" v-bind:key="item.metadataId">
-                    <div class="card" v-for="assessment in item.assessments" v-bind:key="assessment.id">
+            <section>
+                <div class="row justify-content-center" v-for="item in response" v-bind:key="item.metadataId">
+                    <div class="card col-12 col-md-5" v-for="assessment in item.assessments" v-bind:key="assessment.id">
                         <div class="card-body" v-for="examinator in assessment.examinator" v-bind:key="examinator.account">
-                            <h5 class="card-title mb-3">Invulling door {{ examinator.name }} ({{ examinator.account }})</h5>
+                            <h5 class="card-title mb-3">Formulier door {{ examinator.name }} ({{ examinator.account }})</h5>
+                            <p><strong>Voorlopig resultaat</strong><br> {{ (assessment.mark.name ? assessment.mark.name : 'Nog geen resultaat berekend') }}</p>
                             <router-link :to="'/edit/' + item.metadataId + '/' + examinator.id ">
-                                <button class="btn btn-info">Open invulling</button>
+                                <button class="btn btn-info">Open formulier</button>
                             </router-link>
                         </div>
                         <div class="card-footer">
-                            <small class="text-muted">Laatst bijgewerkt: {{ assessment.date_last_modified }} {Remove)</small>
+                            <small class="text-muted">Laatst bijgewerkt: {{ assessment.date_last_modified }}</small>
                         </div>
                     </div>
                 </div>
@@ -44,6 +46,10 @@
                     templateId: 1,
                     status: 1,
                     oeCode: "ICTAFSTSE.D19",
+                    mark: {
+                        name: null,
+                        grade: null,
+                    },                    
                     student: [{
                         id: 4,
                         account: "S1019744",
@@ -61,6 +67,11 @@
                             id: 1,
                             date_created: "12-11-2019 11:47",
                             date_last_modified: "13-11-2019 09:18",
+                            status: 0,
+                            mark: {
+                                name: "good",
+                                grade: 7,
+                            },
                             examinator: [{
                                 id: 6,
                                 account: "BV0111996",
@@ -71,6 +82,11 @@
                             id: 2,
                             date_created: "12-11-2019 11:47",
                             date_last_modified: "13-11-2019 09:18",
+                            status: 0,
+                            mark: {
+                                name: null,
+                                grade: null,
+                            },
                             examinator: [{
                                 id: 7,
                                 account: "P69750694",
