@@ -183,6 +183,7 @@
             backClicked() {
                 this.currentStep = this.currentStep - 1;
                 this.currentSlot = this.getCurrentSlot();
+                this.scrollToTop();
                 return true;
             },
             currentLabel() {
