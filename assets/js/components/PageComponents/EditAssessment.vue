@@ -13,33 +13,37 @@
 
                         <article :slot="this.steps[this.currentStep].slot">
                             <div v-for="item in this.assertions" v-bind:key="item.assertion">
-                                <section v-bind:id="item.assertion" v-if="item.assertionName.toLowerCase().replace(' ', '-') === currentSlot" ref="assertion">
-                                   <header>
-                                    <!-- ToDo: find a way to only show this for the first item in the slot -->
-                                    <!-- We can't do this with an index, because the first item in this slot doesn't always have an index of 0 -->
-                                    <h4 class="mb3">{{ item.categoryName }} - {{ item.groupName }}</h4>
-                                    <h3>{{item.assertionName}}
-                                    <popper trigger="hover" :options="{ placement: 'top' }">
-                                        <div class="popper">
-                                            <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword">{{ keywords }}</span>
-                                        </div>
+                                <div v-if="showHeader(item.categoryName)">
+                                    <header>
+                                        <!-- ToDo: find a way to only show this for the first item in the slot -->
+                                        <!-- We can't do this with an index, because the first item in this slot doesn't always have an index of 0 -->
+                                        <h4 class="mb3">{{ item.categoryName }}</h4>
+                                    </header>
+                                </div>
+                                <section v-bind:id="item.assertion" v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot" ref="assertion">
 
-                                        <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
-                                    </popper>
-                                    </h3>
-                                </header>
                                 <section>
-                                    <h4 class="assessment__question d-none d-sm-block">{{ item.question }}</h4>
-                                    <div v-for="option in item.answers" v-bind:key="option.result">
-                                        <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
-                                            <div class="assessment__answer-body">
-                                                <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="item.checked" v-on:change="check(option.grade)" v-bind:value="option.grade" class="assessment__answer-radio" />
-                                                <label class="form-check-label" v-bind:for="option.grade">
-                                                    <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
-                                                        {{ option.result }}
-                                                    </h1>
-                                                    {{ option.description }}
-                                                </label>
+                                    <h4 class="assessment__question d-none d-sm-block">
+                                        {{ item.question }}
+                                        <popper trigger="hover" :options="{ placement: 'top' }">
+                                            <div class="popper">
+                                                <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword"><strong>Sleutelwoorden:</strong> {{ keywords }}</span>
+                                            </div>
+                                            <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
+                                        </popper>
+                                    </h4>
+                                    <div class="d-flex row">
+                                        <div v-for="option in item.answers" v-bind:key="option.result" class="d-lg-flex d-md-flex col-lg-6 col-md-6 col-sm-12">
+                                            <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
+                                                <div class="assessment__answer-body">
+                                                    <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="item.checked" v-on:change="saveAnswer(item, option.id)" v-bind:value="option.grade" class="assessment__answer-radio" />
+                                                    <label class="form-check-label" v-bind:for="option.grade">
+                                                        <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
+                                                            {{ option.result }}
+                                                        </h1>
+                                                        {{ option.description }}
+                                                    </label>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -83,7 +87,8 @@
                 finalStepLabel: 'Confirm',
                 currentStep: 0,
                 currentSlot: "",
-                dataReady: false
+                dataReady: false,
+                shownHeaders: []
             }
         },
         created () {
@@ -97,28 +102,36 @@
                     let self = this;
                     response.data.forEach(function(subject) {
                         let obj = {
+                            "templateId": subject.question.templateId,
                             "assertionName": subject.question.name,
                             "groupName": subject.groupName,
+                            "groupId": subject.question.groupId,
                             "categoryName": subject.name,
+                            "categoryId": subject.question.categoryId,
                             "children": [subject.question.keywords],
                             "question": subject.question.question,
+                            "questionId": subject.question.questionId,
                             "answers": {
                                 "excellent": {
+                                    "id": subject.question.answers[0].id,
                                     "description": subject.question.answers[0].text,
                                     "grade": "excellent",
                                     "result":  subject.question.answers[0].mark,
                                 },
                                 "good": {
+                                    "id": subject.question.answers[1].id,
                                     "description": subject.question.answers[1].text,
                                     "grade": "good",
                                     "result":  subject.question.answers[1].mark,
                                 },
                                 "proficient": {
+                                    "id": subject.question.answers[2].id,
                                     "description": subject.question.answers[2].text,
                                     "grade": "proficient",
                                     "result":  subject.question.answers[2].mark,
                                 },
                                 "poor": {
+                                    "id": subject.question.answers[3].id,
                                     "description": subject.question.answers[3].text,
                                     "grade": "poor",
                                     "result":  subject.question.answers[3].mark,
@@ -133,7 +146,7 @@
                     let array = [];
                     let tmpAssertions = this.assertions;
                     for (let i = 0; i < tmpAssertions.length; i++) {
-                        let label = tmpAssertions[i].assertionName;
+                        let label = tmpAssertions[i].groupName;
                         let obj = { label: label, slot: label.toLowerCase().replace(' ', '-') };
                         if (!this.containsObject(obj, array)) {
                             array.push(obj);
@@ -150,30 +163,23 @@
                 return this.steps[this.currentStep].slot;
             },
             nextClicked(currentPage) {
+                // Check if this is the last page aka if you're clicking 'confirm'
                 if (currentPage !== this.steps.length - 1) {
                     this.currentStep = this.currentStep + 1;
                     this.currentSlot = this.getCurrentSlot();
                     return true;
                 }
 
-                this.saveAssessment();
+                this.$router.push('/browse');
+                return false;
             },
             backClicked() {
                 this.currentStep = this.currentStep - 1;
                 this.currentSlot = this.getCurrentSlot();
                 return true;
             },
-            getTemplateGroups() {
-                //
-            },
-            validateStep() {
-                //
-            },
             currentLabel() {
                 return this.steps[this.currentPage].label;
-            },
-            check(option) {
-                console.log(option + ' checked.');
             },
             containsObject(obj, list) {
                 for (let x in list) {
@@ -183,9 +189,36 @@
                 }
                 return false;
             },
-            saveAssessment() {
-                console.log('confirm');
-            }
+            showHeader(category) {
+                if (this.shownHeaders.indexOf(category) === -1) {
+                    this.shownHeaders.push(category);
+                    return true;
+                }
+
+                return false;
+            },
+            saveAnswer(questionData, answerId) {
+                const ENDPOINTS = 'assessment/AnswerSave';
+                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
+                        "assessmentMetadataId": this.id,
+                        "templateId": questionData.templateId,
+                        "groupId": questionData.groupId,
+                        "categoryId": questionData.categoryId,
+                        "questionId": questionData.questionId,
+                        "answerId": answerId,
+                        "userId": 7,
+                        "createdAt": new Date().toISOString().slice(0,10)
+                    },
+                    {
+                        headers: {"Authorization" : this.$session.get('jwt')}
+                    }).then((response) => {
+                    if (response.status === 200) {
+                        console.log('opgeslagen');
+                    }
+                }).catch(() => {
+                    this.errorMessage = "Er is iets misgegaan bij het opslaan van het antwoord.";
+                });
+            },
         },
         components: {
             'vue-good-wizard': GoodWizard,
