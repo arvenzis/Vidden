@@ -3,6 +3,7 @@
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
         <section class="mt-5 mb-5">
             <div v-if="dataReady">
+                <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
                 <vue-good-wizard
                         :steps="steps"
                         :nextStepLabel="nextStepLabel"
@@ -12,14 +13,10 @@
                         :onBack="backClicked">
 
                         <article :slot="this.steps[this.currentStep].slot">
+                            <header>
+                                <h4 class="mb3">{{ this.steps[this.currentStep].label }}</h4>
+                            </header>
                             <div v-for="item in this.assertions" v-bind:key="item.assertion">
-                                <div v-if="showHeader(item.categoryName)">
-                                    <header>
-                                        <!-- ToDo: find a way to only show this for the first item in the slot -->
-                                        <!-- We can't do this with an index, because the first item in this slot doesn't always have an index of 0 -->
-                                        <h4 class="mb3">{{ item.categoryName }}</h4>
-                                    </header>
-                                </div>
                                 <section v-bind:id="item.assertion" v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot" ref="assertion">
 
                                 <section>
@@ -79,8 +76,8 @@
                 id: this.$route.params.id,
                 assessment: [],
                 steps: [],
-                group: '', //Analyseren
-                category: '',  //Zelfstandigheid
+                group: '',
+                category: '',
                 assertions: [],
                 previousStepLabel: 'Previous',
                 nextStepLabel: 'Next',
@@ -88,11 +85,11 @@
                 currentStep: 0,
                 currentSlot: "",
                 dataReady: false,
-                shownHeaders: []
+                errorMessage: null
             }
         },
         created () {
-            //ToDo: Get metadataid from assessment
+            //ToDo: Get metadataid (en examinator id) from assessment (from Bernards PR)
             const ENDPOINTS = 'assessment/1/question/' + this.$store.state.currentUserId;
             axios.get(this.$store.state.apiBaseUrl + ENDPOINTS,
                 {
@@ -156,7 +153,9 @@
                     this.steps = array;
                     this.currentSlot = this.getCurrentSlot();
                     this.dataReady = true;
-                }); //ToDo: catch die bende
+                }).catch(() => {
+                this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
+            });
         },
         methods: {
             getCurrentSlot() {
@@ -187,14 +186,6 @@
                         return true;
                     }
                 }
-                return false;
-            },
-            showHeader(category) {
-                if (this.shownHeaders.indexOf(category) === -1) {
-                    this.shownHeaders.push(category);
-                    return true;
-                }
-
                 return false;
             },
             saveAnswer(questionData, answerId) {
