@@ -178,10 +178,18 @@
                         headers: {"Authorization" : this.$session.get('jwt')}
                     }).then((response) => {
                         if (response.status === 200) {
-                            window.alert("Je beoordeling is opgeslagen!");
-                            this.$router.push('/browse');
+                            // Get assessmetadataid
+                            
+                            // Set a success message
+                            this.flash('Je beoordeling is succesvol aangemaakt', 'success', {
+                                timeout: 2000
+                            });
+
+                            // Push to summary page
+                            this.$router.push({ name: 'summary', params: { id: 'id' } })
                         }
                     }).catch(() => {
+                    // Make this a toast
                     this.errorMessage = "Er is iets misgegaan bij het opslaan van de beoordeling.";
                 });
             },

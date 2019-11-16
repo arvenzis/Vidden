@@ -1,5 +1,6 @@
 <template>
     <div class="container dashboard-container">
+        <flash-message class="flashpool"></flash-message>
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
         <spinner id="spinner" v-if="loading"></spinner>
         <article class="mt-5 mb-5" v-if="!loading">
