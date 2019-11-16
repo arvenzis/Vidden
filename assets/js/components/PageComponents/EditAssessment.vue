@@ -161,11 +161,19 @@
             getCurrentSlot() {
                 return this.steps[this.currentStep].slot;
             },
+            scrollToTop() {
+                window.scroll({
+                    top: 0,
+                    left: 0,
+                    behavior: 'smooth'
+                })
+            },
             nextClicked(currentPage) {
                 // Check if this is the last page aka if you're clicking 'confirm'
                 if (currentPage !== this.steps.length - 1) {
                     this.currentStep = this.currentStep + 1;
                     this.currentSlot = this.getCurrentSlot();
+                    this.scrollToTop();
                     return true;
                 }
 
