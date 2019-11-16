@@ -2,7 +2,8 @@
     <div class="container dashboard-container">
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
         <section class="mt-5 mb-5">
-            <div v-if="dataReady">
+            <spinner id="spinner" v-if="!dataReady"></spinner>
+            <div v-else>
                 <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
                 <vue-good-wizard
                         :steps="steps"
@@ -65,6 +66,7 @@
     import { GoodWizard } from 'vue-good-wizard';
     import axios from 'axios';
     import Popper from 'vue-popperjs';
+    import Spinner from "vue-simple-spinner";
 
     Vue.use(Popper);
 
@@ -222,7 +224,8 @@
         },
         components: {
             'vue-good-wizard': GoodWizard,
-            'popper': Popper
+            'popper': Popper,
+            Spinner
         }
     };
 </script>
