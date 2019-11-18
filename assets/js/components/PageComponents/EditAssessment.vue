@@ -202,22 +202,17 @@
             saveAnswer(questionData, answerId) {
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
-                        "assessmentMetadataId": this.id,
+                        "assessmentMetadataId": 1,
                         "templateId": questionData.templateId,
                         "groupId": questionData.groupId,
                         "categoryId": questionData.categoryId,
                         "questionId": questionData.questionId,
                         "answerId": answerId,
-                        "userId": 7,
-                        "createdAt": new Date().toISOString().slice(0,10)
+                        "userId": this.$store.state.currentUserId,
                     },
                     {
                         headers: {"Authorization" : this.$session.get('jwt')}
-                    }).then((response) => {
-                    if (response.status === 200) {
-                        console.log('opgeslagen');
-                    }
-                }).catch(() => {
+                    }).then(() => {}).catch(() => {
                     this.errorMessage = "Er is iets misgegaan bij het opslaan van het antwoord.";
                 });
             },
