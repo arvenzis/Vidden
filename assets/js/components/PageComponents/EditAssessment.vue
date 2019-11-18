@@ -30,8 +30,8 @@
                                             <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
                                         </popper>
                                     </h4>
-                                    <div class="d-flex row">
-                                        <div v-for="option in item.answers" v-bind:key="option.result" class="d-lg-flex d-md-flex col-lg-6 col-md-6 col-sm-12">
+                                    <div class="row row-eq-height">
+                                        <div v-for="option in item.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
                                             <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
                                                 <div class="assessment__answer-body">
                                                     <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="item.checked" v-on:change="saveAnswer(item, option.id)" v-bind:value="option.grade" class="assessment__answer-radio" />
