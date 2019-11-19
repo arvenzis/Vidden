@@ -178,15 +178,17 @@
                         headers: {"Authorization" : this.$session.get('jwt')}
                     }).then((response) => {
                         if (response.status === 200) {
-                            // Get assessmetadataid
-                            
+                            // Get assessmentmetadataid
+                            let assessmentmetadataid = response.data;
+
                             // Set a success message
                             this.flash('Je beoordeling is succesvol aangemaakt', 'success', {
                                 timeout: 2000
                             });
 
                             // Push to summary page
-                            this.$router.push({ name: 'summary', params: { id: 'id' } })
+                            // Note the backticks
+                            this.$router.push({ path: `/summary/${assessmentmetadataid}` })
                         }
                     }).catch(() => {
                     // Make this a toast
