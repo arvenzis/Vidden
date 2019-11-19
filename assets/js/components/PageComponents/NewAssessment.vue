@@ -73,9 +73,13 @@
 </template>
 
 <script>
+    import Vue from "vue";
     import { ModelSelect } from 'vue-search-select'
     import { GoodWizard } from 'vue-good-wizard';
     import axios from 'axios';
+    import Toasted from 'vue-toasted';
+
+    Vue.use(Toasted)
 
     export default {
         name: 'new-assessment',
@@ -178,11 +182,23 @@
                         headers: {"Authorization" : this.$session.get('jwt')}
                     }).then((response) => {
                         if (response.status === 200) {
-                            window.alert("Je beoordeling is opgeslagen!");
-                            this.$router.push('/browse');
+                            // Get assessmentmetadataid
+                            let assessmentmetadataid = response.data;
+
+                            // Set a success message
+                            this.flash('Je beoordeling is succesvol aangemaakt', 'success', {
+                                timeout: 2000
+                            });
+
+                            // Push to summary page
+                            // Note the backticks
+                            this.$router.push({ path: `/summary/${assessmentmetadataid}` })
                         }
                     }).catch(() => {
-                    this.errorMessage = "Er is iets misgegaan bij het opslaan van de beoordeling.";
+                        Vue.toasted.show('Er is iets misgegaan bij het opslaan van de beoordeling.', {
+                        type: 'error',
+                        duration: 2000
+                    });
                 });
             },
             nextClicked(currentPage) {

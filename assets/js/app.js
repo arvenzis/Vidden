@@ -5,8 +5,10 @@ import routes from './routes'
 import { store } from './store';
 import AppLogin from './components/AppLogin.vue'
 import CurrentUser from './components/CurrentUser.vue'
+import VueFlashMessage from 'vue-flash-message';
 
 Vue.use(VueRouter);
+Vue.use(VueFlashMessage);
 
 const router = new VueRouter({routes});
 
