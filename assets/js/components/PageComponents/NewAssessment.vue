@@ -194,7 +194,7 @@
                             this.$router.push({ path: `/summary/${assessmentmetadataid}` })
                         }
                     }).catch(() => {
-                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van de beoordeling.', {
+                        Vue.toasted.show('Er is iets misgegaan bij het opslaan van de beoordeling.', {
                         type: 'error',
                         duration: 2000
                     });
