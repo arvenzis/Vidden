@@ -76,6 +76,9 @@
     import { ModelSelect } from 'vue-search-select'
     import { GoodWizard } from 'vue-good-wizard';
     import axios from 'axios';
+    import Toasted from 'vue-toasted';
+
+    Vue.use(Toasted)
 
     export default {
         name: 'new-assessment',
@@ -192,7 +195,10 @@
                         }
                     }).catch(() => {
                     // Make this a toast
-                    this.errorMessage = "Er is iets misgegaan bij het opslaan van de beoordeling.";
+                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van de beoordeling.', {
+                        type: 'error',
+                        duration: 2000
+                    });
                 });
             },
             nextClicked(currentPage) {
