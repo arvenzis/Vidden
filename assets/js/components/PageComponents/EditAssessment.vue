@@ -21,7 +21,7 @@
                                 <section v-bind:id="item.assertion" v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot" ref="assertion">
 
                                 <section>
-                                    <h4 class="assessment__question d-none d-sm-block">
+                                    <h4 class="assessment__question d-sm-block">
                                         {{ item.question }}
                                         <popper trigger="hover" :options="{ placement: 'top' }">
                                             <div class="popper">
