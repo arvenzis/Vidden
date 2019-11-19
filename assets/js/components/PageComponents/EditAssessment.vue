@@ -2,7 +2,7 @@
     <div class="container dashboard-container">
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
         <section class="mt-5 mb-5">
-            <spinner id="spinner" v-if="!dataReady"></spinner>
+            <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
                 <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
                 <vue-good-wizard
