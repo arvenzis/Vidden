@@ -73,6 +73,7 @@
 </template>
 
 <script>
+    import Vue from "vue";
     import { ModelSelect } from 'vue-search-select'
     import { GoodWizard } from 'vue-good-wizard';
     import axios from 'axios';
