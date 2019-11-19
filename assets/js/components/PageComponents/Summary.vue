@@ -2,30 +2,60 @@
     <div class="container dashboard-container">
         <flash-message class="flashpool"></flash-message>
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
-        <spinner id="spinner" v-if="loading"></spinner>
-        <article class="mt-5 mb-5" v-if="!loading">
-            <h3 class="mt-3">Beoordeling {{ response[0].oeCode }} voor {{ fullNameStudent(response) }}</h3>
-            <p><strong>Vak</strong><br> {{ response[0].oeCode }}</p>
-            <p><strong>Status</strong><br> {{ response[0].status }}</p>
-            <p><strong>Eerste examinator</strong><br> {{ fullNameTeacher(response) }}</p>
-            <p><strong>Resultaat</strong><br> {{ (response[0].mark.name ? response[0].mark.name : 'Nog geen resultaat berekend') }}</p>
+        <article class="mt-5 mb-5">
+            <spinner id="spinner" v-if="loading"></spinner>
+            <div v-else v-for="item in this.items" :key="item.id">
+            <h3 class="mt-3">Beoordeling {{ item.oeCode }} voor 
+                <span v-for="student in item.student" v-bind:key="student.account">{{ student.name }}
+                  ({{ student.account }})</span>
+                </h3>
+            <table class="table">
+                <tr>
+                    <td>Vak</td>
+                    <td>{{ item.oeCode }}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>{{ item.status }}</td>
+                </tr>                
+                <tr>
+                    <td>Template</td>
+                    <td>{{ item.templateName }}</td>
+                </tr>
+                <tr>
+                    <td>Resultaat</td>
+                    <td>
+                        <span v-if="item.finalmark == 0">
+                            Nog geen resultaat berekend
+                        </span>
+                        <span v-else>
+                            {{ item.finalMark }}
+                        </span>
+                    </td>
+                </tr>                  
+            </table>
 
             <section>
-                <div class="row justify-content-center" v-for="item in response" v-bind:key="item.metadataId">
-                    <div class="card col-12 col-md-5" v-for="assessment in item.assessments" v-bind:key="assessment.id">
-                        <div class="card-body" v-for="examinator in assessment.examinator" v-bind:key="examinator.account">
-                            <h5 class="card-title mb-3">Formulier door {{ examinator.name }} ({{ examinator.account }})</h5>
-                            <p><strong>Voorlopig resultaat</strong><br> {{ (assessment.mark.name ? assessment.mark.name : 'Nog geen resultaat berekend') }}</p>
-                            <router-link :to="'/edit/' + item.metadataId + '/' + examinator.id ">
-                                <button class="btn btn-info">Open formulier</button>
-                            </router-link>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-muted">Laatst bijgewerkt: {{ assessment.date_last_modified }}</small>
+                <div class="row justify-content-center">
+                    <div class="card col-12 col-md-5" v-for="assessment in item.assessments" :key="assessment.id">
+                        <div class="card-body" v-for="examinator in assessment.examinator" :key="examinator.account">
+                            <span v-if="examinator.id != null">
+                                <h5 class="card-title mb-3">Formulier door {{ examinator.name }} ({{ examinator.account }})</h5>
+                                <router-link :to="'/edit/' + item.id + '/' + examinator.id ">
+                                    <button class="btn btn-info">Open formulier</button>
+                                </router-link>
+                            </span>
+                            <span v-else>
+                                <h5 class="card-title mb-3">Nog geen tweede formulier ingevuld</h5>
+                                <router-link :to="'/edit/' + item.id + '/' + currentUserId ">
+                                    <button class="btn btn-info">Start een nieuw formulier</button>
+                                </router-link>
+                            </span>                           
                         </div>
                     </div>
                 </div>
             </section>
+            </div>
         </article>
     </div>
 </template>
@@ -34,106 +64,81 @@
     import Vue from "vue";
     import axios from 'axios';
     import Spinner from "vue-simple-spinner";
+    import Toasted from 'vue-toasted';
+
+    Vue.use(Toasted)
 
     export default {
         name: 'edit',
         data () {
             return {
-                // This is the id in the parameter of the URL
                 id: this.$route.params.id,
-                // For now mock data
-                response: [{
-                    metadataId: this.$route.params.id,
-                    templateId: 1,
-                    status: 1,
-                    oeCode: "ICTAFSTSE.D19",
-                    mark: {
-                        name: null,
-                        grade: null,
-                    },                    
-                    student: [{
-                        id: 4,
-                        account: "S1019744",
-                        name: "Bernard Bos"
-                    }],
-                    examinator: [{
-                        id: 6,
-                        account: "BV0111996",
-                        name: "Arjen Korevaar"
-                    }],
-                    date_created: "12-11-2019 11:47",
-                    date_last_modified: "13-11-2019 09:18",
-                    // Dit zijn de invullingen
-                    assessments: [{ 
-                            id: 1,
-                            date_created: "12-11-2019 11:47",
-                            date_last_modified: "13-11-2019 09:18",
-                            status: 0,
-                            mark: {
-                                name: "good",
-                                grade: 7,
-                            },
-                            examinator: [{
-                                id: 6,
-                                account: "BV0111996",
-                                name: "Arjen Korevaar"
-                            }]
-                        },
-                        {
-                            id: 2,
-                            date_created: "12-11-2019 11:47",
-                            date_last_modified: "13-11-2019 09:18",
-                            status: 0,
-                            mark: {
-                                name: null,
-                                grade: null,
-                            },
-                            examinator: [{
-                                id: 7,
-                                account: "P69750694",
-                                name: "Eugene van Roden"
-                            }]
-                        },
-                    ]
-                }],
-                loading: false,
-                template: ""
+                items: [],
+                currentUserId: this.$store.state.currentUserId,
+                loading: false
             }
         },
         created() {
-            // this.loading = false;
-            // const ENDPOINTS = 'Assessment/' + this.id;
-            // axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, {
-            //         headers: {
-            //             "Authorization": this.$session.get('jwt')
-            //         }
-            //     })
-            //     .then(response => {
-            //         this.loading = false;
-            //         // Do something
-            //     })
-            //     .catch(error => {
-            //         .this.loading = false;
-            //         // Do something
-            //     });
-        },
-        methods: {
-            fullNameStudent(array) {
-                return array[0].student[0].name + ' (' + array[0].student[0].account + ')';
-            },
-            fullNameTeacher(array) {
-                return array[0].examinator[0].name + ' (' + array[0].examinator[0].account + ')';
-            },
-            getTemplate(id) {
-                const ENDPOINTS = 'Template/' + id;
-                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, 
-                    { 
-                        headers: { "Authorization" : this.$session.get('jwt') } 
-                    })
-                    .then(response => {
-                        this.template = response.name;
+            this.loading = true;
+            const ENDPOINTS = 'Assessment/' + this.id;
+            axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, {
+                    headers: {
+                        "Authorization": this.$session.get('jwt')
+                    }
+                })
+                .then(response => {
+                    let tmpItems = [];
+                    tmpItems.push({
+                        id: response.data.id,
+                        templateId: response.data.templateId,
+                        templateName: response.data.name,
+                        status: response.data.status,
+                        oeCode: response.data.oeCode,
+                        finalmark: response.data.finalMark,
+                        student: [{
+                            id: response.data.studentId,
+                            account: response.data.student.accountNumber,
+                            name: response.data.student.fullName
+                        }],
+                        assessments: [
+                            {
+                                id: response.data.firstTeacherId,
+                                examinator: [{
+                                    id: response.data.firstTeacherId,
+                                    account: response.data.firstTeacher.accountNumber,
+                                    name: response.data.firstTeacher.fullName
+                                }]
+                            },
+                            {
+                                id: (response.data.secondTeacherId != null ? response.data.secondTeacherId : null),
+                                examinator: [{
+                                    id: (response.data.secondTeacherId != null ? response.data.secondTeacherId : null),
+                                    account: (response.data.secondTeacher != null ? response.data.secondTeacher.accountNumber : null),
+                                    name: (response.data.secondTeacher != null ? response.data.secondTeacher.fullName : null)
+                                }]
+                            }
+                        ],
+                        assessmentDate: response.data.assessmentDate,
+                        startDatePeriod: response.data.startDatePeriod,
+                        endDatePeriod: response.data.endDatePeriod
                     });
-            }   
+
+                    this.items = tmpItems;
+                    Vue.toasted.show('Items geladen', {
+                        type: 'success',
+                        duration: 1000
+                    });
+                    
+                    this.loading = false;
+                })
+                .catch(error => {
+                    this.loading = false;
+                    
+                    Vue.toasted.show('Er was een probleem met het laden van de gegevens. Herlaad de pagina om het opnieuw te proberen.', {
+                        type: 'error',
+                        duration: 2000
+                    });
+                });
         },
         components: {
             Spinner
