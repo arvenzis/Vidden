@@ -74,8 +74,9 @@
         name: 'edit',
         data () {
             return {
-                // This is the id in the parameter of the URL
-                id: this.$route.params.id,
+                // These are the ids in the parameter of the URL
+                assessmentMetadataId: this.$route.params.assessmentMetadataId,
+                examinatorId: this.$route.params.examinatorId,
                 assessment: [],
                 steps: [],
                 group: '',
@@ -91,8 +92,7 @@
             }
         },
         created () {
-            //ToDo: Get metadataid (en examinator id) from assessment (from Bernards PR)
-            const ENDPOINTS = 'assessment/1/question/' + this.$store.state.currentUserId;
+            const ENDPOINTS = `assessment/${this.assessmentMetadataId}/question/${this.examinatorId}`;
             axios.get(this.$store.state.apiBaseUrl + ENDPOINTS,
                 {
                     headers: {"Authorization" : this.$session.get('jwt')}
@@ -202,13 +202,13 @@
             saveAnswer(questionData, answerId) {
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
-                        "assessmentMetadataId": 1,
+                        "assessmentMetadataId": this.assessmentMetadataId,
                         "templateId": questionData.templateId,
                         "groupId": questionData.groupId,
                         "categoryId": questionData.categoryId,
                         "questionId": questionData.questionId,
                         "answerId": answerId,
-                        "userId": this.$store.state.currentUserId,
+                        "userId": this.examinatorId,
                     },
                     {
                         headers: {"Authorization" : this.$session.get('jwt')}

@@ -22,7 +22,7 @@ const routes = [{
 		component: NewAssessment
 	},
 	{
-		path: '/edit/:id',
+		path: '/edit/:assessmentMetadataId/:examinatorId',
 		component: EditAssessment
 	},
 	{
