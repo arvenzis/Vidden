@@ -4,6 +4,9 @@
         <section class="mt-5 mb-5">
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
+                <template>
+                    <sidebar-menu :menu="menu" />
+                </template>
                 <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
                 <vue-good-wizard
                         :steps="steps"
@@ -67,6 +70,7 @@
     import axios from 'axios';
     import Popper from 'vue-popperjs';
     import Spinner from "vue-simple-spinner";
+    import { SidebarMenu } from 'vue-sidebar-menu'
 
     Vue.use(Popper);
 
@@ -88,7 +92,30 @@
                 currentStep: 0,
                 currentSlot: "",
                 dataReady: false,
-                errorMessage: null
+                errorMessage: null,
+                menu: [
+                    {
+                        header: true,
+                        title: 'Main Navigation',
+                        hiddenOnCollapse: true
+                    },
+                    {
+                        href: '/',
+                        title: 'Dashboard',
+                        icon: 'fa fa-user'
+                    },
+                    {
+                        href: '/charts',
+                        title: 'Charts',
+                        icon: 'fa fa-chart-area',
+                        child: [
+                            {
+                                href: '/charts/sublink',
+                                title: 'Sub Link'
+                            }
+                        ]
+                    }
+                ]
             }
         },
         created () {
@@ -220,7 +247,8 @@
         components: {
             'vue-good-wizard': GoodWizard,
             'popper': Popper,
-            Spinner
+            Spinner,
+            SidebarMenu
         }
     };
 </script>
