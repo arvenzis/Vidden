@@ -5,7 +5,11 @@
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
                 <template>
-                    <sidebar-menu :menu="menu" />
+                    <sidebar-menu 
+                        :menu="menu"
+                        :collapsed="collapsed"
+                        :theme="selectedTheme" 
+                    />
                 </template>
                 <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
                 <vue-good-wizard
@@ -24,7 +28,7 @@
                                 <section v-bind:id="item.assertion" v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot" ref="assertion">
 
                                 <section>
-                                    <h4 class="assessment__question d-sm-block">
+                                    <h4 class="assessment__question d-sm-block" :id="item.questionId">
                                         {{ item.question }}
                                         <popper trigger="hover" :options="{ placement: 'top' }">
                                             <div class="popper">
@@ -83,6 +87,7 @@
                 examinatorId: this.$route.params.examinatorId,
                 assessment: [],
                 steps: [],
+                menu: [],
                 group: '',
                 category: '',
                 assertions: [],
@@ -93,29 +98,8 @@
                 currentSlot: "",
                 dataReady: false,
                 errorMessage: null,
-                menu: [
-                    {
-                        header: true,
-                        title: 'Main Navigation',
-                        hiddenOnCollapse: true
-                    },
-                    {
-                        href: '/',
-                        title: 'Dashboard',
-                        icon: 'fa fa-user'
-                    },
-                    {
-                        href: '/charts',
-                        title: 'Charts',
-                        icon: 'fa fa-chart-area',
-                        child: [
-                            {
-                                href: '/charts/sublink',
-                                title: 'Sub Link'
-                            }
-                        ]
-                    }
-                ]
+                collapsed: true,
+                theme: 'white-theme'
             }
         },
         created () {
@@ -181,6 +165,7 @@
 
                     this.steps = array;
                     this.currentSlot = this.getCurrentSlot();
+                    this.buildMenu(tmpAssertions);
                     this.dataReady = true;
                 }).catch(() => {
                 this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
@@ -243,6 +228,37 @@
                     this.errorMessage = "Er is iets misgegaan bij het opslaan van het antwoord.";
                 });
             },
+            buildMenu(array) {
+                let tmpMenu = [];
+
+                // Build a header
+                tmpMenu = [{
+                    header: true,
+                    title: 'Main Navigation',
+                    hiddenOnCollapse: true
+                }];
+
+                // Build the items
+                array.forEach(function (subject) {
+                    tmpMenu.push( 
+                        {
+                            href: '/#' + subject.questionId,
+                            title: subject.question
+                            // href: '/',
+                            // title: subject.categoryName,
+                            // child: [ 
+                            //     {
+                            //         href: '/#' + subject.questionId,
+                            //         title: subject.question
+                            //     }
+                            // ]
+                        }
+                    )
+                    console.log("Item toegevoegd aan menu");
+                });
+
+                return this.menu = tmpMenu;
+            }
         },
         components: {
             'vue-good-wizard': GoodWizard,
