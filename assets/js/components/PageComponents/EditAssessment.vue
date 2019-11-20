@@ -32,11 +32,11 @@
                                     </h4>
                                     <div class="row row-eq-height">
                                         <div v-for="option in item.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
-                                            <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
+                                            <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
                                                 <div class="assessment__answer-body">
-                                                    <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="item.checked" v-on:change="saveAnswer(item, option.id)" v-bind:value="option.grade" class="assessment__answer-radio" />
+                                                    <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(item, option.id, option.grade)" v-bind:value="true" class="assessment__answer-radio" />
                                                     <label class="form-check-label" v-bind:for="option.grade">
-                                                        <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: item.checked === option.grade }]">
+                                                        <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: option.chosen === true }]">
                                                             {{ option.result }}
                                                         </h1>
                                                         {{ option.description }}
@@ -116,27 +116,30 @@
                                     "description": subject.question.answers[0].text,
                                     "grade": "excellent",
                                     "result":  subject.question.answers[0].mark,
+                                    "chosen": subject.question.answers[0].chosen
                                 },
                                 "good": {
                                     "id": subject.question.answers[1].id,
                                     "description": subject.question.answers[1].text,
                                     "grade": "good",
                                     "result":  subject.question.answers[1].mark,
+                                    "chosen": subject.question.answers[1].chosen
                                 },
                                 "proficient": {
                                     "id": subject.question.answers[2].id,
                                     "description": subject.question.answers[2].text,
                                     "grade": "proficient",
                                     "result":  subject.question.answers[2].mark,
+                                    "chosen": subject.question.answers[2].chosen
                                 },
                                 "poor": {
                                     "id": subject.question.answers[3].id,
                                     "description": subject.question.answers[3].text,
                                     "grade": "poor",
                                     "result":  subject.question.answers[3].mark,
+                                    "chosen": subject.question.answers[3].chosen
                                 }
-                            },
-                            checked: false
+                            }
                         };
 
                         self.assertions.push(obj);
@@ -199,7 +202,15 @@
                 }
                 return false;
             },
-            saveAnswer(questionData, answerId) {
+            saveAnswer(questionData, answerId, grade) {
+                //Make sure the answer that was chosen before is set to false so that the user will not see an incorrectly filled answer
+                const answers = Object.values(questionData.answers);
+                for (const answer of answers) {
+                    if (answer.grade !== grade) {
+                        answer.chosen = false;
+                    }
+                }
+
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
                         "assessmentMetadataId": this.assessmentMetadataId,
