@@ -17,43 +17,42 @@
                             <header>
                                 <h4 class="mb3">{{ this.steps[this.currentStep].label }}</h4>
                             </header>
-                            <div v-for="item in this.assertions" v-bind:key="item.assertion">
-                                <section v-bind:id="item.assertion" v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot" ref="assertion">
-
-                                <section>
-                                    <h4 class="assessment__question d-sm-block">
-                                        {{ item.question }}
-                                        <popper trigger="hover" :options="{ placement: 'top' }">
-                                            <div class="popper">
-                                                <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword"><strong>Sleutelwoorden:</strong> {{ keywords }}</span>
-                                            </div>
-                                            <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
-                                        </popper>
-                                    </h4>
-                                    <div class="row row-eq-height">
-                                        <div v-for="option in item.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
-                                            <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
-                                                <div class="assessment__answer-body">
-                                                    <input type="radio" v-bind:name="item.assertion" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(item, option.id, option.grade)" v-bind:value="true" class="assessment__answer-radio" />
-                                                    <label class="form-check-label" v-bind:for="option.grade">
-                                                        <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: option.chosen === true }]">
-                                                            {{ option.result }}
-                                                        </h1>
-                                                        {{ option.description }}
-                                                    </label>
+                            <div v-for="item in this.assertions">
+                                <section v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot">
+                                    <section>
+                                        <h4 class="assessment__question d-sm-block">
+                                            {{ item.question }}
+                                            <popper trigger="hover" :options="{ placement: 'top' }">
+                                                <div class="popper">
+                                                    <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword"><strong>Sleutelwoorden:</strong> {{ keywords }}</span>
+                                                </div>
+                                                <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
+                                            </popper>
+                                        </h4>
+                                        <div class="row row-eq-height">
+                                            <div v-for="option in item.answers" class="col-lg-6 col-md-6 col-sm-12">
+                                                <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
+                                                    <div class="assessment__answer-body">
+                                                        <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(item, option.id, option.grade)" v-bind:value="true" class="assessment__answer-radio" />
+                                                        <label class="form-check-label" v-bind:for="option.grade">
+                                                            <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: option.chosen === true }]">
+                                                                {{ option.result }}
+                                                            </h1>
+                                                            {{ option.description }}
+                                                        </label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </section>
+                                    <footer>
+                                        <div class="form-group">
+                                            <label for="opmerkingen">Aanvullende opmerkingen</label>
+                                            <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"></textarea>
+                                        </div>
+                                    </footer>
                                 </section>
-                                <footer>
-                                    <div class="form-group">
-                                        <label for="opmerkingen">Aanvullende opmerkingen</label>
-                                        <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"></textarea>
-                                    </div>
-                                </footer>
-                            </section>
-                        </div>
+                            </div>
                     </article>
             </vue-good-wizard>
             </div>
@@ -146,9 +145,8 @@
                     });
 
                     let array = [];
-                    let tmpAssertions = this.assertions;
-                    for (let i = 0; i < tmpAssertions.length; i++) {
-                        let label = tmpAssertions[i].groupName;
+                    for (let i = 0; i < this.assertions.length; i++) {
+                        let label = this.assertions[i].groupName;
                         let obj = { label: label, slot: label.toLowerCase().replace(' ', '-') };
                         if (!this.containsObject(obj, array)) {
                             array.push(obj);
