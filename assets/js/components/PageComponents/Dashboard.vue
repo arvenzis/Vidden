@@ -55,6 +55,9 @@ export default {
           if (response.status === 200) {
             this.$session.destroy();
             this.$store.commit("logout");
+            this.flash('Uitloggen succesvol', 'success', {
+                timeout: 2000
+            });
           }
         });
     }
