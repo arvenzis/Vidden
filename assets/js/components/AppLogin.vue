@@ -3,19 +3,11 @@
     <div class="row justify-content-center">
       <div class="col-md-7">
         <div class="card">
-          <div class="card-header">Inloggen</div>
           <spinner id="spinner" v-if="loading"></spinner>
           <div class="card-body" v-bind:class="{ overlay : loading}">
+            <h5 class="card-title mb-3">Inloggen</h5>
             <form id="app" @submit="validateCredentials" method="post">
-              <div v-if="loggedInUnsuccessful" class="form-group row">
-                <label class="alert alert-danger col-md-6 offset-md-4" role="alert">{{ errorMessage }}</label>
-              </div> 
-              <div v-if="this.$store.state.loggedOutSuccessful" class="form-group row">
-                <label
-                  class="alert alert-success col-md-6 offset-md-4"
-                  role="alert"
-                >{{successMessage}}</label>
-              </div>
+              <flash-message class="flashpool"></flash-message>
               <div class="form-group row">
                 <label
                   for="emailaddress"
@@ -56,13 +48,13 @@
 
               <div class="form-group row">
                 <div class="col-md-6 offset-md-4">
-                  <a href="#">Wachtwoord vergeten?</a>
+                  <a href="https://password.windesheim.nl">Wachtwoord vergeten?</a>
                 </div>
               </div>
 
               <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4" id="buttonLoader">
-                  <button type="submit" class="btn btn-primary btn-windesheim">Inloggen</button>
+                  <button type="submit" class="btn btn-windesheim">Inloggen</button>
                 </div>
               </div>
             </form>
@@ -78,7 +70,9 @@ import Vue from "vue";
 import axios from "axios";
 import VueSession from "vue-session";
 import Spinner from "vue-simple-spinner";
+import Toasted from 'vue-toasted';
 
+Vue.use(Toasted)
 Vue.use(VueSession);
 
 export default {
@@ -95,7 +89,7 @@ export default {
     };
   },
   methods: {
-    validateCredentials: function(e) {
+    validateCredentials: function (e) {
       const ENDPOINTS = "User/Authenticate/";
       e.preventDefault();
       this.loading = true;
@@ -119,18 +113,23 @@ export default {
           this.loading = false;
           this.loggedInUnsuccessful = true;
           if (e == "Error: Request failed with status code 400") {
-            this.errorMessage =
-              "Uw gebruikersnaam en / of wachtwoord is onjuist.";
+            this.displayMessage("Uw gebruikersnaam en / of wachtwoord is onjuist", "error", 4000)
           } else if (e == "Error: Request failed with status code 500") {
-            this.errorMessage = "Problemen met server, probeer het nog eens.";
+            this.displayMessage("Er was een probleem bij het communiceren met de server. Probeer het nog eens", "error", 4000)
           } else {
-            this.errorMessage = e;
+            this.displayMessage(e + " Please try again.", "error", 2500)
           }
         });
+      },
+      displayMessage(message, type, duration) {
+        Vue.toasted.show(message, {
+          type: type,
+          duration: duration
+        });
+      }
+    },
+    components: {
+      Spinner
     }
-  },
-  components: {
-    Spinner
-  }
-};
+  };
 </script>
