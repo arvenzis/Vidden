@@ -45,12 +45,14 @@
                                             </div>
                                         </div>
                                     </section>
-                                    <footer>
-                                        <div class="form-group">
-                                            <label for="opmerkingen">Aanvullende opmerkingen</label>
-                                            <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"></textarea>
-                                        </div>
-                                    </footer>
+                                    <hr>
+                                    <!-- ToDo: opmerkingen per groep tonen -->
+<!--                                    <footer>-->
+<!--                                        <div class="form-group">-->
+<!--                                            <label for="opmerkingen">Aanvullende opmerkingen</label>-->
+<!--                                            <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"></textarea>-->
+<!--                                        </div>-->
+<!--                                    </footer>-->
                                 </section>
                             </div>
                     </article>
