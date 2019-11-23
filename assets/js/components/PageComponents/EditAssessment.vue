@@ -4,13 +4,16 @@
         <section class="mt-5 mb-5">
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
-                <template>
-                    <sidebar-menu 
-                        :menu="menu"
-                        :collapsed="collapsed"
-                        :theme="selectedTheme" 
-                    />
-                </template>
+                <Slide class="sidebar">
+                    <div v-for="item in menu" v-bind:key="item.id">
+                        <h6>{{ item.group }}</h6>
+                        <span v-for="child in item.children" v-bind:key="child.id">
+                            <a :href="child.href">
+                                <span>{{ child.title }}</span>
+                            </a>
+                        </span>
+                    </div>    
+                </Slide>
                 <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
                 <vue-good-wizard
                         :steps="steps"
@@ -28,7 +31,8 @@
                                 <section v-bind:id="item.assertion" v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot" ref="assertion">
 
                                 <section>
-                                    <h4 class="assessment__question d-sm-block" :id="item.questionId">
+                                    <h4 class="assessment__question d-sm-block">
+                                        <a :id="item.groupId + '' + item.categoryId + '' + item.questionId"></a>
                                         {{ item.question }}
                                         <popper trigger="hover" :options="{ placement: 'top' }">
                                             <div class="popper">
@@ -74,7 +78,7 @@
     import axios from 'axios';
     import Popper from 'vue-popperjs';
     import Spinner from "vue-simple-spinner";
-    import { SidebarMenu } from 'vue-sidebar-menu'
+    import { Slide } from 'vue-burger-menu'
 
     Vue.use(Popper);
 
@@ -98,8 +102,7 @@
                 currentSlot: "",
                 dataReady: false,
                 errorMessage: null,
-                collapsed: true,
-                theme: 'white-theme'
+                GUID: ''
             }
         },
         created () {
@@ -230,41 +233,55 @@
             },
             buildMenu(array) {
                 let tmpMenu = [];
+                let i = 56; // Random number, but because of our not so smart identifier system in the backend this is neccessary
 
-                // Build a header
-                tmpMenu = [{
-                    header: true,
-                    title: 'Main Navigation',
-                    hiddenOnCollapse: true
-                }];
-
-                // Build the items
                 array.forEach(function (subject) {
-                    tmpMenu.push( 
-                        {
-                            href: '/#' + subject.questionId,
-                            title: subject.question
-                            // href: '/',
-                            // title: subject.categoryName,
-                            // child: [ 
-                            //     {
-                            //         href: '/#' + subject.questionId,
-                            //         title: subject.question
-                            //     }
-                            // ]
-                        }
-                    )
-                    console.log("Item toegevoegd aan menu");
+                    tmpMenu.push({
+                        id: i,
+                        group: subject.groupName,
+                        children: [{
+                            id: i / 2,
+                            href: '#' + subject.groupId + '' + subject.categoryId + '' + subject.questionId,
+                            title: subject.assertionName
+                        }]
+                    })
+                    i++;
                 });
 
-                return this.menu = tmpMenu;
-            }
+                var output = tmpMenu.reduce(function (o, cur) {
+
+                    // Get the index of the key-value pair.
+                    var occurs = o.reduce(function (n, item, i) {
+                        return (item.group === cur.group) ? i : n;
+                    }, -1);
+
+                    // If the name is found,
+                    if (occurs >= 0) {
+
+                        // append the current children to its list of children.
+                        o[occurs].children = o[occurs].children.concat(cur.children);
+
+                        // Otherwise,
+                    } else {
+
+                        // add the current item to o (but make sure the children is an array).
+                        var obj = {
+                            group: cur.group,
+                            children: cur.children
+                        };
+                        o = o.concat([obj]);
+                    }
+
+                    return o;
+                }, []);
+                return this.menu = output;
+            },
         },
         components: {
             'vue-good-wizard': GoodWizard,
             'popper': Popper,
             Spinner,
-            SidebarMenu
+            Slide
         }
     };
 </script>

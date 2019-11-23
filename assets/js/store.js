@@ -10,11 +10,10 @@ export const store = new Vuex.Store({
 	})],
 	state: {
 		loggedIn: false,
-		loggedOutSuccessful: false,
 		currentUser: "",
 		currentUserId: null,
 		accountNumber: "",
-		apiBaseUrl: "https://vidden-api.azurewebsites.net/api/"
+		apiBaseUrl: "https://localhost:5001/api/"
 	},
 	mutations: {
 		login: state => {
@@ -22,10 +21,9 @@ export const store = new Vuex.Store({
 		},
 		logout: state => {
 			state.loggedIn = false,
-				state.loggedOutSuccessful = true,
-				state.currentUser = '',
-				state.currentUserId = null,
-				state.accountNumber = ''
+			state.currentUser = '',
+			state.currentUserId = null,
+			state.accountNumber = ''
 		},
 		setCurrentUser: (state, payload) => {
 			state.currentUser = payload
