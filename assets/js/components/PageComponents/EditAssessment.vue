@@ -4,12 +4,12 @@
         <section class="mt-5 mb-5">
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
-                <Slide class="sidebar">
-                    <div v-for="item in menu" v-bind:key="item.id">
-                        <h6>{{ item.group }}</h6>
-                        <span v-for="child in item.children" v-bind:key="child.id">
+                <Slide class="sidebar" noOverlay :crossIcon="false">
+                    <div v-for="item in menu" v-bind:key="item.id" class="group">
+                        <h6 class="group-title">{{ item.group }}</h6>
+                        <span v-for="child in item.children" v-bind:key="child.id" class="child">
                             <a :href="child.href">
-                                <span>{{ child.title }}</span>
+                                <span class="child-title">{{ child.title }}</span>
                             </a>
                         </span>
                     </div>    
@@ -102,7 +102,6 @@
                 currentSlot: "",
                 dataReady: false,
                 errorMessage: null,
-                GUID: ''
             }
         },
         created () {
@@ -242,7 +241,8 @@
                         children: [{
                             id: i / 2,
                             href: '#' + subject.groupId + '' + subject.categoryId + '' + subject.questionId,
-                            title: subject.assertionName
+                            title: subject.assertionName,
+                            checked: subject.checked
                         }]
                     })
                     i++;
