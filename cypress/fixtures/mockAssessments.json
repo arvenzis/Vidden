@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "student": {
+      "accountNumber": "s1117810",
+      "fullName": "Diederick Prins"
+    },
+    "firstTeacher": {
+      "accountNumber": "BV0111996",
+      "fullName": "Arjen Korevaar"
+    },
+    "oeCode": "V12",
+    "assessmentDate": "2019-11-07T11:41:47.9510629",
+    "status": 0
+  },
+  {
+    "id": 2,
+    "student": {
+      "accountNumber": "s1120128",
+      "fullName": "Joost Reijmer"
+    },
+    "firstTeacher": {
+      "accountNumber": "BV0111997",
+      "fullName": "Eugen van Roden"
+    },
+    "oeCode": "V12",
+    "assessmentDate": "2019-11-07T11:41:47.9510629",
+    "status": 0
+  },
+  {
+    "id": 3,
+    "student": {
+      "accountNumber": "s1117810",
+      "fullName": "Diederick Prins"
+    },
+    "firstTeacher": {
+      "accountNumber": "BV0111997",
+      "fullName": "Eugene van Roden"
+    },
+    "oeCode": "V12",
+    "assessmentDate": "2019-11-07T11:41:47.9510629",
+    "status": 0
+  },
+  {
+    "id": 4,
+    "student": {
+      "accountNumber": "s1117810",
+      "fullName": "Diederick Prins"
+    },
+    "firstTeacher": {
+      "accountNumber": "BV0111996",
+      "fullName": "Arjen Korevaar"
+    },
+    "oeCode": "V12",
+    "assessmentDate": "2019-11-07T11:41:47.9510629",
+    "status": 0
+  },
+  {
+    "id": 5,
+    "student": {
+      "accountNumber": "s1117810",
+      "fullName": "Diederick Prins"
+    },
+    "firstTeacher": {
+      "accountNumber": "BV0111996",
+      "fullName": "Arjen Korevaar"
+    },
+    "oeCode": "V12",
+    "assessmentDate": "2019-11-07T11:41:47.9510629",
+    "status": 0
+  }
+]

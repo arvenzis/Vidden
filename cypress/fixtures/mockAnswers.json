@@ -1,0 +1,222 @@
+[
+  {
+    "id": 0,
+    "name": "Zelfstandigheid",
+    "groupName": "Beheren",
+    "question": {
+      "question": "De student heeft een gestructeerde beheeraanpak, wat leidt tot geplande stappen met als doel toewerken naar een mijlpaal. Nieuwe inzichten worden hierbij verwerkt. En de beheeraanpak wordt blijvend gevalideerd.",
+      "keywords": "Gestructureerdheid, samenhang, flexibiliteit",
+      "name": "Aanpak",
+      "answers": [
+        {
+          "id": 1,
+          "text": "Werkt volgens geplande stappen naar een mijlpaal, verwerkt nieuwe inzichten; blijft beheeraanpak valideren.",
+          "mark": 9.0,
+          "chosen": true
+        },
+        {
+          "id": 2,
+          "text": "Werkt volgens geplande stappen naar een mijlpaal en verwerkt nieuwe inzichten.",
+          "mark": 8.0,
+          "chosen": false
+        },
+        {
+          "id": 3,
+          "text": "Werkt volgens geplande stappen naar een mijlpaal.",
+          "mark": 6.0,
+          "chosen": false
+        },
+        {
+          "id": 4,
+          "text": "Ongestructureerde beheeraanpak leidt tot weinig grip en sturing.",
+          "mark": 4.0,
+          "chosen": false
+        }
+      ],
+      "total": 0,
+      "position": 0,
+      "precedingAction": null,
+      "succeedingAction": null,
+      "templateId": 1,
+      "groupId": 1,
+      "categoryId": 1,
+      "questionId": 1
+    }
+  },
+  {
+    "id": 0,
+    "name": "Zelfstandigheid",
+    "groupName": "Beheren",
+    "question": {
+      "question": "De student beheert eigen proces en project. Daarnaast wordt er gereageerd op knelpunten en meevallers. Daarbij wordt hierop geanticipeert en worden onverwachte situaties opgevangen.",
+      "keywords": "Grip, sturing, omgaan met risico’s",
+      "name": "Initiatief",
+      "answers": [
+        {
+          "id": 5,
+          "text": "Reageert en anticipeert uit zichzelf op knelpunten en meevallers en vangt onverwachte situaties op.",
+          "mark": 9.0,
+          "chosen": false
+        },
+        {
+          "id": 6,
+          "text": "Reageert en anticipeert uit zichzelf op knelpunten en meevallers.",
+          "mark": 8.0,
+          "chosen": true
+        },
+        {          
+          "id": 7,
+          "text": "Werkt volgens geplande stappen naar een mijlpaal.",
+          "mark": 6.0,
+          "chosen": false
+        },
+        {
+          "id": 8,
+          "text": "Ongestructureerde beheeraanpak leidt tot weinig grip en sturing.",
+          "mark": 4.0,
+          "chosen": false
+        }
+      ],
+      "total": 0,
+      "position": 0,
+      "precedingAction": null,
+      "succeedingAction": null,
+      "templateId": 1,
+      "groupId": 1,
+      "categoryId": 1,
+      "questionId": 2
+    }
+  },
+  {
+    "id": 0,
+    "name": "Zelfstandigheid",
+    "groupName": "Beheren",
+    "question": {
+      "question": "De student verzamelt alternatieven, onderzoekt de impact. Daarbij maakt hij keuzes en kan deze onderbouwen.Daarnaast worden routes en kaders blijvend gevalideerd.",
+      "keywords": "Bronnen, methoden, technieken",
+      "name": "Keuzes maken",
+      "answers": [
+        {
+          "id": 9,
+          "text": "Verzamelt alternatieven, onderzoekt de impact, maakt onderbouwde keuzes; blijft gekozen routes en kaders valideren.",
+          "mark": 9.0,
+          "chosen": false
+        },
+        {
+          "id": 10,
+          "text": "Verzamelt alternatieven, onderzoekt de impact en maakt goed onderbouwde keuzes.",
+          "mark": 8.0,
+          "chosen": false
+        },
+        {
+          "id": 11,
+          "text": "Verzamelt alternatieven, onderzoekt de impact en maakt keuzes.",
+          "mark": 6.0,
+          "chosen": false
+        },
+        {
+          "id": 12,
+          "text": "Toont weinig vaardigheid in het maken van geschikte keuzes.",
+          "mark": 4.0,
+          "chosen": true
+        }
+      ],
+      "total": 0,
+      "position": 0,
+      "precedingAction": null,
+      "succeedingAction": null,
+      "templateId": 1,
+      "groupId": 1,
+      "categoryId": 1,
+      "questionId": 3
+    }
+  },
+  {
+    "id": 0,
+    "name": "Gedrag",
+    "groupName": "Beheren",
+    "question": {
+      "question": "De student beheert het onderhanden project.Daarnaast wordt er afgestemd met stakeholders en wordt er rekening gehouden met overdracht aan de organisatie.",
+      "keywords": "Mate van bijdrage aan de oplossing van de gegeven situatie",
+      "name": "Effectiviteit",
+      "answers": [
+        {
+          "id": 13,
+          "text": "Beheert het onderhanden project, stemt af met stakeholders en houdt rekening met overdracht aan de organisatie.",
+          "mark": 9.0,
+          "chosen": false
+        },
+        {
+          "id": 14,
+          "text": "Beheert het onderhanden project en stemt af met stakeholders.",
+          "mark": 8.0,
+          "chosen": false
+        },
+        {
+          "id": 15,
+          "text": "Beheert het onderhanden project.",
+          "mark": 6.0,
+          "chosen": true
+        },
+        {
+          "id": 16,
+          "text": "Draagt weinig bij aan de oplossing van de gegeven situatie.",
+          "mark": 4.0,
+          "chosen": false
+        }
+      ],
+      "total": 0,
+      "position": 0,
+      "precedingAction": null,
+      "succeedingAction": null,
+      "templateId": 1,
+      "groupId": 1,
+      "categoryId": 2,
+      "questionId": 4
+    }
+  },
+  {
+    "id": 0,
+    "name": "Gedrag",
+    "groupName": "Beheren",
+    "question": {
+      "question": "De student volgt status van eigen werk en bepaalt mogelijke aanpassingen. Daarnaast voert hij deze door en blijft kritisch op eigen gedrag.",
+      "keywords": "Professioneel functioneren",
+      "name": "Zelfkritisch",
+      "answers": [
+        {
+          "id": 17,
+          "text": "Volgt status van eigen werk, bepaalt mogelijke aanpassingen, voert deze door en blijft kritisch op eigen gedrag.",
+          "mark": 9.0,
+          "chosen": false
+        },
+        {          
+          "id": 18,
+          "text": "Volgt status van eigen werk, bepaalt mogelijke aanpassingen en voert deze door.",
+          "mark": 8.0,
+          "chosen": true
+        },
+        {
+          "id": 19,
+          "text": "Volgt status van eigen werk en bepaalt mogelijke aanpassingen.",
+          "mark": 6.0,
+          "chosen": false
+        },
+        {
+          "id": 20,
+          "text": "Is weinig genegen naar status van eigen werk te kijken.",
+          "mark": 4.0,
+          "chosen": false
+        }
+      ],
+      "total": 0,
+      "position": 0,
+      "precedingAction": null,
+      "succeedingAction": null,
+      "templateId": 1,
+      "groupId": 1,
+      "categoryId": 2,
+      "questionId": 5
+    }
+  }
+]
