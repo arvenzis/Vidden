@@ -13,22 +13,22 @@ Vue.use(VueFlashMessage);
 const router = new VueRouter({routes});
 
 new Vue({
-    router,
-    store,
-    el: '#app',
-    data: {
-        emailaddress: "",
-        password: "",
-    },
-    created: function () {
-        if (Vue.prototype.$session.exists()) {
-            this.$store.state.loggedIn = true;
-        }
-    },
-    components: {
-        AppLogin,
-        CurrentUser
-    },
+  router,
+  store,
+  el: '#app',
+  data: {
+    emailaddress: "",
+    password: "",
+  },
+  created: function () {
+    if (Vue.prototype.$session.exists()) {
+      this.$store.state.loggedIn = true;
+    }
+  },
+  components: {
+    AppLogin,
+    CurrentUser
+  },
 });
 
 Vue.component('current-user', {

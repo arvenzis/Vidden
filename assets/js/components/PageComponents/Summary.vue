@@ -77,7 +77,27 @@
                 currentUserId: this.$store.state.currentUserId,
                 loading: false
             }
-        },
+    },
+    methods: {
+        getStatusText: function (status) {
+            switch (status) {
+                case 0:
+                    return 'New';
+                    break;
+                case 1:
+                    return 'In Progress';
+                    break;
+                case 2:
+                    return 'Completed';
+                    break;
+                case 3:
+                    return 'Final';
+                    break;
+                default:
+                    return 'Status unknown';
+            }
+        }
+    },
         created() {
             this.loading = true;
             const ENDPOINTS = 'Assessment/' + this.id;
@@ -92,7 +112,7 @@
                         id: response.data.id,
                         templateId: response.data.templateId,
                         templateName: response.data.name,
-                        status: response.data.status,
+                        status: this.getStatusText(response.data.status),
                         oeCode: response.data.oeCode,
                         finalmark: response.data.finalMark,
                         student: [{

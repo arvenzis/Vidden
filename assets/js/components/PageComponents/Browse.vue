@@ -105,7 +105,7 @@
         pageAccount: 1,
         itemsAccount: [],
         totalPagesAccount: 0,
-        itemsCurrentPageAccount: [],  
+        itemsCurrentPageAccount: [],
       };
     },
     methods: {
@@ -131,7 +131,7 @@
         for (var j = (page - 1) * this.perPage; j < this.perPage * page && j < items.length; j++) {
             arr.push(items[j])
         }
-        return arr;    
+        return arr;
       },
       //alle items van de account-lijst
       getItemsAccount: function (items) {
@@ -154,7 +154,7 @@
           }
         }
         return allAccountItems
-      },     
+      },
       getAssessments: function () {
         const ENDPOINTS = "Assessment/GetAssessments/";
         axios
@@ -170,7 +170,6 @@
               var updatedAt = new Date(response.data[x].assessmentDate);
               items.push({
                 id: response.data[x].id,
-                status: response.data[x].status,
                 code: response.data[x].oeCode,
                 student: [
                   {
@@ -186,7 +185,7 @@
                     naam: response.data[x].firstTeacher.fullName
                   }
                 ]
-              });              
+              });
             }
             this.itemsAll = items
             this.totalPagesAll = this.getNumberOfPages(items)
@@ -195,7 +194,6 @@
             this.totalPagesAccount = this.getNumberOfPages(this.itemsAccount)
             this.itemsCurrentPageAccount = this.getPageItems(this.itemsAccount, this.pageAccount)
           });
-        
       }
     },
     components: {
@@ -214,7 +212,6 @@
     },
     mounted: function () {
       this.getAssessments();
-      
     }
   };
 </script>
