@@ -4,10 +4,10 @@
         <section class="mt-5 mb-5">
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
-                <Slide class="sidebar" noOverlay :crossIcon="false">
+                <Slide class="sidebar" noOverlay right :crossIcon="false">
                     <div v-for="item in menu" v-bind:key="item.id" class="group">
                         <h6 class="group-title">{{ item.group }}</h6>
-                        <span v-for="child in item.children" v-bind:key="child.id" class="child">
+                        <span v-for="child in item.children" v-bind:key="child.id" class="child" v-bind:class="child.result">
                             <a :href="child.href">
                                 <span class="child-title">{{ child.title }}</span>
                             </a>
@@ -31,6 +31,7 @@
                                 <section v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot">
                                     <section>
                                         <h4 class="assessment__question d-sm-block">
+                                            <a :id="item.groupId + '' + item.categoryId + '' + item.questionId"></a>
                                             {{ item.question }}
                                             <popper trigger="hover" :options="{ placement: 'top' }">
                                                 <div class="popper">
@@ -169,7 +170,7 @@
 
                     this.steps = array;
                     this.currentSlot = this.getCurrentSlot();
-                    this.buildMenu(tmpAssertions);
+                    this.buildMenu(this.assertions);
                     this.dataReady = true;
                 }).catch(() => {
                 this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
@@ -252,7 +253,12 @@
                             id: i / 2,
                             href: '#' + subject.groupId + '' + subject.categoryId + '' + subject.questionId,
                             title: subject.assertionName,
-                            checked: subject.checked
+                            result: 
+                                subject.answers.excellent.chosen ? 'excellent'
+                                : subject.answers.good.chosen ? 'good'
+                                : subject.answers.proficient.chosen ? 'proficient'
+                                : subject.answers.poor.chosen ? 'poor'
+                                : ''
                         }]
                     })
                     i++;
@@ -284,6 +290,8 @@
 
                     return o;
                 }, []);
+
+                console.log(output);
                 return this.menu = output;
             },
         },
