@@ -214,7 +214,6 @@
     },
     mounted: function () {
       this.getAssessments();
-      
     }
   };
 </script>
