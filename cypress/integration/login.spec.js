@@ -23,7 +23,7 @@ describe('Login page', function () {
     })
     cy.route('POST', 'Authenticate').as('authenticate')
     cy.get('input[name=emailaddress]').type('test@test.com')
-    cy.get('input[name=password]').type('password123{enter}')
+    cy.get('input[name=password]').type('password123{enter}') 
 
     // spinner should be visible during loading
     cy.get('.vue-simple-spinner').should('be.visible')
