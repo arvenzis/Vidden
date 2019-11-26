@@ -5,12 +5,12 @@
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
                 <Slide class="sidebar" noOverlay right :crossIcon="false">
-                    <div v-for="item in menu" v-bind:key="item.id" class="group">
-                        <h6 class="group-title">{{ item.group }}</h6>
+                    <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
+                        <h6 class="group-title">{{ index }} {{ item.group }}</h6>
                         <span v-for="child in item.children" v-bind:key="child.id" class="child" v-bind:class="child.result">
-                            <a :href="child.href">
+                            <router-link :to="`#${child.id}`" v-scroll-to="{ el: '#' + child.id }">
                                 <span class="child-title">{{ child.title }}</span>
-                            </a>
+                            </router-link>
                         </span>
                     </div>    
                 </Slide>
@@ -30,8 +30,8 @@
                             <div v-for="item in this.assertions">
                                 <section v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot">
                                     <section>
-                                        <h4 class="assessment__question d-sm-block">
-                                            <a :id="item.groupId + '' + item.categoryId + '' + item.questionId"></a>
+                                        <h4 class="assessment__question d-sm-block" v-bind:id="item.uuid">
+                                            <!-- <a :id="item.groupId + '' + item.categoryId + '' + item.questionId"></a> -->
                                             {{ item.question }}
                                             <popper trigger="hover" :options="{ placement: 'top' }">
                                                 <div class="popper">
@@ -153,7 +153,8 @@
                                     "result":  subject.question.answers[3].mark,
                                     "chosen": subject.question.answers[3].chosen
                                 }
-                            }
+                            },
+                            "uuid": 'q' + subject.question.groupId + '' + subject.question.categoryId + '' + subject.question.questionId
                         };
 
                         self.assertions.push(obj);
@@ -243,15 +244,12 @@
             },
             buildMenu(array) {
                 let tmpMenu = [];
-                let i = 56; // Random number, but because of our not so smart identifier system in the backend this is neccessary
 
                 array.forEach(function (subject) {
                     tmpMenu.push({
-                        id: i,
                         group: subject.groupName,
                         children: [{
-                            id: i / 2,
-                            href: '#' + subject.groupId + '' + subject.categoryId + '' + subject.questionId,
+                            id: subject.uuid,
                             title: subject.assertionName,
                             result: 
                                 subject.answers.excellent.chosen ? 'excellent'
@@ -261,7 +259,6 @@
                                 : ''
                         }]
                     })
-                    i++;
                 });
 
                 var output = tmpMenu.reduce(function (o, cur) {
@@ -280,7 +277,7 @@
                         // Otherwise,
                     } else {
 
-                        // add the current item to o (but make sure the children is an array).
+                        // add the current item to o.
                         var obj = {
                             group: cur.group,
                             children: cur.children
@@ -291,9 +288,8 @@
                     return o;
                 }, []);
 
-                console.log(output);
                 return this.menu = output;
-            },
+            }
         },
         components: {
             'vue-good-wizard': GoodWizard,
