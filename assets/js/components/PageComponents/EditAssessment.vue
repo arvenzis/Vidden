@@ -17,7 +17,7 @@
                             <header>
                                 <h4 class="mb3">{{ this.steps[this.currentStep].label }}</h4>
                             </header>
-                            <div v-for="item in this.assertions">
+                            <div v-for="item in this.assertions" v-bind:key="item.assertion">
                                 <section v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot">
                                     <section>
                                         <h4 class="assessment__question d-sm-block">
@@ -30,7 +30,7 @@
                                             </popper>
                                         </h4>
                                         <div class="row row-eq-height">
-                                            <div v-for="option in item.answers" class="col-lg-6 col-md-6 col-sm-12">
+                                            <div v-for="option in item.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
                                                 <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
                                                     <div class="assessment__answer-body">
                                                         <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(item, option.id, option.grade)" v-bind:value="true" class="assessment__answer-radio" />
