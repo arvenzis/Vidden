@@ -10,8 +10,8 @@
         <h2>Bladeren</h2>
       </div>
     </div>
-
-    <tabs :onSelect="showTab">
+    <spinner id="spinner" v-if="loading"></spinner>
+    <tabs :onSelect="showTab" v-bind:class="{ overlay : loading}">
 
       <tab title="Alle beoordelingen">
         <div id="assessment-listAll" v-if="showAll">
@@ -90,6 +90,7 @@
   import axios from "axios";
   import { Tabs, Tab } from 'vue-slim-tabs'
   import Paginate from 'vuejs-paginate'
+  import Spinner from "vue-simple-spinner";
 
   Vue.component('paginate', Paginate)
 
@@ -100,6 +101,7 @@
         //algemeen
         perPage: 3,
         showAll: true,
+        loading: false,
 
         // voor lijst met alle beoordelingen
         pageAll: 1,
@@ -111,7 +113,7 @@
         pageAccount: 1,
         itemsAccount: [],
         totalPagesAccount: 0,
-        itemsCurrentPageAccount: [],  
+        itemsCurrentPageAccount: [],
       };
     },
     methods: {
@@ -137,7 +139,7 @@
         for (var j = (page - 1) * this.perPage; j < this.perPage * page && j < items.length; j++) {
             arr.push(items[j])
         }
-        return arr;    
+        return arr;
       },
       //alle items van de account-lijst
       getItemsAccount: function (items) {
@@ -160,8 +162,9 @@
           }
         }
         return allAccountItems
-      },     
+      },
       getAssessments: function () {
+        this.loading = true;
         const ENDPOINTS = "Assessment/GetAssessments/";
         axios
           .get(this.$store.state.apiBaseUrl + ENDPOINTS, {
@@ -192,7 +195,7 @@
                     naam: response.data[x].firstTeacher.fullName
                   }
                 ]
-              });              
+              });
             }
             this.itemsAll = items
             this.totalPagesAll = this.getNumberOfPages(items)
@@ -200,13 +203,15 @@
             this.itemsAccount = this.getItemsAccount(items)
             this.totalPagesAccount = this.getNumberOfPages(this.itemsAccount)
             this.itemsCurrentPageAccount = this.getPageItems(this.itemsAccount, this.pageAccount)
+            this.loading = false;
           });
-        
+
       }
     },
     components: {
       Tabs,
       Tab,
+      Spinner
     },
     watch: {
       pageAll: function () {
@@ -220,7 +225,7 @@
     },
     mounted: function () {
       this.getAssessments();
-      
+
     }
   };
 </script>
