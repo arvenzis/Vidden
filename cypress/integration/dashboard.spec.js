@@ -1,6 +1,6 @@
 describe('Dashboard page', function () {
   before(function () {
-    cy.login('s1019744@student.windesheim.nl', '12345')
+    cy.login('BV0111996@windesheim.nl', 'Welkom01!')
   })
 
   after(function () {
@@ -16,12 +16,12 @@ describe('Dashboard page', function () {
     })
 
     it('Nieuw: Should redirect to new assessment page', function () {
-      cy.get('a').contains('NIEUW').click()
+      cy.openNewAssessmentPage()
       cy.url().should('include', '/new-assessment')
     })
 
     it('Bladeren: Should redirect to browse page', function () {
-      cy.get('a').contains('BLADEREN').click()
+      cy.openBrowsePage()
       cy.url().should('include', '/browse')
     })
 

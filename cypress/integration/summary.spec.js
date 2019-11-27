@@ -1,15 +1,12 @@
 describe('Summary page', function () {
   before(function () {
-    cy.server()
-    cy.route('GET', '13').as('getNewAssessment')
     cy.login('BV0111996@windesheim.nl', 'Welkom01!')
-    cy.visit('http://vidden.karenbrakband.nl/#/summary/13')
-    cy.wait(['@getNewAssessment'])
+    cy.openSummaryPage()
   })
 
   after(function () {
-    cy.get('a').contains('Terug naar overzicht').click()
-    cy.get('a').contains('Terug naar dashboard').click()
+    cy.backToBrowsePage()
+    cy.backToDashboardPage()
     cy.logout()
   })
 

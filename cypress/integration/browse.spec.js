@@ -1,15 +1,12 @@
 describe('Browse page', function () {
   before(function () {
-    // mock assessment: 5 assessments
-    cy.server()
-    cy.route('GET', 'GetAssessments', 'fixture:mockAssessments').as('assessments')
+    // mock assessment: 5 assessments    
     cy.login('BV0111996@windesheim.nl', 'Welkom01!')
-    cy.get('a').contains('BLADEREN').click()
-    cy.wait('@assessments')
+    cy.openBrowsePage()
   })
 
   after(function () {
-    cy.get('a').contains('Terug naar dashboard').click()
+    cy.backToDashboardPage()
     cy.logout()
   })
 
@@ -69,7 +66,7 @@ describe('Browse page', function () {
       cy.get('.text-muted span').should('have.length', 3)
         .each(($assessment) => {
           const text = $assessment.text()
-          expect(text).to.include('Arjen Korevaar\n                  (BV0111996)')
+          expect(text).to.include('Arjen Korevaar\n                (BV0111996)')
         })
     })
   })

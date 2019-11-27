@@ -40,7 +40,7 @@ describe('Login page', function () {
       .should('be.not.be.visible')
 
     // incorrect username on purpose
-    cy.login('test@test.com', 'password123')
+    cy.loginFalse('test@test.com', 'password123')
 
     // we should have visible errors now
     cy.get('label.alert.alert-danger.col-md-6.offset-md-4')
@@ -49,10 +49,10 @@ describe('Login page', function () {
   })
 
   it('Should redirect to /dashboard on success', function () {
-    cy.login('s1019744@student.windesheim.nl', '12345')
+    cy.login('BV0111996@windesheim.nl', 'Welkom01!')
 
     // we should be redirected to dashboard
     cy.get('.container.dashboard-container').should('be.visible')
-    cy.get('span.header__user').should('contain', 'Bernard Bos')
+    cy.get('span.header__user').should('contain', 'Arjen Korevaar')
   })
 })

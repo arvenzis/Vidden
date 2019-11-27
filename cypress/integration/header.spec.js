@@ -1,6 +1,6 @@
 describe('Header', function () {
   before(function () {
-    cy.login('s1019744@student.windesheim.nl', '12345')
+    cy.login('BV0111996@windesheim.nl', 'Welkom01!')
   })
 
   after(function () {
@@ -8,6 +8,6 @@ describe('Header', function () {
   })
 
   it('Should display the name and account number in the header', function () {
-    cy.get('.header__user').should('contain', 'Bernard Bos (s1019744)')
+    cy.get('.header__user').should('contain', 'Arjen Korevaar (BV0111996)')
   })
 })

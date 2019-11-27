@@ -1,12 +1,12 @@
 describe('New assessment page', function () {
   before(function () {
     cy.login('BV0111996@windesheim.nl', 'Welkom01!')
-    cy.get('a').contains('NIEUW').click()
+    cy.openNewAssessmentPage()
   })
 
   after(function () {
-    cy.get('a').contains('Terug naar overzicht').click()
-    cy.get('a').contains('Terug naar dashboard').click()
+    cy.backToBrowsePage()
+    cy.backToDashboardPage()
     cy.logout()
   })
 
@@ -46,12 +46,7 @@ describe('New assessment page', function () {
   })
 
   it('Should show a flash message after confirming new assessment', function () {
-    cy.server()
-    cy.route('POST', 'assessment', 13).as('postNewAssessment')
-    cy.route('GET', '13', 'fixture:mockAssessment').as('getNewAssessment')
-    cy.get('a').contains('Bevestigen').click()
-    cy.wait(['@postNewAssessment'])
-    cy.wait(['@getNewAssessment'])
+    cy.confirmNewAssessment()
     cy.get('.flash__message-content').should('contain', 'Je beoordeling is succesvol aangemaakt')
   })
 })

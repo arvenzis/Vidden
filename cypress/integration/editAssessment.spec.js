@@ -1,15 +1,12 @@
 describe('Assessment editing page', function () {
-  before(function () {
-    cy.server()
-    cy.route('GET', '6', 'fixture:mockAnswers').as('getAssessmentTeacher')
+  before(function () {    
     cy.login('BV0111996@windesheim.nl', 'Welkom01!')
-    cy.visit('http://vidden.karenbrakband.nl/#/edit/1/6')
-    cy.wait(['@getAssessmentTeacher'])
+    cy.openEditAssessmentPage()
   })
 
   after(function () {
-    cy.get('a').contains('Terug naar overzicht').click()
-    cy.get('a').contains('Terug naar dashboard').click()
+    cy.backToBrowsePage()
+    cy.backToDashboardPage()
     cy.logout()
   })
 
@@ -25,12 +22,7 @@ describe('Assessment editing page', function () {
   })
 
   it('Should show the first question answered with Poor after Poor is clicked', function () {
-    cy.server()
-    cy.route('POST', 'AnswerSave', '').as('answerSaved')
-
-    cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#poor').click()
-    cy.wait(['@answerSaved'])
+    cy.chooseAnswer('poor')
 
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
       .parent().get('#excellent').should('have.class', 'assessment__answer excellent')
