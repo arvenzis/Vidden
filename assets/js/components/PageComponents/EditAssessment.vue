@@ -48,13 +48,15 @@
                                         </div>
                                     </section>
                                     <hr>
-                                    <!-- ToDo: opmerkingen per groep tonen -->
-<!--                                    <footer>-->
-<!--                                        <div class="form-group">-->
-<!--                                            <label for="opmerkingen">Aanvullende opmerkingen</label>-->
-<!--                                            <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"></textarea>-->
-<!--                                        </div>-->
-<!--                                    </footer>-->
+                                    <footer>
+                                        <h4>Opmerkingen</h4>
+                                        <div v-for="comment in item.comments" v-bind:key="comment.question">
+                                            <div class="form-group">
+                                                <label for="opmerkingen">{{ comment.question }}</label>
+                                                <textarea name="opmerkingen" id="opmerkingen" v-model="comment.answer" v-on:change="saveComment(item.groupId, comment)" class="form-control" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </footer>
                                 </section>
                             </div>
                     </article>
@@ -195,6 +197,8 @@
                 })
             },
             nextClicked(currentPage) {
+                this.saveComment();
+
                 // Check if this is the last page aka if you're clicking 'confirm'
                 if (currentPage !== this.steps.length - 1) {
                     this.currentStep = this.currentStep + 1;
@@ -207,6 +211,8 @@
                 return false;
             },
             backClicked() {
+                this.saveComment();
+
                 this.currentStep = this.currentStep - 1;
                 this.currentSlot = this.getCurrentSlot();
                 this.scrollToTop();
@@ -248,6 +254,31 @@
                     this.errorMessage = "Er is iets misgegaan bij het opslaan van het antwoord.";
                 });
             },
+            saveComment(groupId, comment) {
+                console.log('yas');
+                const ENDPOINTS = 'assessment/CommentsSave';
+                // console.log({"assessmentMetadataId": this.assessmentMetadataId,
+                //     "groupId": groupId,
+                //     "question": comment.question,
+                //     "answer": comment.answer});
+
+                var obj = JSON.parse(JSON.stringify({"assessmentMetadataId": this.assessmentMetadataId,
+                    "groupId": groupId,
+                    "question": comment.question,
+                    "answer": comment.answer}));
+
+                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
+                        obj
+                        // "userId": this.examinatorId,
+                    },
+                    {
+                        headers: {"Authorization" : this.$session.get('jwt')}
+                    }).then((response) => {
+                        console.log(response);
+                }).catch(() => {
+                    this.errorMessage = "Er is iets misgegaan bij het opslaan van de opmerking.";
+                });
+            }
         },
         components: {
             'vue-good-wizard': GoodWizard,
