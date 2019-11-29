@@ -72,8 +72,10 @@
     import axios from 'axios';
     import Popper from 'vue-popperjs';
     import Spinner from "vue-simple-spinner";
+    import Toasted from 'vue-toasted';
 
     Vue.use(Popper);
+    Vue.use(Toasted);
 
     export default {
         name: 'edit',
@@ -238,17 +240,22 @@
 
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
-                        "assessmentMetadataId": this.assessmentMetadataId,
-                        "templateId": questionData.templateId,
-                        "groupId": groupId,
-                        "categoryId": questionData.categoryId,
-                        "questionId": questionData.questionId,
-                        "answerId": answerId,
-                        "userId": this.examinatorId,
-                    },
-                    {
-                        headers: {"Authorization" : this.$session.get('jwt')}
-                    }).then(() => {}).catch(() => {
+                    "assessmentMetadataId": this.assessmentMetadataId,
+                    "templateId": questionData.templateId,
+                    "groupId": groupId,
+                    "categoryId": questionData.categoryId,
+                    "questionId": questionData.questionId,
+                    "answerId": answerId,
+                    "userId": this.examinatorId,
+                },
+                {
+                    headers: {"Authorization" : this.$session.get('jwt')}
+                }).then(() => {
+                Vue.toasted.show('Het antwoord is opgeslagen', {
+                    type: 'success',
+                    duration: 1000
+                });
+                }).catch(() => {
                     this.errorMessage = "Er is iets misgegaan bij het opslaan van het antwoord.";
                 });
             },
@@ -256,21 +263,26 @@
                 const ENDPOINTS = 'assessment/CommentsSave';
 
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
-                        [
-                            {
-                                "id": comment.id,
-                                "assessmentMetadataId": this.assessmentMetadataId,
-                                "groupId":groupId,
-                                "question":comment.question,
-                                "answer":comment.answer
-                            }
-                        ]
-                    ,
-                    {
-                        headers: {
-                            "Authorization" : this.$session.get('jwt')
+                    [
+                        {
+                            "id": comment.id,
+                            "assessmentMetadataId": this.assessmentMetadataId,
+                            "groupId":groupId,
+                            "question":comment.question,
+                            "answer":comment.answer
                         }
-                    }).then(() => {}).catch(() => {
+                    ]
+                ,
+                {
+                    headers: {
+                        "Authorization" : this.$session.get('jwt')
+                    }
+                }).then(() => {
+                    Vue.toasted.show('De opmerking is opgeslagen', {
+                        type: 'success',
+                        duration: 1000
+                    });
+                }).catch(() => {
                     this.errorMessage = "Er is iets misgegaan bij het opslaan van de opmerking.";
                 });
             }
