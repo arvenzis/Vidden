@@ -265,7 +265,6 @@
                                 "answer":comment.answer
                             }
                         ]
-                        // "userId": this.examinatorId,
                     ,
                     {
                         headers: {
