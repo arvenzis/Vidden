@@ -7,8 +7,8 @@
                 <Slide class="sidebar" noOverlay right :crossIcon="false">
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
                         <h6 class="group-title">{{ index }} {{ item.group }}</h6>
-                        <span v-for="child in item.children" v-bind:key="child.id" class="child" v-bind:class="child.result">
-                            <router-link :to="`#${item.groupId + '' + child.id}`" v-scroll-to="{ el: '#' + item.groupId + '' + child.id }">
+                        <span v-for="child in item.children" v-bind:key="child.uuid" class="child" v-bind:class="child.result">
+                            <router-link :to="`#${child.uuid}`" v-scroll-to="{ el: '#' + child.uuid }">
                                 <span class="child-title">{{ child.title }}</span>
                             </router-link>
                         </span>
@@ -275,23 +275,18 @@
                 });
             },
             buildMenu(array) {
-                //TODO: find a way to combine the group, category and question id
-                
                 let tmpMenu = [];
-                let i = 0;
-
-                console.log(array);
 
                 array.forEach(function (subject) {
                     let menuObj = [];
+                    let groupId = subject.groupId;
                     let groupData = {
                         group: subject.groupName,
-                        groupId: 'q' + subject.groupId,
                         children: {}
                     }
                     for(var i in subject.questions) {
                         let children = {
-                            childId: subject.questions[i].categoryId + '' + subject.questions[i].questionId,
+                            uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
                             title: subject.questions[i].assertionName,
                             result: 
                                 subject.questions[i].answers.excellent.chosen ? 'excellent'
@@ -307,8 +302,6 @@
                     groupData.children = menuObj;
                     tmpMenu.push(groupData);
                 });
-
-                console.log(tmpMenu);
 
                 var output = tmpMenu.reduce(function (o, cur) {
 
@@ -337,7 +330,6 @@
                     return o;
                 }, []);
 
-                console.log(this.menu);
                 return this.menu = output;
             },
             saveComment(groupId, comment) {
