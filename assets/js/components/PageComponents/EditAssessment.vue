@@ -251,12 +251,15 @@
                 {
                     headers: {"Authorization" : this.$session.get('jwt')}
                 }).then(() => {
-                Vue.toasted.show('Het antwoord is opgeslagen', {
-                    type: 'success',
-                    duration: 1000
-                });
+                    Vue.toasted.show('Het antwoord is opgeslagen', {
+                        type: 'success',
+                        duration: 1000
+                    });
                 }).catch(() => {
-                    this.errorMessage = "Er is iets misgegaan bij het opslaan van het antwoord.";
+                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van het antwoord', {
+                        type: 'error',
+                        duration: 1000
+                    });
                 });
             },
             saveComment(groupId, comment) {
