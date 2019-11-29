@@ -2,14 +2,13 @@
     <div class="container dashboard-container">
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
         <section class="mt-5 mb-5">
-            <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
                 <Slide class="sidebar" noOverlay right :crossIcon="false">
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
                         <h6 class="group-title">{{ index }} {{ item.group }}</h6>
                         <span v-for="child in item.children" v-bind:key="child.id" class="child" v-bind:class="child.result">
-                            <router-link :to="`#${child.id}`" v-scroll-to="{ el: '#' + child.id }">
+                            <router-link :to="`#${item.groupId + '' + child.id}`" v-scroll-to="{ el: '#' + item.groupId + '' + child.id }">
                                 <span class="child-title">{{ child.title }}</span>
                             </router-link>
                         </span>
@@ -31,7 +30,7 @@
                                 <section v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot">
                                     <section>
                                         <div v-for="question in item.questions" v-bind:key="question.question">
-                                            <h4 class="assessment__question d-sm-block" v-bind:id="item.uuid">
+                                            <h4 class="assessment__question d-sm-block" v-bind:id="'q' + item.groupId + question.categoryId + question.questionId">
                                                 {{ question.question }}
                                                 <popper trigger="hover" :options="{ placement: 'top' }">
                                                     <div class="popper">
@@ -58,13 +57,15 @@
                                         </div>
                                     </section>
                                     <hr>
-                                    <!-- ToDo: opmerkingen per groep tonen -->
-<!--                                    <footer>-->
-<!--                                        <div class="form-group">-->
-<!--                                            <label for="opmerkingen">Aanvullende opmerkingen</label>-->
-<!--                                            <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"></textarea>-->
-<!--                                        </div>-->
-<!--                                    </footer>-->
+                                    <footer>
+                                        <h4>Opmerkingen</h4>
+                                        <div v-for="comment in item.comments" v-bind:key="comment.question">
+                                            <div class="form-group">
+                                                <label for="opmerkingen">{{ comment.question }}</label>
+                                                <textarea name="opmerkingen" id="opmerkingen" v-model="comment.answer" v-on:change="saveComment(item.groupId, comment)" class="form-control" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </footer>
                                 </section>
                             </div>
                     </article>
@@ -81,8 +82,10 @@
     import Popper from 'vue-popperjs';
     import Spinner from "vue-simple-spinner";
     import { Slide } from 'vue-burger-menu'
+    import Toasted from 'vue-toasted';
 
     Vue.use(Popper);
+    Vue.use(Toasted);
 
     export default {
         name: 'edit',
@@ -121,10 +124,12 @@
                              "groupName": group.name,
                              "comments": {
                                  "product": {
+                                     "id": group.comments[0].id,
                                      "question": group.comments[0].question,
                                      "answer": group.comments[0].answer
                                  },
                                  "complexity": {
+                                     "id": group.comments[1].id,
                                      "question": group.comments[1].question,
                                      "answer": group.comments[1].answer
                                  }
@@ -247,38 +252,63 @@
 
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
-                        "assessmentMetadataId": this.assessmentMetadataId,
-                        "templateId": questionData.templateId,
-                        "groupId": groupId,
-                        "categoryId": questionData.categoryId,
-                        "questionId": questionData.questionId,
-                        "answerId": answerId,
-                        "userId": this.examinatorId,
-                    },
-                    {
-                        headers: {"Authorization" : this.$session.get('jwt')}
-                    }).then(() => {}).catch(() => {
-                    this.errorMessage = "Er is iets misgegaan bij het opslaan van het antwoord.";
+                    "assessmentMetadataId": this.assessmentMetadataId,
+                    "templateId": questionData.templateId,
+                    "groupId": groupId,
+                    "categoryId": questionData.categoryId,
+                    "questionId": questionData.questionId,
+                    "answerId": answerId,
+                    "userId": this.examinatorId,
+                },
+                {
+                    headers: {"Authorization" : this.$session.get('jwt')}
+                }).then(() => {
+                    Vue.toasted.show('Het antwoord is opgeslagen', {
+                        type: 'success',
+                        duration: 1000
+                    });
+                }).catch(() => {
+                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van het antwoord', {
+                        type: 'error',
+                        duration: 1000
+                    });
                 });
             },
             buildMenu(array) {
+                //TODO: find a way to combine the group, category and question id
+                
                 let tmpMenu = [];
+                let i = 0;
+
+                console.log(array);
 
                 array.forEach(function (subject) {
-                    tmpMenu.push({
+                    let menuObj = [];
+                    let groupData = {
                         group: subject.groupName,
-                        children: [{
-                            id: subject.uuid,
-                            title: subject.assertionName,
+                        groupId: 'q' + subject.groupId,
+                        children: {}
+                    }
+                    for(var i in subject.questions) {
+                        let children = {
+                            childId: subject.questions[i].categoryId + '' + subject.questions[i].questionId,
+                            title: subject.questions[i].assertionName,
                             result: 
-                                subject.answers.excellent.chosen ? 'excellent'
-                                : subject.answers.good.chosen ? 'good'
-                                : subject.answers.proficient.chosen ? 'proficient'
-                                : subject.answers.poor.chosen ? 'poor'
+                                subject.questions[i].answers.excellent.chosen ? 'excellent'
+                                : subject.questions[i].answers.good.chosen ? 'good'
+                                : subject.questions[i].answers.proficient.chosen ? 'proficient'
+                                : subject.questions[i].answers.poor.chosen ? 'poor'
                                 : ''
-                        }]
-                    })
+                        };
+                        menuObj.push(children);
+                        i++;
+                    }
+                
+                    groupData.children = menuObj;
+                    tmpMenu.push(groupData);
                 });
+
+                console.log(tmpMenu);
 
                 var output = tmpMenu.reduce(function (o, cur) {
 
@@ -307,7 +337,38 @@
                     return o;
                 }, []);
 
+                console.log(this.menu);
                 return this.menu = output;
+            },
+            saveComment(groupId, comment) {
+                const ENDPOINTS = 'assessment/CommentsSave';
+
+                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
+                    [
+                        {
+                            "id": comment.id,
+                            "assessmentMetadataId": this.assessmentMetadataId,
+                            "groupId":groupId,
+                            "question":comment.question,
+                            "answer":comment.answer
+                        }
+                    ]
+                ,
+                {
+                    headers: {
+                        "Authorization" : this.$session.get('jwt')
+                    }
+                }).then(() => {
+                    Vue.toasted.show('De opmerking is opgeslagen', {
+                        type: 'success',
+                        duration: 1000
+                    });
+                }).catch(() => {
+                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van de opmerking', {
+                        type: 'error',
+                        duration: 1000
+                    });
+                });
             }
         },
         components: {
