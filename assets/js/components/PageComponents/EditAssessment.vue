@@ -2,7 +2,6 @@
     <div class="container dashboard-container">
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
         <section class="mt-5 mb-5">
-            <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
                 <vue-good-wizard
@@ -286,7 +285,10 @@
                         duration: 1000
                     });
                 }).catch(() => {
-                    this.errorMessage = "Er is iets misgegaan bij het opslaan van de opmerking.";
+                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van de opmerking', {
+                        type: 'error',
+                        duration: 1000
+                    });
                 });
             }
         },
