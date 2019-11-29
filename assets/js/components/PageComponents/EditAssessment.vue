@@ -2,7 +2,6 @@
     <div class="container dashboard-container">
         <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
         <section class="mt-5 mb-5">
-            <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
                 <vue-good-wizard
@@ -48,13 +47,15 @@
                                         </div>
                                     </section>
                                     <hr>
-                                    <!-- ToDo: opmerkingen per groep tonen -->
-<!--                                    <footer>-->
-<!--                                        <div class="form-group">-->
-<!--                                            <label for="opmerkingen">Aanvullende opmerkingen</label>-->
-<!--                                            <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"></textarea>-->
-<!--                                        </div>-->
-<!--                                    </footer>-->
+                                    <footer>
+                                        <h4>Opmerkingen</h4>
+                                        <div v-for="comment in item.comments" v-bind:key="comment.question">
+                                            <div class="form-group">
+                                                <label for="opmerkingen">{{ comment.question }}</label>
+                                                <textarea name="opmerkingen" id="opmerkingen" v-model="comment.answer" v-on:change="saveComment(item.groupId, comment)" class="form-control" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </footer>
                                 </section>
                             </div>
                     </article>
@@ -70,8 +71,10 @@
     import axios from 'axios';
     import Popper from 'vue-popperjs';
     import Spinner from "vue-simple-spinner";
+    import Toasted from 'vue-toasted';
 
     Vue.use(Popper);
+    Vue.use(Toasted);
 
     export default {
         name: 'edit',
@@ -109,10 +112,12 @@
                              "groupName": group.name,
                              "comments": {
                                  "product": {
+                                     "id": group.comments[0].id,
                                      "question": group.comments[0].question,
                                      "answer": group.comments[0].answer
                                  },
                                  "complexity": {
+                                     "id": group.comments[1].id,
                                      "question": group.comments[1].question,
                                      "answer": group.comments[1].answer
                                  }
@@ -234,20 +239,58 @@
 
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
-                        "assessmentMetadataId": this.assessmentMetadataId,
-                        "templateId": questionData.templateId,
-                        "groupId": groupId,
-                        "categoryId": questionData.categoryId,
-                        "questionId": questionData.questionId,
-                        "answerId": answerId,
-                        "userId": this.examinatorId,
-                    },
-                    {
-                        headers: {"Authorization" : this.$session.get('jwt')}
-                    }).then(() => {}).catch(() => {
-                    this.errorMessage = "Er is iets misgegaan bij het opslaan van het antwoord.";
+                    "assessmentMetadataId": this.assessmentMetadataId,
+                    "templateId": questionData.templateId,
+                    "groupId": groupId,
+                    "categoryId": questionData.categoryId,
+                    "questionId": questionData.questionId,
+                    "answerId": answerId,
+                    "userId": this.examinatorId,
+                },
+                {
+                    headers: {"Authorization" : this.$session.get('jwt')}
+                }).then(() => {
+                    Vue.toasted.show('Het antwoord is opgeslagen', {
+                        type: 'success',
+                        duration: 1000
+                    });
+                }).catch(() => {
+                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van het antwoord', {
+                        type: 'error',
+                        duration: 1000
+                    });
                 });
             },
+            saveComment(groupId, comment) {
+                const ENDPOINTS = 'assessment/CommentsSave';
+
+                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
+                    [
+                        {
+                            "id": comment.id,
+                            "assessmentMetadataId": this.assessmentMetadataId,
+                            "groupId":groupId,
+                            "question":comment.question,
+                            "answer":comment.answer
+                        }
+                    ]
+                ,
+                {
+                    headers: {
+                        "Authorization" : this.$session.get('jwt')
+                    }
+                }).then(() => {
+                    Vue.toasted.show('De opmerking is opgeslagen', {
+                        type: 'success',
+                        duration: 1000
+                    });
+                }).catch(() => {
+                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van de opmerking', {
+                        type: 'error',
+                        duration: 1000
+                    });
+                });
+            }
         },
         components: {
             'vue-good-wizard': GoodWizard,
