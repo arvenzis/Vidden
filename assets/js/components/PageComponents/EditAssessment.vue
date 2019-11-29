@@ -111,10 +111,12 @@
                              "groupName": group.name,
                              "comments": {
                                  "product": {
+                                     "id": group.comments[0].id,
                                      "question": group.comments[0].question,
                                      "answer": group.comments[0].answer
                                  },
                                  "complexity": {
+                                     "id": group.comments[1].id,
                                      "question": group.comments[1].question,
                                      "answer": group.comments[1].answer
                                  }
@@ -197,8 +199,6 @@
                 })
             },
             nextClicked(currentPage) {
-                this.saveComment();
-
                 // Check if this is the last page aka if you're clicking 'confirm'
                 if (currentPage !== this.steps.length - 1) {
                     this.currentStep = this.currentStep + 1;
@@ -211,8 +211,6 @@
                 return false;
             },
             backClicked() {
-                this.saveComment();
-
                 this.currentStep = this.currentStep - 1;
                 this.currentSlot = this.getCurrentSlot();
                 this.scrollToTop();
@@ -255,27 +253,25 @@
                 });
             },
             saveComment(groupId, comment) {
-                console.log('yas');
                 const ENDPOINTS = 'assessment/CommentsSave';
-                // console.log({"assessmentMetadataId": this.assessmentMetadataId,
-                //     "groupId": groupId,
-                //     "question": comment.question,
-                //     "answer": comment.answer});
 
-                var obj = JSON.parse(JSON.stringify({"assessmentMetadataId": this.assessmentMetadataId,
-                    "groupId": groupId,
-                    "question": comment.question,
-                    "answer": comment.answer}));
-
-                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
-                        obj
+                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
+                        [
+                            {
+                                "id": comment.id,
+                                "assessmentMetadataId": this.assessmentMetadataId,
+                                "groupId":groupId,
+                                "question":comment.question,
+                                "answer":comment.answer
+                            }
+                        ]
                         // "userId": this.examinatorId,
-                    },
+                    ,
                     {
-                        headers: {"Authorization" : this.$session.get('jwt')}
-                    }).then((response) => {
-                        console.log(response);
-                }).catch(() => {
+                        headers: {
+                            "Authorization" : this.$session.get('jwt')
+                        }
+                    }).then(() => {}).catch(() => {
                     this.errorMessage = "Er is iets misgegaan bij het opslaan van de opmerking.";
                 });
             }
