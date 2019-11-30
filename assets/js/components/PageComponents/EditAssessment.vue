@@ -43,7 +43,7 @@
                                                 <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
                                                     <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
                                                         <div class="assessment__answer-body">
-                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
+                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
                                                             <label class="form-check-label" v-bind:for="option.grade">
                                                                 <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: option.chosen === true }]">
                                                                     {{ option.result }}
@@ -241,7 +241,7 @@
                 }
                 return false;
             },
-            saveAnswer(questionData, answerId, grade, groupId) {
+            saveAnswer(questionData, answerId, grade, result, groupId) {
                 //Make sure the answer that was chosen before is set to false so that the user will not see an incorrectly filled answer
                 const answers = Object.values(questionData.answers);
                 for (const answer of answers) {
@@ -258,7 +258,10 @@
                     "categoryId": questionData.categoryId,
                     "questionId": questionData.questionId,
                     "answerId": answerId,
-                    "userId": this.examinatorId,
+                    "createdById": this.examinatorId,
+                    "mark": result,
+                    "isFinal": true,
+                    "status": 0
                 },
                 {
                     headers: {"Authorization" : this.$session.get('jwt')}
