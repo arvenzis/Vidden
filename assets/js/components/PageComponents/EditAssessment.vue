@@ -8,13 +8,15 @@
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
                         <h6 class="group-title">{{ index }} {{ item.group }}</h6>
                         <span v-for="child in item.children" v-bind:key="child.uuid" class="child" v-bind:class="child.result">
-                            <router-link :to="`#${child.uuid}`" v-scroll-to="{ el: '#' + child.uuid }">
+                            <!-- <router-link :to="`#${child.uuid}`" v-scroll-to="{ el: '#' + child.uuid }"> -->
+                            <router-link to="#" @click.native="deepLink(index, child.uuid)" class="link">    
                                 <span class="child-title">{{ child.title }}</span>
                             </router-link>
                         </span>
                     </div>    
                 </Slide>
                 <vue-good-wizard
+                        ref="wizard"
                         :steps="steps"
                         :nextStepLabel="nextStepLabel"
                         :previousStepLabel="previousStepLabel"
@@ -54,6 +56,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <hr>
                                         </div>
                                     </section>
                                     <hr>
@@ -83,7 +86,9 @@
     import Spinner from "vue-simple-spinner";
     import { Slide } from 'vue-burger-menu'
     import Toasted from 'vue-toasted';
+    var VueScrollTo = require('vue-scrollto');
 
+    Vue.use(VueScrollTo)
     Vue.use(Popper);
     Vue.use(Toasted);
 
@@ -197,6 +202,7 @@
                     this.currentSlot = this.getCurrentSlot();
                     this.buildMenu(this.assertions);
                     this.dataReady = true;
+                    console.table(this.assertions)
                 }).catch(() => {
                     this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
             });
@@ -364,7 +370,24 @@
                         duration: 1000
                     });
                 });
-            }
+            },
+            deepLink(index, target) {
+                console.log(this.$route.path);
+                console.log(index);
+                console.log(this.currentStep)
+
+                if(index === this.currentStep) {
+                    this.$scrollTo('#' + target);
+                }
+                else {
+                    this.currentStep = index;
+                    this.currentSlot = this.getCurrentSlot();
+                    this.$refs.wizard.goTo(index);
+
+                    setTimeout(() => { this.$scrollTo('#' + target) }, 300);
+                    return true;
+                }
+            },
         },
         components: {
             'vue-good-wizard': GoodWizard,
