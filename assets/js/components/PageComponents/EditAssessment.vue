@@ -4,7 +4,7 @@
         <section class="mt-5 mb-5">
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
-                <Slide class="sidebar" noOverlay right :crossIcon="false">
+                <Sidebar class="sidebar" right :crossIcon="false">
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
                         <h6 class="group-title">{{ item.group }}</h6>
                         <span v-for="child in item.children" v-bind:key="child.uuid" class="child" v-bind:class="child.result">
@@ -13,7 +13,7 @@
                             </router-link>
                         </span>
                     </div>    
-                </Slide>
+                </Sidebar>
                 <vue-good-wizard
                         ref="wizard"
                         :steps="steps"
@@ -83,7 +83,7 @@
     import axios from 'axios';
     import Popper from 'vue-popperjs';
     import Spinner from "vue-simple-spinner";
-    import { Slide } from 'vue-burger-menu'
+    import Sidebar from '../SingleComponents/Sidebar.vue'
     import Toasted from 'vue-toasted';
     var VueScrollTo = require('vue-scrollto');
 
@@ -201,7 +201,6 @@
                     this.currentSlot = this.getCurrentSlot();
                     this.buildMenu(this.assertions);
                     this.dataReady = true;
-                    console.table(this.assertions)
                 }).catch(() => {
                     this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
             });
@@ -389,7 +388,7 @@
             'vue-good-wizard': GoodWizard,
             'popper': Popper,
             Spinner,
-            Slide
+            Sidebar
         }
     };
 </script>
