@@ -4,7 +4,6 @@
         <section class="mt-5 mb-5">
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
-                <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
                 <vue-good-wizard
                         :steps="steps"
                         :nextStepLabel="nextStepLabel"
@@ -17,42 +16,46 @@
                             <header>
                                 <h4 class="mb3">{{ this.steps[this.currentStep].label }}</h4>
                             </header>
-                            <div v-for="item in this.assertions" v-bind:key="item.assertion">
+                            <div v-for="item in this.assertions" v-bind:key="item.groupName">
                                 <section v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot">
                                     <section>
-                                        <h4 class="assessment__question d-sm-block">
-                                            {{ item.question }}
-                                            <popper trigger="hover" :options="{ placement: 'top' }">
-                                                <div class="popper">
-                                                    <span v-for="keywords in item.children" v-bind:key="keywords" class="keyword"><strong>Sleutelwoorden:</strong> {{ keywords }}</span>
-                                                </div>
-                                                <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
-                                            </popper>
-                                        </h4>
-                                        <div class="row row-eq-height">
-                                            <div v-for="option in item.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
-                                                <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
-                                                    <div class="assessment__answer-body">
-                                                        <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(item, option.id, option.grade)" v-bind:value="true" class="assessment__answer-radio" />
-                                                        <label class="form-check-label" v-bind:for="option.grade">
-                                                            <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: option.chosen === true }]">
-                                                                {{ option.result }}
-                                                            </h1>
-                                                            {{ option.description }}
-                                                        </label>
+                                        <div v-for="question in item.questions" v-bind:key="question.question">
+                                            <h4 class="assessment__question d-sm-block">
+                                                {{ question.question }}
+                                                <popper trigger="hover" :options="{ placement: 'top' }">
+                                                    <div class="popper">
+                                                        <span v-for="keywords in question.children" v-bind:key="keywords" class="keyword"><strong>Sleutelwoorden:</strong> {{ keywords }}</span>
+                                                    </div>
+                                                    <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
+                                                </popper>
+                                            </h4>
+                                            <div class="row row-eq-height">
+                                                <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
+                                                    <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
+                                                        <div class="assessment__answer-body">
+                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
+                                                            <label class="form-check-label" v-bind:for="option.grade">
+                                                                <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: option.chosen === true }]">
+                                                                    {{ option.result }}
+                                                                </h1>
+                                                                {{ option.description }}
+                                                            </label>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </section>
                                     <hr>
-                                    <!-- ToDo: opmerkingen per groep tonen -->
-<!--                                    <footer>-->
-<!--                                        <div class="form-group">-->
-<!--                                            <label for="opmerkingen">Aanvullende opmerkingen</label>-->
-<!--                                            <textarea name="opmerkingen" id="opmerkingen" v-model="comments" class="form-control" rows="3"></textarea>-->
-<!--                                        </div>-->
-<!--                                    </footer>-->
+                                    <footer>
+                                        <h4>Opmerkingen</h4>
+                                        <div v-for="comment in item.comments" v-bind:key="comment.question">
+                                            <div class="form-group">
+                                                <label for="opmerkingen">{{ comment.question }}</label>
+                                                <textarea name="opmerkingen" id="opmerkingen" v-model="comment.answer" v-on:change="saveComment(item.groupId, comment)" class="form-control" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                    </footer>
                                 </section>
                             </div>
                     </article>
@@ -68,8 +71,10 @@
     import axios from 'axios';
     import Popper from 'vue-popperjs';
     import Spinner from "vue-simple-spinner";
+    import Toasted from 'vue-toasted';
 
     Vue.use(Popper);
+    Vue.use(Toasted);
 
     export default {
         name: 'edit',
@@ -83,9 +88,9 @@
                 group: '',
                 category: '',
                 assertions: [],
-                previousStepLabel: 'Previous',
-                nextStepLabel: 'Next',
-                finalStepLabel: 'Confirm',
+                previousStepLabel: 'Vorige',
+                nextStepLabel: 'Volgende',
+                finalStepLabel: 'Bevestigen',
                 currentStep: 0,
                 currentSlot: "",
                 dataReady: false,
@@ -100,50 +105,71 @@
                 })
                 .then(response => {
                     let self = this;
-                    response.data.forEach(function(subject) {
-                        let obj = {
-                            "templateId": subject.question.templateId,
-                            "assertionName": subject.question.name,
-                            "groupName": subject.groupName,
-                            "groupId": subject.question.groupId,
-                            "categoryName": subject.name,
-                            "categoryId": subject.question.categoryId,
-                            "children": [subject.question.keywords],
-                            "question": subject.question.question,
-                            "questionId": subject.question.questionId,
-                            "answers": {
-                                "excellent": {
-                                    "id": subject.question.answers[0].id,
-                                    "description": subject.question.answers[0].text,
-                                    "grade": "excellent",
-                                    "result":  subject.question.answers[0].mark,
-                                    "chosen": subject.question.answers[0].chosen
-                                },
-                                "good": {
-                                    "id": subject.question.answers[1].id,
-                                    "description": subject.question.answers[1].text,
-                                    "grade": "good",
-                                    "result":  subject.question.answers[1].mark,
-                                    "chosen": subject.question.answers[1].chosen
-                                },
-                                "proficient": {
-                                    "id": subject.question.answers[2].id,
-                                    "description": subject.question.answers[2].text,
-                                    "grade": "proficient",
-                                    "result":  subject.question.answers[2].mark,
-                                    "chosen": subject.question.answers[2].chosen
-                                },
-                                "poor": {
-                                    "id": subject.question.answers[3].id,
-                                    "description": subject.question.answers[3].text,
-                                    "grade": "poor",
-                                    "result":  subject.question.answers[3].mark,
-                                    "chosen": subject.question.answers[3].chosen
-                                }
-                            }
-                        };
+                     response.data.groups.forEach(function(group) {
+                         let questionObj = [];
+                         let groupData = {
+                             "groupId": group.id,
+                             "groupName": group.name,
+                             "comments": {
+                                 "product": {
+                                     "id": group.comments[0].id,
+                                     "question": group.comments[0].question,
+                                     "answer": group.comments[0].answer
+                                 },
+                                 "complexity": {
+                                     "id": group.comments[1].id,
+                                     "question": group.comments[1].question,
+                                     "answer": group.comments[1].answer
+                                 }
+                             },
+                             "questions": {}
+                         };
 
-                        self.assertions.push(obj);
+                         group.questions.forEach(function(question) {
+                            let questionsData = {
+                                 "templateId": question.question.templateId,
+                                 "assertionName": question.question.name,
+                                 "categoryName": question.name,
+                                 "categoryId": question.question.categoryId,
+                                 "questionId": question.question.questionId,
+                                 "children": [question.question.keywords],
+                                 "question": question.question.question,
+                                 "answers": {
+                                     "excellent": {
+                                         "id": question.question.answers[0].id,
+                                         "description": question.question.answers[0].text,
+                                         "grade": "excellent",
+                                         "result": question.question.answers[0].mark,
+                                         "chosen": question.question.answers[0].chosen
+                                     },
+                                     "good": {
+                                         "id": question.question.answers[1].id,
+                                         "description": question.question.answers[1].text,
+                                         "grade": "good",
+                                         "result":  question.question.answers[1].mark,
+                                         "chosen": question.question.answers[1].chosen
+                                     },
+                                     "proficient": {
+                                         "id": question.question.answers[2].id,
+                                         "description": question.question.answers[2].text,
+                                         "grade": "proficient",
+                                         "result":  question.question.answers[2].mark,
+                                         "chosen": question.question.answers[2].chosen
+                                     },
+                                     "poor": {
+                                         "id": question.question.answers[3].id,
+                                         "description": question.question.answers[3].text,
+                                         "grade": "poor",
+                                         "result":  question.question.answers[3].mark,
+                                         "chosen": question.question.answers[3].chosen
+                                     }
+                                 },
+                             };
+                             questionObj.push(questionsData);
+                         });
+
+                         groupData.questions = questionObj;
+                         self.assertions.push(groupData);
                     });
 
                     let array = [];
@@ -159,7 +185,7 @@
                     this.currentSlot = this.getCurrentSlot();
                     this.dataReady = true;
                 }).catch(() => {
-                this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
+                    this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
             });
         },
         methods: {
@@ -202,7 +228,7 @@
                 }
                 return false;
             },
-            saveAnswer(questionData, answerId, grade) {
+            saveAnswer(questionData, answerId, grade, result, groupId) {
                 //Make sure the answer that was chosen before is set to false so that the user will not see an incorrectly filled answer
                 const answers = Object.values(questionData.answers);
                 for (const answer of answers) {
@@ -213,20 +239,61 @@
 
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
-                        "assessmentMetadataId": this.assessmentMetadataId,
-                        "templateId": questionData.templateId,
-                        "groupId": questionData.groupId,
-                        "categoryId": questionData.categoryId,
-                        "questionId": questionData.questionId,
-                        "answerId": answerId,
-                        "userId": this.examinatorId,
-                    },
-                    {
-                        headers: {"Authorization" : this.$session.get('jwt')}
-                    }).then(() => {}).catch(() => {
-                    this.errorMessage = "Er is iets misgegaan bij het opslaan van het antwoord.";
+                    "assessmentMetadataId": this.assessmentMetadataId,
+                    "templateId": questionData.templateId,
+                    "groupId": groupId,
+                    "categoryId": questionData.categoryId,
+                    "questionId": questionData.questionId,
+                    "answerId": answerId,
+                    "createdById": this.examinatorId,
+                    "mark": result,
+                    "isFinal": true,
+                    "status": 0
+                },
+                {
+                    headers: {"Authorization" : this.$session.get('jwt')}
+                }).then(() => {
+                    Vue.toasted.show('Het antwoord is opgeslagen', {
+                        type: 'success',
+                        duration: 1000
+                    });
+                }).catch(() => {
+                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van het antwoord', {
+                        type: 'error',
+                        duration: 1000
+                    });
                 });
             },
+            saveComment(groupId, comment) {
+                const ENDPOINTS = 'assessment/CommentsSave';
+
+                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
+                    [
+                        {
+                            "id": comment.id,
+                            "assessmentMetadataId": this.assessmentMetadataId,
+                            "groupId":groupId,
+                            "question":comment.question,
+                            "answer":comment.answer
+                        }
+                    ]
+                ,
+                {
+                    headers: {
+                        "Authorization" : this.$session.get('jwt')
+                    }
+                }).then(() => {
+                    Vue.toasted.show('De opmerking is opgeslagen', {
+                        type: 'success',
+                        duration: 1000
+                    });
+                }).catch(() => {
+                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van de opmerking', {
+                        type: 'error',
+                        duration: 1000
+                    });
+                });
+            }
         },
         components: {
             'vue-good-wizard': GoodWizard,
