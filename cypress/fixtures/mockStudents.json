@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "firstName": "Karen",
+    "lastName": "Bosch",
+    "insertion": null,
+    "emailAddress": "s1120990@student.windesheim.nl",
+    "password": "12345",
+    "token": null,
+    "accountNumber": "s1120990",
+    "role": 1,
+    "fullName": "Karen Bosch"
+  },
+  {
+    "id": 2,
+    "firstName": "Joost",
+    "lastName": "Reijmer",
+    "insertion": null,
+    "emailAddress": "s1120128@student.windesheim.nl",
+    "password": "12345",
+    "token": null,
+    "accountNumber": "s1120128",
+    "role": 1,
+    "fullName": "Joost Reijmer"
+  },
+  {
+    "id": 3,
+    "firstName": "Bernard",
+    "lastName": "Bos",
+    "insertion": null,
+    "emailAddress": "s1019744@student.windesheim.nl",
+    "password": "12345",
+    "token": null,
+    "accountNumber": "s1019744",
+    "role": 1,
+    "fullName": "Bernard Bos"
+  },
+  {
+    "id": 4,
+    "firstName": "Klaas",
+    "lastName": "Hakvoort",
+    "insertion": null,
+    "emailAddress": "s1115735@student.windesheim.nl",
+    "password": "12345",
+    "token": null,
+    "accountNumber": "s1115735",
+    "role": 1,
+    "fullName": "Klaas Hakvoort"
+  },
+  {
+    "id": 5,
+    "firstName": "Diederick",
+    "lastName": "Prins",
+    "insertion": null,
+    "emailAddress": "s1117810@student.windesheim.nl",
+    "password": "12345",
+    "token": null,
+    "accountNumber": "s1117810",
+    "role": 1,
+    "fullName": "Diederick Prins"
+  }
+]
