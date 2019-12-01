@@ -1,53 +1,39 @@
 @mixin borderAnswer($answer) {
-  border-left: 5px solid $answer;
+  border-left: 10px solid $answer;
 
   @media (min-width: 576px) {
     border-left: none;
-    border-right: 5px solid $answer
+    border-right: 10px solid $answer
   }
 }
 
 .sidebar {
-
   * {
     box-sizing: border-box;
   }
 
-  .bm {
+  &-menu {
 
-    &-burger {
-      &-button {
-        position: fixed;
-        width: 36px;
-        height: 30px;
-        left: 36px;
-        top: 36px;
-        cursor: pointer;
-      }
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 97;
+    box-sizing: border-box;
+    width: 40px;
+    transition: 0.3s;
+    padding-top: 5px;
+    background-color: $color-white;
+    overflow: hidden;
+    box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.18);
 
-      &-bars {
-        background-color: #373a47;
-      }
+    @media (min-width: 576px) {
+      width: 0;
     }
 
-    &-menu {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      z-index: 999;
-      box-sizing: border-box;
-      width: 30px;
-      transition: 0.3s;
-      padding-top: 20px;
-      background-color: $color-white;
-      overflow: hidden;
-      box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.18);
-    }
-
-    &-item-list {
+    & .item-list {
       width: 100%;
       height: 100%;
       overflow-y: auto;
@@ -63,18 +49,26 @@
       }
 
       & > * > span {
-        margin-left: 10px;
         font-weight: 700;
         color: white;
       }
     }
+  }
+
+  & .open-button {    
+    position: fixed;
+    width: 15px;
+    height: 100vh;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+    box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.18);
+    background: $color-white;
+    z-index: 99;
 
     @media (min-width: 576px) {
-    	&-menu {
-    		width: 0;
-    	}
+      right: 0;
     }
-
   }
 
   .group {
@@ -83,20 +77,17 @@
     width: 100%;
     
     &-title {
-      white-space: nowrap;
+      display: block;
+      white-space: pre-line;
       font-weight: 600;
-      padding: 10px;
+      padding: 10px 0px;
       text-transform: uppercase;
     }
 
     .child {
       display: block;
-      margin-left: 5px;
-      margin-top: 3px;
-
-      &-title {
-        margin-left: 10px;
-      }
+      margin-top: 4px;
+      white-space: pre-line;
 
       &.excellent {
         @include borderAnswer($excellent)
@@ -109,6 +100,15 @@
       }
       &.poor {
         @include borderAnswer($poor);
+      }
+
+      &-title {
+        display: block;
+        margin-left: 10px;
+
+        @media (min-width: 576px) {
+          margin-left: 0px;
+        }
       }
 
       &:hover {
