@@ -8,7 +8,6 @@
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
                         <h6 class="group-title">{{ index }} {{ item.group }}</h6>
                         <span v-for="child in item.children" v-bind:key="child.uuid" class="child" v-bind:class="child.result">
-                            <!-- <router-link :to="`#${child.uuid}`" v-scroll-to="{ el: '#' + child.uuid }"> -->
                             <router-link to="#" @click.native="deepLink(index, child.uuid)" class="link">    
                                 <span class="child-title">{{ child.title }}</span>
                             </router-link>
@@ -374,7 +373,7 @@
             deepLink(index, target) {
                 console.log(this.$route.path);
                 console.log(index);
-                console.log(this.currentStep)
+                console.log(this.currentStep);
 
                 if(index === this.currentStep) {
                     this.$scrollTo('#' + target);
@@ -384,7 +383,7 @@
                     this.currentSlot = this.getCurrentSlot();
                     this.$refs.wizard.goTo(index);
 
-                    setTimeout(() => { this.$scrollTo('#' + target) }, 300);
+                    setTimeout(() => { this.$scrollTo('#' + target) }, 200);
                     return true;
                 }
             },
