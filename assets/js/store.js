@@ -10,6 +10,7 @@ export const store = new Vuex.Store({
 	})],
 	state: {
 		loggedIn: false,
+		loggedOutSuccesfull: false,
 		currentUser: "",
 		currentUserId: null,
 		accountNumber: "",
@@ -21,6 +22,7 @@ export const store = new Vuex.Store({
 		},
 		logout: state => {
 			state.loggedIn = false,
+				state.loggedOutSuccesfull = true,
 			state.currentUser = '',
 			state.currentUserId = null,
 			state.accountNumber = ''

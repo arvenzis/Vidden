@@ -10,9 +10,7 @@ import VueFlashMessage from 'vue-flash-message';
 Vue.use(VueRouter);
 Vue.use(VueFlashMessage);
 
-const router = new VueRouter({
-    routes
-});
+const router = new VueRouter({routes});
 
 new Vue({
     router,
