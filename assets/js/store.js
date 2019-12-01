@@ -23,9 +23,9 @@ export const store = new Vuex.Store({
 		logout: state => {
 			state.loggedIn = false,
 				state.loggedOutSuccessful = true,
-			state.currentUser = '',
-			state.currentUserId = null,
-			state.accountNumber = ''
+				state.currentUser = '',
+				state.currentUserId = null,
+				state.accountNumber = ''
 		},
 		setCurrentUser: (state, payload) => {
 			state.currentUser = payload
