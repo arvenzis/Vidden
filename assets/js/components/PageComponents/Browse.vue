@@ -29,7 +29,7 @@
               <router-link :to="'/summary/' + item.id">
                 <button class="btn btn-info">Open beoordeling</button>
               </router-link>
-              {{ item.status }}
+              <div class="badge badge-pill badge-secondary">{{ item.status }}</div>
             </div>
             <div class="card-footer">
               <small class="text-muted">
@@ -64,7 +64,7 @@
               <router-link :to="'/summary/' + item.id">
                 <button class="btn btn-info">Open beoordeling</button>
               </router-link>
-              {{ item.status }}
+              <div class="badge badge-pill badge-secondary">{{ item.status }}</div>
             </div>
             <div class="card-footer">
               <small class="text-muted">

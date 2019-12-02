@@ -44,7 +44,7 @@
                   <router-link :to="'/edit/' + item.id + '/' + examinator.id ">
                     <button class="btn btn-info">Open formulier</button>
                   </router-link>
-                     {{ assessment.status }}
+                  <div class="badge badge-pill badge-secondary">{{ assessment.status }}</div>   
                 </span>
                 <span v-else>
                   <h5 class="card-title mb-3">Nog geen tweede formulier ingevuld</h5>
