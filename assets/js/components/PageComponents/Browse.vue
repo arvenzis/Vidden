@@ -11,8 +11,8 @@
       </div>
     </div>
 
-    <tabs :onSelect="showTab">
-
+    <spinner id="spinner" v-if="loading"></spinner>
+    <tabs :onSelect="showTab" v-bind:class="{ overlay : loading}">
       <tab title="Alle beoordelingen">
         <div id="assessment-listAll" v-if="showAll">
           <p class="mt-3">Pagina: {{ pageAll }} van {{ totalPagesAll }}</p>
@@ -90,6 +90,7 @@
   import axios from "axios";
   import { Tabs, Tab } from 'vue-slim-tabs'
   import Paginate from 'vuejs-paginate'
+  import Spinner from "vue-simple-spinner";
 
   Vue.component('paginate', Paginate)
 
@@ -100,6 +101,7 @@
         //algemeen
         perPage: 3,
         showAll: true,
+        loading: false,
 
         // voor lijst met alle beoordelingen
         pageAll: 1,
@@ -162,6 +164,7 @@
         return allAccountItems
       },
       getAssessments: function () {
+        this.loading = true;
         const ENDPOINTS = "Assessment/GetAssessments/";
         axios
           .get(this.$store.state.apiBaseUrl + ENDPOINTS, {
@@ -176,6 +179,7 @@
               var updatedAt = new Date(response.data[x].assessmentDate);
               items.push({
                 id: response.data[x].id,
+                status: response.data[x].status,
                 code: response.data[x].oeCode,
                 student: [
                   {
@@ -199,12 +203,15 @@
             this.itemsAccount = this.getItemsAccount(items)
             this.totalPagesAccount = this.getNumberOfPages(this.itemsAccount)
             this.itemsCurrentPageAccount = this.getPageItems(this.itemsAccount, this.pageAccount)
+            this.loading = false;
           });
+
       }
     },
     components: {
       Tabs,
       Tab,
+      Spinner
     },
     watch: {
       pageAll: function () {
