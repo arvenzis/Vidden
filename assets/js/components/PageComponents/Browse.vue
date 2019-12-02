@@ -1,88 +1,82 @@
 <template>
   <div class="container dashboard-container">
-    <div class="row">
-      <div class="col-6">
-        <router-link to="/">
-          <i class="fa fa-arrow-left"></i> Terug naar dashboard
-        </router-link>
-      </div>
-      <div class="col-6">
-        <h2>Bladeren</h2>
-      </div>
-    </div>
+    <div class="path"><router-link to="/" class="ml-2">Dashboard</router-link> &gt; Bladeren</div>
+    <article class="mb-5">
+      <spinner id="spinner" v-if="loading"></spinner>
+      <div v-else v-bind:class="{ overlay : loading}">
+        <tabs :onSelect="showTab">
+          <tab title="Alle beoordelingen">
+            <div id="assessment-listAll" v-if="showAll">
+              <p class="mt-3">Pagina: {{ pageAll }} van {{ totalPagesAll }}</p>
+              <div class="card" v-for="item in itemsCurrentPageAll" v-bind:key="item.id">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    Beoordeling
+                    <span v-for="student in item.student" v-bind:key="student.account">
+                      {{ student.naam }}
+                      ({{ student.account }})
+                    </span>
+                  </h5>
+                  <h6 class="card-subtitle mb-3 text-muted">{{ item.code }}</h6>
+                  <router-link :to="'/summary/' + item.id">
+                    <button class="btn btn-windesheim">Open beoordeling</button>
+                  </router-link>
+                  <div class="badge badge-pill badge-secondary">{{ item.status }}</div>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">
+                    Laatst bijgewerkt: {{ item.date_last_modified }} door
+                    <span v-for="examinator in item.examinator" v-bind:key="examinator.account">
+                      {{ examinator.naam }}
+                      ({{ examinator.account }})
+                    </span>
+                  </small>
+                </div>
+              </div>
+            </div>
+            <paginate v-model="pageAll" :page-count="totalPagesAll" :page-range="3" :margin-pages="2"
+                      :prev-text="'&lsaquo;'" :next-text="'&rsaquo;'" :container-class="'pagination'" :page-class="'page-item'"
+                      :first-last-button="true" :first-button-text="'&laquo;'" :last-button-text="'&raquo;'">
+            </paginate>
+          </tab>
 
-    <spinner id="spinner" v-if="loading"></spinner>
-    <tabs :onSelect="showTab" v-bind:class="{ overlay : loading}">
-      <tab title="Alle beoordelingen">
-        <div id="assessment-listAll" v-if="showAll">
-          <p class="mt-3">Pagina: {{ pageAll }} van {{ totalPagesAll }}</p>
-          <div class="card" v-for="item in itemsCurrentPageAll" v-bind:key="item.id">
-            <div class="card-body">
-              <h5 class="card-title">
-                Beoordeling
-                <span v-for="student in item.student" v-bind:key="student.account">
-                  {{ student.naam }}
-                  ({{ student.account }})
-                </span>
-              </h5>
-              <h6 class="card-subtitle mb-3 text-muted">{{ item.code }}</h6>
-              <router-link :to="'/summary/' + item.id">
-                <button class="btn btn-info">Open beoordeling</button>
-              </router-link>
-              <div class="badge badge-pill badge-secondary">{{ item.status }}</div>
+          <tab title="Mijn beoordelingen">
+            <div id="assessment-listAll" v-if="!showAll">
+              <p class="mt-3">Pagina: {{ pageAccount }} van {{ totalPagesAccount }}</p>
+              <div class="card" v-for="item in itemsCurrentPageAccount" v-bind:key="item.id">
+                <div class="card-body">
+                  <h5 class="card-title">
+                    Beoordeling
+                    <span v-for="student in item.student" v-bind:key="student.account">
+                      {{ student.naam }}
+                      ({{ student.account }})
+                    </span>
+                  </h5>
+                  <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
+                  <router-link :to="'/summary/' + item.id">
+                    <button class="btn btn-windesheim">Open beoordeling</button>
+                  </router-link>
+                  <div class="badge badge-pill badge-secondary">{{ item.status }}</div>
+                </div>
+                <div class="card-footer">
+                  <small class="text-muted">
+                    Laatst bijgewerkt: {{ item.date_last_modified }} door
+                    <span v-for="examinator in item.examinator" v-bind:key="examinator.account">
+                      {{ examinator.naam }}
+                      ({{ examinator.account }})
+                    </span>
+                  </small>
+                </div>
+              </div>
             </div>
-            <div class="card-footer">
-              <small class="text-muted">
-                Laatst bijgewerkt: {{ item.date_last_modified }} door
-                <span v-for="examinator in item.examinator" v-bind:key="examinator.account">
-                  {{ examinator.naam }}
-                  ({{ examinator.account }})
-                </span>
-              </small>
-            </div>
-          </div>
-        </div>
-        <paginate v-model="pageAll" :page-count="totalPagesAll" :page-range="3" :margin-pages="2"
-                  :prev-text="'&lsaquo;'" :next-text="'&rsaquo;'" :container-class="'pagination'" :page-class="'page-item'"
-                  :first-last-button="true" :first-button-text="'&laquo;'" :last-button-text="'&raquo;'">
-        </paginate>
-      </tab>
-
-      <tab title="Mijn beoordelingen">
-        <div id="assessment-listAll" v-if="!showAll">
-          <p class="mt-3">Pagina: {{ pageAccount }} van {{ totalPagesAccount }}</p>
-          <div class="card" v-for="item in itemsCurrentPageAccount" v-bind:key="item.id">
-            <div class="card-body">
-              <h5 class="card-title">
-                Beoordeling
-                <span v-for="student in item.student" v-bind:key="student.account">
-                  {{ student.naam }}
-                  ({{ student.account }})
-                </span>
-              </h5>
-              <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
-              <router-link :to="'/summary/' + item.id">
-                <button class="btn btn-info">Open beoordeling</button>
-              </router-link>
-              <div class="badge badge-pill badge-secondary">{{ item.status }}</div>
-            </div>
-            <div class="card-footer">
-              <small class="text-muted">
-                Laatst bijgewerkt: {{ item.date_last_modified }} door
-                <span v-for="examinator in item.examinator" v-bind:key="examinator.account">
-                  {{ examinator.naam }}
-                  ({{ examinator.account }})
-                </span>
-              </small>
-            </div>
-          </div>
-        </div>
-        <paginate v-model="pageAccount" :page-count="totalPagesAccount" :page-range="3" :margin-pages="2"
-                  :prev-text="'&lsaquo;'" :next-text="'&rsaquo;'" :container-class="'pagination'" :page-class="'page-item'"
-                  :first-last-button="true" :first-button-text="'&laquo;'" :last-button-text="'&raquo;'">
-        </paginate>
-      </tab>
-    </tabs>
+            <paginate v-model="pageAccount" :page-count="totalPagesAccount" :page-range="3" :margin-pages="2"
+                      :prev-text="'&lsaquo;'" :next-text="'&rsaquo;'" :container-class="'pagination'" :page-class="'page-item'"
+                      :first-last-button="true" :first-button-text="'&laquo;'" :last-button-text="'&raquo;'">
+            </paginate>
+          </tab>
+        </tabs>
+      </div>
+    </article>    
   </div>
 
 </template>
