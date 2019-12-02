@@ -4,7 +4,18 @@
         <section class="mt-5 mb-5">
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
+                <Sidebar class="sidebar" right :crossIcon="false">
+                    <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
+                        <h6 class="group-title">{{ item.group }}</h6>
+                        <span v-for="child in item.children" v-bind:key="child.uuid" class="child" v-bind:class="child.result">
+                            <router-link to="#" @click.native="deepLink(index, child.uuid)" class="link">    
+                                <span class="child-title">{{ child.title }}</span>
+                            </router-link>
+                        </span>
+                    </div>    
+                </Sidebar>
                 <vue-good-wizard
+                        ref="wizard"
                         :steps="steps"
                         :nextStepLabel="nextStepLabel"
                         :previousStepLabel="previousStepLabel"
@@ -20,7 +31,7 @@
                                 <section v-if="item.groupName.toLowerCase().replace(' ', '-') === currentSlot">
                                     <section>
                                         <div v-for="question in item.questions" v-bind:key="question.question">
-                                            <h4 class="assessment__question d-sm-block">
+                                            <h4 class="assessment__question d-sm-block" v-bind:id="'q' + item.groupId + question.categoryId + question.questionId">
                                                 {{ question.question }}
                                                 <popper trigger="hover" :options="{ placement: 'top' }">
                                                     <div class="popper">
@@ -44,6 +55,7 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <hr>
                                         </div>
                                     </section>
                                     <hr>
@@ -71,8 +83,11 @@
     import axios from 'axios';
     import Popper from 'vue-popperjs';
     import Spinner from "vue-simple-spinner";
+    import Sidebar from '../SingleComponents/Sidebar.vue'
     import Toasted from 'vue-toasted';
+    import VueScrollTo from 'vue-scrollto';
 
+    Vue.use(VueScrollTo)
     Vue.use(Popper);
     Vue.use(Toasted);
 
@@ -85,6 +100,7 @@
                 examinatorId: this.$route.params.examinatorId,
                 assessment: [],
                 steps: [],
+                menu: [],
                 group: '',
                 category: '',
                 assertions: [],
@@ -94,7 +110,7 @@
                 currentStep: 0,
                 currentSlot: "",
                 dataReady: false,
-                errorMessage: null
+                errorMessage: null,
             }
         },
         created () {
@@ -183,6 +199,7 @@
 
                     this.steps = array;
                     this.currentSlot = this.getCurrentSlot();
+                    this.buildMenu(this.assertions);
                     this.dataReady = true;
                 }).catch(() => {
                     this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
@@ -293,12 +310,85 @@
                         duration: 1000
                     });
                 });
-            }
+            },
+            buildMenu(array) {
+                let tmpMenu = [];
+
+                array.forEach(function (subject) {
+                    let menuObj = [];
+                    let groupId = subject.groupId;
+                    let groupData = {
+                        group: subject.groupName,
+                        children: {}
+                    }
+                    for(var i in subject.questions) {
+                        let children = {
+                            uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
+                            title: subject.questions[i].assertionName,
+                            result: 
+                                subject.questions[i].answers.excellent.chosen ? 'excellent'
+                                : subject.questions[i].answers.good.chosen ? 'good'
+                                : subject.questions[i].answers.proficient.chosen ? 'proficient'
+                                : subject.questions[i].answers.poor.chosen ? 'poor'
+                                : ''
+                        };
+                        menuObj.push(children);
+                        i++;
+                    }
+                
+                    groupData.children = menuObj;
+                    tmpMenu.push(groupData);
+                });
+
+                var output = tmpMenu.reduce(function (o, cur) {
+
+                    // Get the index of the key-value pair.
+                    var occurs = o.reduce(function (n, item, i) {
+                        return (item.group === cur.group) ? i : n;
+                    }, -1);
+
+                    // If the name is found,
+                    if (occurs >= 0) {
+
+                        // append the current children to its list of children.
+                        o[occurs].children = o[occurs].children.concat(cur.children);
+
+                        // Otherwise,
+                    } else {
+
+                        // add the current item to o.
+                        var obj = {
+                            group: cur.group,
+                            children: cur.children
+                        };
+                        o = o.concat([obj]);
+                    }
+
+                    return o;
+                }, []);
+
+                return this.menu = output;
+            },
+            deepLink(index, target) {
+                if(index === this.currentStep) {
+                    this.$scrollTo('#' + target);
+                }
+                else {
+                    this.currentStep = index;
+                    this.currentSlot = this.getCurrentSlot();
+                    this.$refs.wizard.goTo(index);
+
+                    // Give em just enough time to refresh the contents of the slot
+                    setTimeout(() => { this.$scrollTo('#' + target) }, 100);
+                    return true;
+                }
+            },
         },
         components: {
             'vue-good-wizard': GoodWizard,
             'popper': Popper,
-            Spinner
+            Spinner,
+            Sidebar
         }
     };
 </script>
