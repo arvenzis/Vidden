@@ -201,6 +201,11 @@
                     this.currentSlot = this.getCurrentSlot();
                     this.buildMenu(this.assertions);
                     this.dataReady = true;
+
+                    Vue.toasted.show('Items geladen', {
+                        type: 'success',
+                        duration: 1000
+                    });
                 }).catch(() => {
                     this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
             });
