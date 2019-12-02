@@ -84,7 +84,6 @@ export default {
       currentUser: "",
       accountNumber: "",
       errorMessage: "",
-      successMessage: "U bent uitgelogd.",
       loading: false
     };
   },
@@ -113,11 +112,11 @@ export default {
           this.loading = false;
           this.loggedInUnsuccessful = true;
           if (e == "Error: Request failed with status code 400") {
-            this.displayMessage("Uw gebruikersnaam en / of wachtwoord is onjuist", "error", 4000)
+            this.displayMessage("Je gebruikersnaam en / of wachtwoord is onjuist", "error", 4000)
           } else if (e == "Error: Request failed with status code 500") {
             this.displayMessage("Er was een probleem bij het communiceren met de server. Probeer het nog eens", "error", 4000)
           } else {
-            this.displayMessage(e + " Please try again.", "error", 2500)
+            this.displayMessage(e + " Probeer het nog eens.", "error", 2500)
           }
         });
       },
