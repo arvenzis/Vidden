@@ -85,7 +85,7 @@
     import Spinner from "vue-simple-spinner";
     import Sidebar from '../SingleComponents/Sidebar.vue'
     import Toasted from 'vue-toasted';
-    var VueScrollTo = require('vue-scrollto');
+    import VueScrollTo from 'vue-scrollto';
 
     Vue.use(VueScrollTo)
     Vue.use(Popper);
