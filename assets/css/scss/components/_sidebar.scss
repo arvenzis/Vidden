@@ -1,0 +1,130 @@
+@mixin borderAnswer($answer) {
+  border-left: 10px solid $answer;
+
+  @media (min-width: 576px) {
+    border-left: none;
+    border-right: 10px solid $answer
+  }
+}
+
+.sidebar {
+  * {
+    box-sizing: border-box;
+  }
+
+  &-menu {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: 97;
+    box-sizing: border-box;
+    width: 40px;
+    transition: 0.3s;
+    padding-top: 5px;
+    background-color: $color-white;
+    overflow: hidden;
+    box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.18);
+
+    @media (min-width: 576px) {
+      width: 0;
+    }
+
+    & .item-list {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin: 0;
+      font-size: inherit;
+      color: $color-windesheim-black;
+
+      & > * {
+        display: flex;
+        text-decoration: none;
+        padding: 0.7em;
+      }
+
+      & > * > span {
+        font-weight: 700;
+        color: white;
+      }
+    }
+  }
+
+  & .open-button {    
+    position: fixed;
+    width: 25px;
+    height: 100vh;
+    top: 0px;
+    right: 0px;
+    cursor: pointer;
+    box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.18);
+    background: $color-white;
+    z-index: 99;
+    padding: 7px;
+
+    @media (min-width: 576px) {
+      right: 0;
+    }
+  }
+
+  .group {
+    position: relative;
+    display: block;
+    width: 100%;
+    
+    &-title {
+      display: block;
+      white-space: pre-line;
+      font-weight: 600;
+      padding: 10px 0px;
+      text-transform: uppercase;
+    }
+
+    .child {
+      display: block;
+      margin-top: 4px;
+      white-space: pre-line;
+
+      &.excellent {
+        @include borderAnswer($excellent)
+      }
+      &.good {
+        @include borderAnswer($good);
+      }
+      &.proficient {
+        @include borderAnswer($proficient);
+      }
+      &.poor {
+        @include borderAnswer($poor);
+      }
+
+      &-title {
+        display: block;
+        margin-left: 10px;
+
+        @media (min-width: 576px) {
+          margin-left: 0px;
+        }
+      }
+
+      &:hover {
+        margin-left: 10px;
+        transition: 0.2s;
+      }
+    }
+  }
+
+  @keyframes slide-animation {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+}

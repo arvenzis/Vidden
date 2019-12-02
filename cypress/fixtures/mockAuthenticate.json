@@ -1,0 +1,12 @@
+{
+  "id": 6,
+  "firstName": "Arjen",
+  "lastName": "Korevaar",
+  "insertion": null,
+  "emailAddress": "BV0111996@windesheim.nl",
+  "password": null,
+  "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjYiLCJyb2xlIjoiVGVhY2hlciIsImVtYWlsIjoiQlYwMTExOTk2QHdpbmRlc2hlaW0ubmwiLCJuYmYiOjE1NzQ4NTc2ODgsImV4cCI6MTU3NDk0NDA4OCwiaWF0IjoxNTc0ODU3Njg4fQ.x-GYS7PsLZYNjnL8Zfq-PZCuwbt1NvEwucbEDGlCOfg",
+  "accountNumber": "BV0111996",
+  "role": 0,
+  "fullName": "Arjen Korevaar"
+}

@@ -1,0 +1,39 @@
+{
+  "id": 13,
+  "templateId": 1,
+  "studentId": 3,
+  "student": {
+    "id": 3,
+    "firstName": "Bernard",
+    "lastName": "Bos",
+    "insertion": null,
+    "emailAddress": "s1019744@student.windesheim.nl",
+    "password": "12345",
+    "token": null,
+    "accountNumber": "s1019744",
+    "role": 1,
+    "fullName": "Bernard Bos"
+  },
+  "firstTeacherId": 6,
+  "firstTeacher": {
+    "id": 6,
+    "firstName": "Arjen",
+    "lastName": "Korevaar",
+    "insertion": null,
+    "emailAddress": "BV0111996@windesheim.nl",
+    "password": "Welkom01!",
+    "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjYiLCJyb2xlIjoiVGVhY2hlciIsImVtYWlsIjoiQlYwMTExOTk2QHdpbmRlc2hlaW0ubmwiLCJuYmYiOjE1NzQ4NjI0NjgsImV4cCI6MTU3NDk0ODg2OCwiaWF0IjoxNTc0ODYyNDY4fQ.5byn_vQFgpBkGULBs5jlC1b4764zEgd_1oO9aLzqUUM",
+    "accountNumber": "BV0111996",
+    "role": 0,
+    "fullName": "Arjen Korevaar"
+  },
+  "secondTeacherId": null,
+  "secondTeacher": null,
+  "oeCode": "ICT.AFSTSE.D19",
+  "assessmentDate": "2019-11-21T00:00:00",
+  "startDatePeriod": "2019-11-01T00:00:00",
+  "endDatePeriod": "2019-11-02T00:00:00",
+  "companyId": 1,
+  "finalMark": 0,
+  "status": 0
+}
