@@ -29,6 +29,7 @@
               <router-link :to="'/summary/' + item.id">
                 <button class="btn btn-info">Open beoordeling</button>
               </router-link>
+              {{ item.status }}
             </div>
             <div class="card-footer">
               <small class="text-muted">
@@ -63,6 +64,7 @@
               <router-link :to="'/summary/' + item.id">
                 <button class="btn btn-info">Open beoordeling</button>
               </router-link>
+              {{ item.status }}
             </div>
             <div class="card-footer">
               <small class="text-muted">
@@ -179,7 +181,7 @@
               var updatedAt = new Date(response.data[x].assessmentDate);
               items.push({
                 id: response.data[x].id,
-                status: response.data[x].status,
+                status: this.$parent.getStatusText(response.data[x].status),
                 code: response.data[x].oeCode,
                 student: [
                   {

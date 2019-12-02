@@ -20,6 +20,26 @@ new Vue({
     emailaddress: "",
     password: "",
   },
+  methods: {
+    getStatusText: function (status) {
+      switch (status) {
+        case 0:
+          return 'New';
+          break;
+        case 1:
+          return 'In Progress';
+          break;
+        case 2:
+          return 'Completed';
+          break;
+        case 3:
+          return 'Final';
+          break;
+        default:
+          return 'New';
+      }
+    }
+  },
   created: function () {
     if (Vue.prototype.$session.exists()) {
       this.$store.state.loggedIn = true;
