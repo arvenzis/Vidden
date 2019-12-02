@@ -19,10 +19,10 @@
     <div id="app" v-cloak>
 
         <div id="header-section">
-            <div class="col-1">
+            <div class="col-1 offset-md-2">
                 <div class="logo-container"></div>
             </div>
-            <div class="col-11" v-if="this.$store.state.loggedIn">
+            <div class="col-xs-11 col-sm-10 col-md-10" v-if="this.$store.state.loggedIn">
                 <current-user></current-user>
             </div>
             <div class="header"></div>
