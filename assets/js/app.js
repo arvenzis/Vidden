@@ -13,22 +13,42 @@ Vue.use(VueFlashMessage);
 const router = new VueRouter({routes});
 
 new Vue({
-    router,
-    store,
-    el: '#app',
-    data: {
-        emailaddress: "",
-        password: "",
-    },
-    created: function () {
-        if (Vue.prototype.$session.exists()) {
-            this.$store.state.loggedIn = true;
-        }
-    },
-    components: {
-        AppLogin,
-        CurrentUser
-    },
+  router,
+  store,
+  el: '#app',
+  data: {
+    emailaddress: "",
+    password: "",
+  },
+  methods: {
+    getStatusText: function (status) {
+      switch (status) {
+        case 0:
+          return 'New';
+          break;
+        case 1:
+          return 'In Progress';
+          break;
+        case 2:
+          return 'Completed';
+          break;
+        case 3:
+          return 'Final';
+          break;
+        default:
+          return 'New';
+      }
+    }
+  },
+  created: function () {
+    if (Vue.prototype.$session.exists()) {
+      this.$store.state.loggedIn = true;
+    }
+  },
+  components: {
+    AppLogin,
+    CurrentUser
+  },
 });
 
 Vue.component('current-user', {
