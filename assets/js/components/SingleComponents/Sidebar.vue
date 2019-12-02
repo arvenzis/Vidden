@@ -1,7 +1,12 @@
 <template>
     <div>
-        <div ref="sidebarButton" class="open-button" @click="openMenu" :class="{ hidden: !burgerIcon }">
-            <i class="fa fa-chevron-circle-left"></i>
+        <div ref="sidebarButton" class="open-button" @click="openCloseMenu" :class="{ hidden: !burgerIcon }">
+            <span v-if="!this.isSideBarOpen">
+              <i class="fa fa-chevron-circle-left"></i>
+            </span>
+            <span v-else>
+              <i class="fa fa-chevron-circle-right"></i>
+            </span> 
         </div>
 
         <div ref="sideNav" class="sidebar-menu">
@@ -63,6 +68,14 @@
         }
       },
       methods: {
+        openCloseMenu() {
+          if(this.isSideBarOpen) {
+            this.closeMenu();
+          } else {
+            this.openMenu();
+          }
+        },
+        
         openMenu() {
           this.$emit('openMenu');
           this.isSideBarOpen = true;
