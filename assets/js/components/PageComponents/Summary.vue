@@ -137,11 +137,6 @@
           });
 
           this.items = tmpItems;
-          Vue.toasted.show('Items geladen', {
-            type: 'success',
-            duration: 1000
-          });
-
           this.loading = false;
         })
         .catch(error => {
