@@ -1,7 +1,7 @@
 <template>
   <div class="container dashboard-container">
     <flash-message class="flashpool"></flash-message>
-    <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
+    <div class="path"><router-link to="/browse" class="ml-2">Bladeren</router-link> &gt; Samenvatting beoordeling</div>
     <article class="mt-5 mb-5">
       <spinner id="spinner" v-if="loading"></spinner>
       <div v-else v-for="item in this.items" :key="item.id">
@@ -18,15 +18,15 @@
             <td>Status</td>
             <td>{{ item.status }}</td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td>Template</td>
             <td>{{ item.templateName }}</td>
-          </tr>
+          </tr> -->
           <tr>
             <td>Resultaat</td>
             <td>
               <span v-if="item.finalmark == 0">
-                Nog geen resultaat berekend
+                Nog geen eindresultaat berekend
               </span>
               <span v-else>
                 {{ item.finalMark }}
@@ -42,14 +42,14 @@
                 <span v-if="examinator.id != null">
                   <h5 class="card-title mb-3">Formulier door {{ examinator.name }} ({{ examinator.account }})</h5>
                   <router-link :to="'/edit/' + item.id + '/' + examinator.id ">
-                    <button class="btn btn-info">Open formulier</button>
+                    <button class="btn btn-windesheim">Open formulier</button>
                   </router-link>
                   <div class="badge badge-pill badge-secondary">{{ assessment.status }}</div>   
                 </span>
                 <span v-else>
                   <h5 class="card-title mb-3">Nog geen tweede formulier ingevuld</h5>
                   <router-link :to="'/edit/' + item.id + '/' + currentUserId ">
-                    <button class="btn btn-info">Start een nieuw formulier</button>
+                    <button class="btn btn-windesheim">Start een nieuw formulier</button>
                   </router-link>
                 </span>
               </div>              
