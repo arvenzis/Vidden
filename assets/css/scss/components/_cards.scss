@@ -9,16 +9,6 @@
         > h6.card-subtitle {
             margin-bottom: 15px;
         }
-
-        > a > button.btn.btn-info {
-            border-radius: 1px;
-            background-color: $color-windesheim-green;
-            border-color: darken($color-windesheim-green, 10%);
-
-            &:hover {
-                background-color: darken($color-windesheim-green, 10%);
-            }
-        }
     }
 
     &-footer {
