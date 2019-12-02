@@ -57,7 +57,7 @@
 
   & .open-button {    
     position: fixed;
-    width: 15px;
+    width: 25px;
     height: 100vh;
     top: 0px;
     right: 0px;
@@ -65,6 +65,7 @@
     box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.18);
     background: $color-white;
     z-index: 99;
+    padding: 7px;
 
     @media (min-width: 576px) {
       right: 0;
