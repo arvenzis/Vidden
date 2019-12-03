@@ -1,10 +1,15 @@
 .btn-windesheim {
   background-color: $color-windesheim-green;
   border: $color-windesheim-green 1px solid;
+  border-radius: 1px;
+  color: $color-white;
+  display: block;
 
   &:hover{
     background-color: $color-windesheim-green-hover;
     border: $color-windesheim-green-hover 1px solid;
+    color: $color-white;
+    text-decoration: none;
   }
 
   @include media-breakpoint-down(sm) {

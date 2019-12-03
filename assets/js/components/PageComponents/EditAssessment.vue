@@ -1,6 +1,6 @@
 <template>
     <div class="container dashboard-container">
-        <router-link to="/browse" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar overzicht</router-link>
+        <div class="path"><router-link :to="'/summary/' + this.assessmentMetadataId" class="ml-2">Samenvatting beoordeling</router-link> &gt; Beoordeling bewerken</div>
         <section class="mt-5 mb-5">
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
@@ -203,6 +203,11 @@
                     this.currentSlot = this.getCurrentSlot();
                     this.buildMenu(this.assertions);
                     this.dataReady = true;
+
+                    Vue.toasted.show('Items geladen', {
+                        type: 'success',
+                        duration: 1000
+                    });
                 }).catch(() => {
                     this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
             });
@@ -274,12 +279,12 @@
                 }).then(() => {
                     Vue.toasted.show('Het antwoord is opgeslagen', {
                         type: 'success',
-                        duration: 1000
+                        duration: 1500
                     });
                 }).catch(() => {
                     Vue.toasted.show('Er is iets misgegaan bij het opslaan van het antwoord', {
                         type: 'error',
-                        duration: 1000
+                        duration: 1500
                     });
                 });
             },

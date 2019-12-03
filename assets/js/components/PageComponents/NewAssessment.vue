@@ -1,6 +1,6 @@
 <template>
     <div class="container dashboard-container">
-        <router-link to="/" class="ml-2"><i class="fa fa-arrow-left"></i> Terug naar dashboard</router-link>
+        <div class="path"><router-link to="/" class="ml-2">Dashboard</router-link> &gt; Nieuwe beoordeling</div>
         <div class="mt-5 mb-5">
             <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
             <vue-good-wizard

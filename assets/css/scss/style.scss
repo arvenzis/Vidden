@@ -38,11 +38,18 @@ a {
 
 a:hover {
   color: $color-windesheim-light-blue-hover;
+  text-decoration: none;
+}
+
+.path {
+  & a:hover {
+    text-decoration: underline;
+  }
 }
 
 #buttonLoader {
   display: -webkit-flex; 
-  -webkit-align-items: center;
+  align-items: center;
 }
 
 #spinner {
