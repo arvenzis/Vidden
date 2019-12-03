@@ -3,7 +3,6 @@
     <div class="row justify-content-center">
       <div class="col-md-7">
         <div class="card">
-          <div class="card-header">{{ $t("login.title") }}</div>
           <spinner id="spinner" v-if="loading"></spinner>
           <div class="card-body" v-bind:class="{ overlay : loading}">
             <h5 class="card-title mb-3">Inloggen</h5>
@@ -113,11 +112,11 @@ export default {
           this.loading = false;
           this.loggedInUnsuccessful = true;
           if (e == "Error: Request failed with status code 400") {
-            this.displayMessage("Je gebruikersnaam en / of wachtwoord is onjuist", "error", 4000)
+            this.displayMessage(this.$t('error.login_400'), "error", 4000)
           } else if (e == "Error: Request failed with status code 500") {
-            this.displayMessage("Er was een probleem bij het communiceren met de server. Probeer het nog eens", "error", 4000)
+            this.displayMessage(this.$t('error.login_500'), "error", 4000)
           } else {
-            this.displayMessage(e + " Probeer het nog eens.", "error", 2500)
+            this.displayMessage(this.$t('error.login_else', { error: e } ), "error", 2500)
           }
         });
       },

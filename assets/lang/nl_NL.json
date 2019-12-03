@@ -70,7 +70,10 @@
         "new_assessment_validation_second_step": "Niet alle gegevens zijn ingevuld.",
         "new_assessment_validation_date": "De begindatum mag niet na de einddatum liggen.",
         "answer_save": "Antwoord niet opgeslagen",
-        "comment_save": "Opmerking niet opgeslagen"
+        "comment_save": "Opmerking niet opgeslagen",
+        "login_400": "Je gebruikersnaam en / of wachtwoord is onjuist",
+        "login_500": "Er was een probleem bij het communiceren met de server. Probeer het nog eens",
+        "login_else": "{error} Probeer het nog eens."
     },
     "success": {
         "loading": "Items geladen",
