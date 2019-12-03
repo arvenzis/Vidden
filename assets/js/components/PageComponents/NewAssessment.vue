@@ -1,6 +1,6 @@
 <template>
     <div class="container dashboard-container">
-        <div class="path"><router-link to="/" class="ml-2">Dashboard</router-link> &gt; Nieuwe beoordeling</div>
+        <div class="path"><router-link to="/" class="ml-2">{{ $t('common.dashboard') }}</router-link> &gt; {{ $t('common.new') }}</div>
         <div class="mt-5 mb-5">
             <div v-if="this.errorMessage" class="alert alert-danger">{{ this.errorMessage }}</div>
             <vue-good-wizard
@@ -10,60 +10,60 @@
                     :finalStepLabel="finalStepLabel"
                     :onNext="nextClicked">
                 <div slot="step-1">
-                    <h2 class="mb-3">Nieuwe beoordeling</h2>
+                    <h2 class="mb-3">{{ $t('assessment.new') }}</h2>
                     <div class="form-group">
-                        <label>Soort beoordeling</label>
+                        <label>{{ $t('assessment.template') }}</label>
                         <model-select :options="templateOptions"
                                       v-model="template"
-                                      placeholder="Selecteer een template">
+                                      :placeholder="$t('assessment.template_select')">
                         </model-select>
                     </div>
                     <div class="form-group">
-                        <label>Student</label>
+                        <label>{{ $t('assessment.student') }}</label>
                         <model-select :options="studentOptions"
                                       v-model="student"
-                                      placeholder="Selecteer een student">
+                                      :placeholder="$t('assessment.student_select')">
                         </model-select>
                     </div>
                     <div class="form-group">
-                        <label>Onderwijseenheid</label>
+                        <label>{{ $t('assessment.course') }}</label>
                         <model-select :options="oecodeOptions"
                                       v-model="oecode"
-                                      placeholder="Selecteer de onderwijseenheid">
+                                      :placeholder="$t('assessment.course_select')">
                         </model-select>
                     </div>
                 </div>
                 <div slot="step-2">
-                    <h2 class="mb-3">Details</h2>
+                    <h2 class="mb-3">{{ $t('assessment.details') }}</h2>
                     <div class="form-group">
-                        <label class="font-weight-bold">Periode</label>
+                        <label class="font-weight-bold">{{ $t('assessment.period') }}</label>
                         <div class="row">
                             <div class="col-6">
-                                <label for="start-date">Van</label>
+                                <label for="start-date">{{ $t('assessment.period_from') }}</label>
                                 <input type="date" name="start-date" id="start-date" class="form-control" v-model="startDate" />
                             </div>
                             <div class="col-6">
-                                <label for="end-date">Tot</label>
+                                <label for="end-date">{{ $t('assessment.period_to') }}</label>
                                 <input type="date" name="end-date" id="end-date" class="form-control" v-model="endDate" />
                             </div>
                         </div>
                     </div>
-                    <strong>Stage/afstudeerbedrijf</strong>
+                    <strong>{{ $t('assessment.company') }}</strong>
                     <div class="form-group">
-                        <label for="company">Naam</label>
+                        <label for="company">{{ $t('assessment.company_name') }}</label>
                         <input type="text" name="company" id="company" placeholder="Windesheim" v-model="company" class="form-control" />
                     </div>
                     <div class="form-group">
-                        <label for="address">Adres</label>
+                        <label for="address">{{ $t('assessment.company_address') }}</label>
                         <input type="text" name="address" id="address" placeholder="Campus 2, 8017 CA Zwolle" v-model="address" class="form-control" />
                     </div>
                 </div>
                 <div slot="step-3">
-                    <h2 class="mb-3">Overzicht beoordeling</h2>
+                    <h2 class="mb-3">{{ $t('assessment.summary') }}</h2>
                     <strong>{{this.student.text}}</strong><br>
                     <span>{{ this.startDate }} - {{ this.endDate }}</span><br><br>
 
-                    <strong>Stage/afstudeerbedrijf</strong><br>
+                    <strong>{{ $t('assessment.company') }}</strong><br>
                     <span>{{ this.company }}</span><br>
                     <span>{{ this.address }}</span><br>
                 </div>
@@ -104,20 +104,20 @@
                 endDate: '',
                 company: '',
                 address: '',
-                previousStepLabel: 'Vorige',
-                nextStepLabel: 'Volgende',
-                finalStepLabel: 'Bevestigen',
+                previousStepLabel: this.$t('assessment.previous'),
+                nextStepLabel: this.$t('assessment.next'),
+                finalStepLabel: this.$t('assessment.confirm'),
                 steps: [
                     {
-                        label: 'Algemene informatie',
+                        label: this.$t('assessment.general'),
                         slot: 'step-1'
                     },
                     {
-                        label: 'Details',
+                        label: this.$t('assessment.details'),
                         slot: 'step-2'
                     },
                     {
-                        label: 'Overzicht',
+                        label: this.$t('assessment.overview'),
                         slot: 'step-3'
                     },
                 ],
@@ -186,7 +186,7 @@
                             let assessmentmetadataid = response.data;
 
                             // Set a success message
-                            this.flash('Je beoordeling is succesvol aangemaakt', 'success', {
+                            this.flash(this.$t('success.new_assessment_save'), 'success', {
                                 timeout: 2000
                             });
 
@@ -195,7 +195,7 @@
                             this.$router.push({ path: `/summary/${assessmentmetadataid}` })
                         }
                     }).catch(() => {
-                        Vue.toasted.show('Er is iets misgegaan bij het opslaan van de beoordeling.', {
+                        Vue.toasted.show(this.$t('error.new_assessment_save'), {
                         type: 'error',
                         duration: 2000
                     });
@@ -212,7 +212,7 @@
             },
             validateStepOne() {
                 if (this.student.text === "" || this.template.text === "" || this.oecode.text === "") {
-                    this.errorMessage = "Je hebt geen template, student of onderwijseenheid gekozen.";
+                    this.errorMessage = this.$t('error.new_assessment_validation_first_step');
                     return false;
                 }
 
@@ -221,12 +221,12 @@
             },
             validateStepTwo() {
                 if (this.startDate === "" || this.endDate === "" || this.company === "" || this.address === "") {
-                    this.errorMessage = "Niet alle gegevens zijn ingevuld.";
+                    this.errorMessage = this.$t('error.new_assessment_validation_second_step');
                     return false;
                 }
 
                 if (new Date(this.startDate) > new Date(this.endDate)) {
-                    this.errorMessage = "De begindatum mag niet na de einddatum liggen.";
+                    this.errorMessage = this.$t('error.new_assessment_validation_date');
                     return false;
                 }
 

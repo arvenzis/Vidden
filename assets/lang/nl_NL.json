@@ -1,0 +1,87 @@
+{
+    "common": {
+        "assessment": "Beoordeling | Beoordelingen",
+        "form": "Invulling | Invullingen",
+        "dashboard": "Dashboard",
+        "new": "Nieuw",
+        "edit": "Bewerken",
+        "browse": "Bladeren",
+        "settings": "Instellingen",
+        "logout": "Uitloggen",
+        "summary": "Samenvatting beoordeling"
+    },
+    "login": {
+        "title": "Inloggen",
+        "username": "Email",
+        "password": "Wachtwoord",
+        "password_forgot": "Wachtwoord vergeten"
+    },
+    "browse": {
+        "title": "Bladeren",
+        "all": "Alle beoordelingen",
+        "my": "Mijn beoordelingen",
+        "pages": "Pagina {page} van {total}",
+        "last_updated": "Laatst bijgewerkt {date} door {user}",
+        "open": "Open beoordeling"
+    },
+    "summary": {
+        "course": "Vak",
+        "status": "Status",
+        "template": "Sjabloon",
+        "result": "Resultaat",
+        "no_final_result": "Er is nog geen eindresultaat berekend",
+        "no_form_result": "Er is nog geen resultaat berekend",
+        "form_by": "Invulling door {user}",
+        "open": "Open invulling",
+        "form_empty": "Er is nog geen invulling geopend",
+        "start": "Start een nieuwe invulling"
+    },
+    "assessment": {
+        "new": "Nieuwe beoordeling",
+        "template": "Sjabloon",
+        "template_select": "Selecteer een sjabloon",
+        "student": "Student",
+        "student_select": "Selecteer een student",
+        "course": "Vak",
+        "course_select": "Selecteer het vak",
+        "period": "Periode",
+        "period_from": "Van",
+        "period_to": "Tot",
+        "company": "Stage/afstudeerbedrijf",
+        "company_name": "Naam",
+        "company_address": "Adres",
+        "summary": "Overzicht beoordeling",
+        "previous": "Vorige",
+        "next": "Volgende",
+        "confirm": "Bevestigen",
+        "general": "Algemene informatie",
+        "details": "Details",
+        "overview": "Overzicht",
+        "keywords": "Sleutelwoorden",
+        "comments": "Opmerkingen"
+    },
+    "settings": {
+
+    },
+    "error": {
+        "loading": "Er was een probleem met het laden van de gegevens. Herlaad de pagina om het opnieuw te proberen.",
+        "new_assessment_save": "Er is iets misgegaan bij het opslaan van de beoordeling.",
+        "new_assessment_validation_first_step": "Je hebt geen template, student of onderwijseenheid gekozen.",
+        "new_assessment_validation_second_step": "Niet alle gegevens zijn ingevuld.",
+        "new_assessment_validation_date": "De begindatum mag niet na de einddatum liggen.",
+        "answer_save": "Antwoord niet opgeslagen",
+        "comment_save": "Opmerking niet opgeslagen"
+    },
+    "success": {
+        "loading": "Items geladen",
+        "new_assessment_save": "Je beoordeling is succesvol aangemaakt",
+        "answer_save": "Antwoord opgeslagen",
+        "comment_save": "Opmerking opgeslagen"
+    },
+    "status": {
+        "new": "Nieuw",
+        "in_progress": "In behandeling",
+        "completed": "Afgerond",
+        "final": "Definitief"
+    }
+}

@@ -1,6 +1,6 @@
 <template>
     <div class="container dashboard-container">
-        <div class="path"><router-link :to="'/summary/' + this.assessmentMetadataId" class="ml-2">Samenvatting beoordeling</router-link> &gt; Beoordeling bewerken</div>
+        <div class="path"><router-link :to="'/summary/' + this.assessmentMetadataId" class="ml-2">{{ $t('common.summary') }}</router-link> &gt; {{ $t('common.edit') }}</div>
         <section class="mt-5 mb-5">
             <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
             <div v-else>
@@ -37,7 +37,7 @@
                                                 {{ question.question }}
                                                 <popper trigger="hover" :options="{ placement: 'top' }">
                                                     <div class="popper">
-                                                        <span v-for="keywords in question.children" v-bind:key="keywords" class="keyword"><strong>Sleutelwoorden:</strong> {{ keywords }}</span>
+                                                        <span v-for="keywords in question.children" v-bind:key="keywords" class="keyword"><strong>{{ $t('assessment.keywords') }}:</strong> {{ keywords }}</span>
                                                     </div>
                                                     <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
                                                 </popper>
@@ -62,7 +62,7 @@
                                     </section>
                                     <hr>
                                     <footer>
-                                        <h4>Opmerkingen</h4>
+                                        <h4>{{ $t('assessment.comments') }}</h4>
                                         <div v-for="comment in item.comments" v-bind:key="comment.question">
                                             <div class="form-group">
                                                 <label for="opmerkingen">{{ comment.question }}</label>
@@ -106,9 +106,9 @@
                 group: '',
                 category: '',
                 assertions: [],
-                previousStepLabel: 'Vorige',
-                nextStepLabel: 'Volgende',
-                finalStepLabel: 'Bevestigen',
+                previousStepLabel: this.$t('assessment.previous'),
+                nextStepLabel: this.$t('assessment.next'),
+                finalStepLabel: this.$t('assessment.confirm'),
                 currentStep: 0,
                 currentSlot: "",
                 dataReady: false,
@@ -209,7 +209,7 @@
                         duration: 1000
                     });
                 }).catch(() => {
-                    this.errorMessage = "Er is iets misgegaan bij het ophalen van de vragen.";
+                    this.errorMessage = this.$t('error.loading');
             });
         },
         methods: {
@@ -277,12 +277,12 @@
                 {
                     headers: {"Authorization" : this.$session.get('jwt')}
                 }).then(() => {
-                    Vue.toasted.show('Het antwoord is opgeslagen', {
+                    Vue.toasted.show(this.$t('success.answer_save'), {
                         type: 'success',
                         duration: 1500
                     });
                 }).catch(() => {
-                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van het antwoord', {
+                    Vue.toasted.show(this.$t('error.answer_save'), {
                         type: 'error',
                         duration: 1500
                     });
@@ -307,12 +307,12 @@
                         "Authorization" : this.$session.get('jwt')
                     }
                 }).then(() => {
-                    Vue.toasted.show('De opmerking is opgeslagen', {
+                    Vue.toasted.show(this.$t('success.comment_save'), {
                         type: 'success',
                         duration: 1000
                     });
                 }).catch(() => {
-                    Vue.toasted.show('Er is iets misgegaan bij het opslaan van de opmerking', {
+                    Vue.toasted.show(this.$t('error.comment_save'), {
                         type: 'error',
                         duration: 1000
                     });

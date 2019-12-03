@@ -6,16 +6,26 @@ import { store } from './store';
 import AppLogin from './components/AppLogin.vue'
 import CurrentUser from './components/CurrentUser.vue'
 import VueFlashMessage from 'vue-flash-message';
+import VueI18n from 'vue-i18n';
 
+Vue.use(VueI18n);
 Vue.use(VueRouter);
 Vue.use(VueFlashMessage);
 
 const router = new VueRouter({routes});
 
+const i18n = new VueI18n({
+  locale: 'nl_NL',
+  messages: {
+    'nl_NL': require('../lang/nl_NL.json')
+  }
+})
+
 new Vue({
   router,
   store,
   el: '#app',
+  i18n,
   data: {
     emailaddress: "",
     password: "",
@@ -24,19 +34,19 @@ new Vue({
     getStatusText: function (status) {
       switch (status) {
         case 0:
-          return 'New';
+          return 'new';
           break;
         case 1:
-          return 'In Progress';
+          return 'in_progress';
           break;
         case 2:
-          return 'Completed';
+          return 'completed';
           break;
         case 3:
-          return 'Final';
+          return 'final';
           break;
         default:
-          return 'New';
+          return 'new';
       }
     }
   },

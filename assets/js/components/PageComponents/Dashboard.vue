@@ -5,7 +5,7 @@
         <router-link to="/new-assessment" class="action">
           <div class="action__container">
             <i class="fa fa-3x fa-plus"></i>
-            <br />NIEUW
+            <br />{{ $t("common.new") }}
           </div>
         </router-link>
       </div>
@@ -13,7 +13,7 @@
         <router-link to="/browse" class="action">
           <div class="action__container">
             <i class="fa fa-3x fa-archive"></i>
-            <br />BLADEREN
+            <br />{{ $t("common.browse") }}
           </div>
         </router-link>
       </div>
@@ -23,14 +23,14 @@
         <router-link to="/settings" class="action">
           <div class="action__container">
             <i class="fa fa-3x fa-cog"></i>
-            <br />INSTELLINGEN
+            <br />{{ $t("common.settings") }}
           </div>
         </router-link>
       </div>
       <div class="col flex-column padding-right-0">
         <div class="action__container" @click="this.logout">
           <i class="fa fa-3x fa-sign-out"></i>
-          <br />UITLOGGEN
+          <br />{{ $t("common.logout") }}
         </div>
       </div>
     </div>

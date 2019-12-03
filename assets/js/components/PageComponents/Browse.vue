@@ -1,34 +1,32 @@
 <template>
   <div class="container dashboard-container">
-    <div class="path"><router-link to="/" class="ml-2">Dashboard</router-link> &gt; Bladeren</div>
+    <div class="path"><router-link to="/" class="ml-2">{{ $t('common.dashboard') }}</router-link> &gt; {{ $t('common.browse') }}</div>
     <article class="mb-5">
       <spinner id="spinner" v-if="loading"></spinner>
       <div v-else v-bind:class="{ overlay : loading}">
         <tabs :onSelect="showTab">
-          <tab title="Alle beoordelingen">
+          <tab v-bind:title="$t('browse.all')">
             <div id="assessment-listAll" v-if="showAll">
-              <p class="mt-3">Pagina: {{ pageAll }} van {{ totalPagesAll }}</p>
+              <p class="mt-2">{{ $t('browse.pages', { page: pageAll, total: totalPagesAll }) }}</p>
               <div class="card" v-for="item in itemsCurrentPageAll" v-bind:key="item.id">
                 <div class="card-body">
                   <h5 class="card-title">
-                    Beoordeling
+                    {{ $tc('common.assessment', 1) }}
                     <span v-for="student in item.student" v-bind:key="student.account">
                       {{ student.naam }}
                       ({{ student.account }})
                     </span>
                   </h5>
-                  <h6 class="card-subtitle mb-3 text-muted">{{ item.code }}</h6>
+                  <h6 class="card-subtitle mb-4 text-muted">{{ item.code }}</h6>
                   <router-link :to="'/summary/' + item.id">
-                    <button class="btn btn-windesheim">Open beoordeling</button>
+                    <button class="btn btn-windesheim">{{ $t('browse.open') }}</button>
                   </router-link>
-                  <div class="badge badge-pill badge-secondary">{{ item.status }}</div>
+                  <div class="badge badge-pill badge-secondary">{{ $t('status.' + item.status) }}</div>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">
-                    Laatst bijgewerkt: {{ item.date_last_modified }} door
                     <span v-for="examinator in item.examinator" v-bind:key="examinator.account">
-                      {{ examinator.naam }}
-                      ({{ examinator.account }})
+                      {{ $t('browse.last_updated', { date: item.date_last_modified, user: examinator.naam + ' (' + examinator.account + ')' }) }}
                     </span>
                   </small>
                 </div>
@@ -40,30 +38,28 @@
             </paginate>
           </tab>
 
-          <tab title="Mijn beoordelingen">
+          <tab v-bind:title="$t('browse.my')">
             <div id="assessment-listAll" v-if="!showAll">
-              <p class="mt-3">Pagina: {{ pageAccount }} van {{ totalPagesAccount }}</p>
+              <p class="mt-2">{{ $t('browse.pages', { page: pageAccount, total: totalPagesAccount }) }}</p>
               <div class="card" v-for="item in itemsCurrentPageAccount" v-bind:key="item.id">
                 <div class="card-body">
                   <h5 class="card-title">
-                    Beoordeling
+                    {{ $tc('common.assessment', 1) }}
                     <span v-for="student in item.student" v-bind:key="student.account">
                       {{ student.naam }}
                       ({{ student.account }})
                     </span>
                   </h5>
-                  <h6 class="card-subtitle mb-2 text-muted">{{ item.code }}</h6>
+                  <h6 class="card-subtitle mb-4 text-muted">{{ item.code }}</h6>
                   <router-link :to="'/summary/' + item.id">
-                    <button class="btn btn-windesheim">Open beoordeling</button>
+                    <button class="btn btn-windesheim">{{ $t('browse.open') }}</button>
                   </router-link>
-                  <div class="badge badge-pill badge-secondary">{{ item.status }}</div>
+                  <div class="badge badge-pill badge-secondary">{{ $t('status.' + item.status) }}</div>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">
-                    Laatst bijgewerkt: {{ item.date_last_modified }} door
                     <span v-for="examinator in item.examinator" v-bind:key="examinator.account">
-                      {{ examinator.naam }}
-                      ({{ examinator.account }})
+                      {{ $t('browse.last_updated', { date: item.date_last_modified, user: examinator.naam + ' (' + examinator.account + ')' }) }}
                     </span>
                   </small>
                 </div>

@@ -1,8 +1,8 @@
 <template>
     <div class="container dashboard-container">
-        <div class="path"><router-link to="/" class="ml-2">Dashboard</router-link> &gt; Instellingen</div>
+        <div class="path"><router-link to="/" class="ml-2">{{ $t('common.dashboard') }}</router-link> &gt; {{ $t('common.settings') }}</div>
         <div class="mt-5 mb-5">
-            <h1>Instellingen</h1>
+            <h1>{{ $t('settings') }}</h1>
         </div>
     </div>
 </template>

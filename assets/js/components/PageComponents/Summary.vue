@@ -1,7 +1,7 @@
 <template>
   <div class="container dashboard-container">
     <flash-message class="flashpool"></flash-message>
-    <div class="path"><router-link to="/browse" class="ml-2">Bladeren</router-link> &gt; Samenvatting beoordeling</div>
+    <div class="path"><router-link to="/browse" class="ml-2">{{ $t('common.browse') }}</router-link> &gt; {{ $t('common.summary') }}</div>
     <article class="mt-5 mb-5">
       <spinner id="spinner" v-if="loading"></spinner>
       <div v-else v-for="item in this.items" :key="item.id">
@@ -11,22 +11,22 @@
         </h3>
         <table class="table">
           <tr>
-            <td>Vak</td>
+            <td>{{ $t('summary.course') }}</td>
             <td>{{ item.oeCode }}</td>
           </tr>
           <tr>
-            <td>Status</td>
-            <td>{{ item.status }}</td>
+            <td>{{ $t('summary.status') }}</td>
+            <td>{{ $t('status.' + item.status) }}</td>
           </tr>
-          <!-- <tr>
-            <td>Template</td>
-            <td>{{ item.templateName }}</td>
-          </tr> -->
           <tr>
-            <td>Resultaat</td>
+            <td>{{ $t('summary.template') }}</td>
+            <td>{{ item.templateName }}</td>
+          </tr>
+          <tr>
+            <td>{{ $t('summary.result') }}</td>
             <td>
               <span v-if="item.finalmark == 0">
-                Nog geen eindresultaat berekend
+                {{ $t('summary.no_final_result') }}
               </span>
               <span v-else>
                 {{ item.finalMark }}
@@ -40,16 +40,16 @@
             <div class="card col-12 col-md-5" v-for="assessment in item.assessments" :key="assessment.id">
               <div class="card-body" v-for="examinator in assessment.examinator" :key="examinator.account">
                 <span v-if="examinator.id != null">
-                  <h5 class="card-title mb-3">Formulier door {{ examinator.name }} ({{ examinator.account }})</h5>
+                  <h5 class="card-title mb-3">{{ $t('summary.form_by', { user: examinator.name + ' (' + examinator.account + ')' }) }}</h5>
                   <router-link :to="'/edit/' + item.id + '/' + examinator.id ">
-                    <button class="btn btn-windesheim">Open formulier</button>
+                    <button class="btn btn-windesheim">{{ $t('summary.open') }}</button>
                   </router-link>
-                  <div class="badge badge-pill badge-secondary">{{ assessment.status }}</div>   
+                  <div class="badge badge-pill badge-secondary">{{ $t('status.' + assessment.status) }}</div>   
                 </span>
                 <span v-else>
-                  <h5 class="card-title mb-3">Nog geen tweede formulier ingevuld</h5>
+                  <h5 class="card-title mb-3">{{ $t('summary.form_empty')}}</h5>
                   <router-link :to="'/edit/' + item.id + '/' + currentUserId ">
-                    <button class="btn btn-windesheim">Start een nieuw formulier</button>
+                    <button class="btn btn-windesheim">{{ $t('summary.start')}}</button>
                   </router-link>
                 </span>
               </div>              
@@ -137,12 +137,17 @@
           });
 
           this.items = tmpItems;
+          Vue.toasted.show(this.$t('success.loading'), {
+            type: 'success',
+            duration: 1000
+          });
+
           this.loading = false;
         })
         .catch(error => {
           this.loading = false;
 
-          Vue.toasted.show('Er was een probleem met het laden van de gegevens. Herlaad de pagina om het opnieuw te proberen.', {
+          Vue.toasted.show(this.$t('error.loading'), {
             type: 'error',
             duration: 2000
           });

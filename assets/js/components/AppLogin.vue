@@ -3,6 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-md-7">
         <div class="card">
+          <div class="card-header">{{ $t("login.title") }}</div>
           <spinner id="spinner" v-if="loading"></spinner>
           <div class="card-body" v-bind:class="{ overlay : loading}">
             <h5 class="card-title mb-3">Inloggen</h5>
@@ -12,7 +13,7 @@
                 <label
                   for="emailaddress"
                   class="col-md-4 col-form-label text-md-right"
-                >Gebruikersnaam</label>
+                >{{ $t("login.username") }}</label>
 
                 <div class="col-md-6">
                   <input
@@ -30,7 +31,7 @@
               </div>
 
               <div class="form-group row">
-                <label for="password" class="col-md-4 col-form-label text-md-right">Wachtwoord</label>
+                <label for="password" class="col-md-4 col-form-label text-md-right">{{ $t("login.password") }}</label>
 
                 <div class="col-md-6">
                   <input
@@ -48,13 +49,13 @@
 
               <div class="form-group row">
                 <div class="col-md-6 offset-md-4">
-                  <a href="https://password.windesheim.nl">Wachtwoord vergeten?</a>
+                  <a href="https://password.windesheim.nl">{{ $t("login.password_forgot") }}?</a>
                 </div>
               </div>
 
               <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4" id="buttonLoader">
-                  <button type="submit" class="btn btn-windesheim">Inloggen</button>
+                  <button type="submit" class="btn btn-primary btn-windesheim">{{ $t("login.login") }}</button>
                 </div>
               </div>
             </form>
