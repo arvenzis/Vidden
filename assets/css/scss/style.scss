@@ -79,3 +79,25 @@ a:hover {
 .no-link {
   color: $color-windesheim-black;
 }
+
+.badge.badge-pill.badge {
+  &.new {
+    background-color: $color-windesheim-yellow;
+    color: $color-black;
+  }
+
+  &.in_progress {
+    background-color: #b99445;
+    color: $color-white;
+  }
+
+  &.completed {
+    background-color: #b9a845;
+    color: white;
+  }
+
+  &.final {
+    background-color: #9cb945;
+    color: white;
+  }
+}
