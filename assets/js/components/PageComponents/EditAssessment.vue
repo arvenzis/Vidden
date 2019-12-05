@@ -89,7 +89,7 @@
     import Toasted from 'vue-toasted';
     import VueScrollTo from 'vue-scrollto';
 
-    Vue.use(VueScrollTo)
+    Vue.use(VueScrollTo);
     Vue.use(Popper);
     Vue.use(Toasted);
 
@@ -318,8 +318,19 @@
                     });
                 });
             },
-            buildMenu(array) {
+            buildMenu: function (array) {
                 let tmpMenu = [];
+                const ENDPOINTS = 'assessment/GetSummary';
+
+                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')},
+                    body: {
+                        "AssessmentMetadataId": 1,
+                        "GroupId": 1,
+                        "UserId": 6
+                    } })
+                    .then(response => {
+                        console.log(response);
+                    });
 
                 array.forEach(function (subject) {
                     let menuObj = [];
@@ -334,17 +345,17 @@
                         let children = {
                             uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
                             title: subject.questions[i].assertionName,
-                            result: 
+                            result:
                                 subject.questions[i].answers.excellent.chosen ? 'excellent'
-                                : subject.questions[i].answers.good.chosen ? 'good'
-                                : subject.questions[i].answers.proficient.chosen ? 'proficient'
-                                : subject.questions[i].answers.poor.chosen ? 'poor'
-                                : ''
+                                    : subject.questions[i].answers.good.chosen ? 'good'
+                                    : subject.questions[i].answers.proficient.chosen ? 'proficient'
+                                        : subject.questions[i].answers.poor.chosen ? 'poor'
+                                            : ''
                         };
                         menuObj.push(children);
                         i++;
                     }
-                
+
                     groupData.children = menuObj;
                     tmpMenu.push(groupData);
                 });
