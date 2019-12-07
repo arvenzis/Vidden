@@ -7,7 +7,10 @@
                 <Sidebar class="sidebar" right :crossIcon="false">
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
                         <h6 class="group-title">
-                            <router-link to="#" @click.native="deepLinkHeading(item.groupId - 1)" class="no-link">{{ item.group }} {{ item.groupMark }}</router-link>
+                            <router-link to="#" @click.native="deepLinkHeading(item.groupId - 1)" class="no-link">{{ item.groupName }}</router-link>
+                            <span class="badge badge-pill" v-bind:class="{ 'badge-success': item.groupMark >= 5.5, 'badge-danger': item.groupMark <= 5.5 }" v-if="item.groupMark !== 0">
+                                {{ item.groupMark }}
+                            </span>
                         </h6>
                         <span v-for="child in item.children" v-bind:key="child.uuid" class="child" v-bind:class="child.result">
                             <router-link to="#" @click.native="deepLink(index, child.uuid)" class="link">    
@@ -339,7 +342,7 @@
                         let menuObj = [];
                         let groupId = subject.groupId;
                         let groupData = {
-                            group: subject.groupName,
+                            groupName: subject.groupName,
                             groupId: subject.groupId,
                             groupMark: response.data.mark,
                             children: {}
@@ -373,11 +376,28 @@
                 // Not the best way to do this, but since the promises are called dynamically (based on an array that variates in length), I don't know how else to do this
                 Promise.all([timeOut(1000)])
                     .then(() => {
+                        function mapOrder (array, order, key) {
+                            array.sort( function (a, b) {
+                                var A = a[key], B = b[key];
+
+                                if (order.indexOf(A) > order.indexOf(B)) {
+                                    return 1;
+                                } else {
+                                    return -1;
+                                }
+
+                            });
+
+                            return array;
+                        }
+
+                        self.tmpMenu = mapOrder(self.tmpMenu, array.map(g => g.groupId), 'groupId'); //Sort the sidebar menu again, as the promise(s) screwed over the order because of its "asyncness"
+
                         var output = self.tmpMenu.reduce(function (o, cur) {
 
                             // Get the index of the key-value pair.
                             var occurs = o.reduce(function (n, item, i) {
-                                return (item.group === cur.group) ? i : n;
+                                return (item.groupName === cur.groupName) ? i : n;
                             }, -1);
 
                             // If the name is found,
@@ -391,7 +411,7 @@
 
                                 // add the current item to o.
                                 var obj = {
-                                    group: cur.group,
+                                    groupName: cur.groupName,
                                     groupId: cur.groupId,
                                     groupMark: cur.groupMark,
                                     children: cur.children
