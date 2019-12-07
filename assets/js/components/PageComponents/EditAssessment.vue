@@ -7,7 +7,7 @@
                 <Sidebar class="sidebar" right :crossIcon="false">
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
                         <h6 class="group-title">
-                            <router-link to="#" @click.native="deepLinkHeading(item.groupId - 1)" class="no-link">{{ item.group }}</router-link>
+                            <router-link to="#" @click.native="deepLinkHeading(item.groupId - 1)" class="no-link">{{ item.group }} {{ item.groupMark }}</router-link>
                         </h6>
                         <span v-for="child in item.children" v-bind:key="child.uuid" class="child" v-bind:class="child.result">
                             <router-link to="#" @click.native="deepLink(index, child.uuid)" class="link">    
@@ -113,6 +113,7 @@
                 currentSlot: "",
                 dataReady: false,
                 errorMessage: null,
+                tmpMenu: []
             }
         },
         created () {
@@ -319,76 +320,90 @@
                 });
             },
             buildMenu: function (array) {
-                let tmpMenu = [];
-                const ENDPOINTS = 'assessment/GetSummary';
+                let self = this;
 
-                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')},
-                    body: {
-                        "AssessmentMetadataId": 1,
-                        "GroupId": 1,
-                        "UserId": 6
-                    } })
-                    .then(response => {
-                        console.log(response);
-                    });
+                const timeOut = (t) => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            resolve(`Completed in ${t}`)
+                        }, t)
+                    })
+                };
 
                 array.forEach(function (subject) {
-                    let menuObj = [];
-                    let groupId = subject.groupId;
-                    let groupData = {
-                        group: subject.groupName,
-                        groupId: subject.groupId,
-                        children: {}
-                    };
+                    let endpoints = `assessment/GetSummary/${self.assessmentMetadataId}/${subject.groupId}/${self.examinatorId}`;
 
-                    for (let i in subject.questions) {
-                        let children = {
-                            uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
-                            title: subject.questions[i].assertionName,
-                            result:
-                                subject.questions[i].answers.excellent.chosen ? 'excellent'
-                                    : subject.questions[i].answers.good.chosen ? 'good'
-                                    : subject.questions[i].answers.proficient.chosen ? 'proficient'
-                                        : subject.questions[i].answers.poor.chosen ? 'poor'
-                                            : ''
+                    axios.get(self.$store.state.apiBaseUrl + endpoints, {
+                        headers: {"Authorization" : self.$session.get('jwt')},
+                    }).then(response => {
+                        let menuObj = [];
+                        let groupId = subject.groupId;
+                        let groupData = {
+                            group: subject.groupName,
+                            groupId: subject.groupId,
+                            groupMark: response.data.mark,
+                            children: {}
                         };
-                        menuObj.push(children);
-                        i++;
-                    }
 
-                    groupData.children = menuObj;
-                    tmpMenu.push(groupData);
+                        for (let i in subject.questions) {
+                            let children = {
+                                uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
+                                title: subject.questions[i].assertionName,
+                                result:
+                                    subject.questions[i].answers.excellent.chosen ? 'excellent'
+                                        : subject.questions[i].answers.good.chosen ? 'good'
+                                        : subject.questions[i].answers.proficient.chosen ? 'proficient'
+                                            : subject.questions[i].answers.poor.chosen ? 'poor'
+                                                : ''
+                            };
+                            menuObj.push(children);
+                            i++;
+                        }
+
+                        groupData.children = menuObj;
+                        self.tmpMenu.push(groupData);
+                    }).catch(() => {
+                        Vue.toasted.show(self.$t('error.get_summary'), {
+                            type: 'error',
+                            duration: 1500
+                        });
+                    });
                 });
 
-                var output = tmpMenu.reduce(function (o, cur) {
+                // Not the best way to do this, but since the promises are called dynamically (based on an array that variates in length), I don't know how else to do this
+                Promise.all([timeOut(1000)])
+                    .then(() => {
+                        var output = self.tmpMenu.reduce(function (o, cur) {
 
-                    // Get the index of the key-value pair.
-                    var occurs = o.reduce(function (n, item, i) {
-                        return (item.group === cur.group) ? i : n;
-                    }, -1);
+                            // Get the index of the key-value pair.
+                            var occurs = o.reduce(function (n, item, i) {
+                                return (item.group === cur.group) ? i : n;
+                            }, -1);
 
-                    // If the name is found,
-                    if (occurs >= 0) {
+                            // If the name is found,
+                            if (occurs >= 0) {
 
-                        // append the current children to its list of children.
-                        o[occurs].children = o[occurs].children.concat(cur.children);
+                                // append the current children to its list of children.
+                                o[occurs].children = o[occurs].children.concat(cur.children);
 
-                        // Otherwise,
-                    } else {
+                                // Otherwise,
+                            } else {
 
-                        // add the current item to o.
-                        var obj = {
-                            group: cur.group,
-                            groupId: cur.groupId,
-                            children: cur.children
-                        };
-                        o = o.concat([obj]);
-                    }
+                                // add the current item to o.
+                                var obj = {
+                                    group: cur.group,
+                                    groupId: cur.groupId,
+                                    groupMark: cur.groupMark,
+                                    children: cur.children
+                                };
+                                o = o.concat([obj]);
+                            }
 
-                    return o;
-                }, []);
+                            return o;
+                        }, []);
 
-                return this.menu = output;
+                        return this.menu = output;
+                    });
             },
             deepLink(index, target) {
                 if(index === this.currentStep) {
