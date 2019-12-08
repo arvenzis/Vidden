@@ -7,7 +7,7 @@
                 <Sidebar class="sidebar" right :crossIcon="false">
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
                         <h6 class="group-title">
-                            <router-link to="#" @click.native="deepLinkHeading(item.groupId - 1)" class="no-link">{{ item.groupName }}</router-link>
+                            <router-link to="#" @click.native="deepLinkHeading(index)" class="no-link">{{ item.groupName }}</router-link>
                             <span class="badge badge-pill" v-bind:class="{ 'badge-success': item.groupMark >= 5.5, 'badge-danger': item.groupMark <= 5.5 }" v-if="item.groupMark !== 0">
                                 {{ item.groupMark }}
                             </span>
@@ -208,7 +208,7 @@
                     this.buildMenu(this.assertions);
                     this.dataReady = true;
 
-                    Vue.toasted.show('Items geladen', {
+                    Vue.toasted.show(this.$t('success.loading'), {
                         type: 'success',
                         duration: 1000
                     });
@@ -442,6 +442,7 @@
             deepLinkHeading(index) {
                 this.currentStep = index;
                 this.$refs.wizard.goTo(index);
+                this.scrollToTop();
 
                 return true;
             }
