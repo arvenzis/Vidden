@@ -79,3 +79,16 @@ a:hover {
 .no-link {
   color: $color-windesheim-black;
 }
+
+.password_field {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+
+  &__toggle {
+    position: absolute;
+    top: 6px;
+    right: 20px;
+    transition: right 0.2s;
+  }
+}

@@ -32,7 +32,7 @@
               <div class="form-group row">
                 <label for="password" class="col-md-4 col-form-label text-md-right">{{ $t("login.password") }}</label>
 
-                <div class="col-md-6">
+                <div class="col-md-6 password_field">
                   <input
                     id="password"
                     v-model="password"
@@ -42,7 +42,9 @@
                     required
                     :disabled="loading"
                     autocomplete="current-password"
+                    ref="passwordInput"
                   />
+                  <span class="d-none d-md-block password_field__toggle" @mouseover="showPassword" @mouseleave="hidePassword" ref="passwordToggle">🙈</span>
                 </div>
               </div>
 
@@ -125,6 +127,14 @@ export default {
           type: type,
           duration: duration
         });
+      },
+      showPassword() {
+        this.$refs.passwordToggle.innerHTML = "🐵";
+        this.$refs.passwordInput.setAttribute('type','text');
+      },
+      hidePassword() {
+        this.$refs.passwordToggle.innerHTML = "🙈";
+        this.$refs.passwordInput.setAttribute('type','password');
       }
     },
     components: {
