@@ -7,7 +7,10 @@
                 <Sidebar class="sidebar" right :crossIcon="false">
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
                         <h6 class="group-title">
-                            <router-link to="#" @click.native="deepLinkHeading(item.groupId - 1)" class="no-link">{{ item.group }}</router-link>
+                            <router-link to="#" @click.native="deepLinkHeading(index)" class="no-link">{{ item.groupName }}</router-link>
+                            <span class="badge badge-pill" v-bind:class="{ 'badge-success': item.groupMark >= 5.5, 'badge-danger': item.groupMark <= 5.5 }" v-if="item.groupMark !== 0">
+                                {{ item.groupMark }}
+                            </span>
                         </h6>
                         <span v-for="child in item.children" v-bind:key="child.uuid" class="child" v-bind:class="child.result">
                             <router-link to="#" @click.native="deepLink(index, child.uuid)" class="link">    
@@ -89,7 +92,7 @@
     import Toasted from 'vue-toasted';
     import VueScrollTo from 'vue-scrollto';
 
-    Vue.use(VueScrollTo)
+    Vue.use(VueScrollTo);
     Vue.use(Popper);
     Vue.use(Toasted);
 
@@ -113,6 +116,7 @@
                 currentSlot: "",
                 dataReady: false,
                 errorMessage: null,
+                tmpMenu: []
             }
         },
         created () {
@@ -204,7 +208,7 @@
                     this.buildMenu(this.assertions);
                     this.dataReady = true;
 
-                    Vue.toasted.show('Items geladen', {
+                    Vue.toasted.show(this.$t('success.loading'), {
                         type: 'success',
                         duration: 1000
                     });
@@ -318,66 +322,108 @@
                     });
                 });
             },
-            buildMenu(array) {
-                let tmpMenu = [];
+            buildMenu: function (array) {
+                let self = this;
+
+                const timeOut = (t) => {
+                    return new Promise((resolve, reject) => {
+                        setTimeout(() => {
+                            resolve(`Completed in ${t}`)
+                        }, t)
+                    })
+                };
 
                 array.forEach(function (subject) {
-                    let menuObj = [];
-                    let groupId = subject.groupId;
-                    let groupData = {
-                        group: subject.groupName,
-                        groupId: subject.groupId,
-                        children: {}
-                    };
+                    let endpoints = `assessment/GetSummary/${self.assessmentMetadataId}/${subject.groupId}/${self.examinatorId}`;
 
-                    for (let i in subject.questions) {
-                        let children = {
-                            uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
-                            title: subject.questions[i].assertionName,
-                            result: 
-                                subject.questions[i].answers.excellent.chosen ? 'excellent'
-                                : subject.questions[i].answers.good.chosen ? 'good'
-                                : subject.questions[i].answers.proficient.chosen ? 'proficient'
-                                : subject.questions[i].answers.poor.chosen ? 'poor'
-                                : ''
+                    axios.get(self.$store.state.apiBaseUrl + endpoints, {
+                        headers: {"Authorization" : self.$session.get('jwt')},
+                    }).then(response => {
+                        let menuObj = [];
+                        let groupId = subject.groupId;
+                        let groupData = {
+                            groupName: subject.groupName,
+                            groupId: subject.groupId,
+                            groupMark: response.data.mark,
+                            children: {}
                         };
-                        menuObj.push(children);
-                        i++;
-                    }
-                
-                    groupData.children = menuObj;
-                    tmpMenu.push(groupData);
+
+                        for (let i in subject.questions) {
+                            let children = {
+                                uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
+                                title: subject.questions[i].assertionName,
+                                result:
+                                    subject.questions[i].answers.excellent.chosen ? 'excellent'
+                                        : subject.questions[i].answers.good.chosen ? 'good'
+                                        : subject.questions[i].answers.proficient.chosen ? 'proficient'
+                                            : subject.questions[i].answers.poor.chosen ? 'poor'
+                                                : ''
+                            };
+                            menuObj.push(children);
+                            i++;
+                        }
+
+                        groupData.children = menuObj;
+                        self.tmpMenu.push(groupData);
+                    }).catch(() => {
+                        Vue.toasted.show(self.$t('error.get_summary'), {
+                            type: 'error',
+                            duration: 1500
+                        });
+                    });
                 });
 
-                var output = tmpMenu.reduce(function (o, cur) {
+                // Not the best way to do this, but since the promises are called dynamically (based on an array that variates in length), I don't know how else to do this
+                Promise.all([timeOut(1000)])
+                    .then(() => {
+                        function mapOrder (array, order, key) {
+                            array.sort( function (a, b) {
+                                var A = a[key], B = b[key];
 
-                    // Get the index of the key-value pair.
-                    var occurs = o.reduce(function (n, item, i) {
-                        return (item.group === cur.group) ? i : n;
-                    }, -1);
+                                if (order.indexOf(A) > order.indexOf(B)) {
+                                    return 1;
+                                } else {
+                                    return -1;
+                                }
 
-                    // If the name is found,
-                    if (occurs >= 0) {
+                            });
 
-                        // append the current children to its list of children.
-                        o[occurs].children = o[occurs].children.concat(cur.children);
+                            return array;
+                        }
 
-                        // Otherwise,
-                    } else {
+                        self.tmpMenu = mapOrder(self.tmpMenu, array.map(g => g.groupId), 'groupId'); //Sort the sidebar menu again, as the promise(s) screwed over the order because of its "asyncness"
 
-                        // add the current item to o.
-                        var obj = {
-                            group: cur.group,
-                            groupId: cur.groupId,
-                            children: cur.children
-                        };
-                        o = o.concat([obj]);
-                    }
+                        var output = self.tmpMenu.reduce(function (o, cur) {
 
-                    return o;
-                }, []);
+                            // Get the index of the key-value pair.
+                            var occurs = o.reduce(function (n, item, i) {
+                                return (item.groupName === cur.groupName) ? i : n;
+                            }, -1);
 
-                return this.menu = output;
+                            // If the name is found,
+                            if (occurs >= 0) {
+
+                                // append the current children to its list of children.
+                                o[occurs].children = o[occurs].children.concat(cur.children);
+
+                                // Otherwise,
+                            } else {
+
+                                // add the current item to o.
+                                var obj = {
+                                    groupName: cur.groupName,
+                                    groupId: cur.groupId,
+                                    groupMark: cur.groupMark,
+                                    children: cur.children
+                                };
+                                o = o.concat([obj]);
+                            }
+
+                            return o;
+                        }, []);
+
+                        return this.menu = output;
+                    });
             },
             deepLink(index, target) {
                 if(index === this.currentStep) {
@@ -396,6 +442,7 @@
             deepLinkHeading(index) {
                 this.currentStep = index;
                 this.$refs.wizard.goTo(index);
+                this.scrollToTop();
 
                 return true;
             }

@@ -1,10 +1,5 @@
 @mixin borderAnswer($answer) {
   border-left: 10px solid $answer;
-
-  @media (min-width: 576px) {
-    border-left: none;
-    border-right: 10px solid $answer
-  }
 }
 
 .sidebar {
@@ -29,7 +24,7 @@
     overflow: hidden;
     box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.18);
 
-    @media (min-width: 576px) {
+    @include media-breakpoint-up(sm) {
       width: 0;
     }
 
@@ -67,7 +62,7 @@
     z-index: 99;
     padding: 7px;
 
-    @media (min-width: 576px) {
+    @include media-breakpoint-up(sm) {
       right: 0;
     }
   }
@@ -106,10 +101,6 @@
       &-title {
         display: block;
         margin-left: 10px;
-
-        @media (min-width: 576px) {
-          margin-left: 0px;
-        }
       }
 
       &:hover {
