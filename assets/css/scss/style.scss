@@ -79,3 +79,38 @@ a:hover {
 .no-link {
   color: $color-windesheim-black;
 }
+
+.password_field {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+
+  &__toggle {
+    position: absolute;
+    top: 6px;
+    right: 20px;
+    transition: right 0.2s;
+  }
+}
+
+.badge.badge-pill.badge {
+  &.new {
+    background-color: $color-windesheim-yellow;
+    color: $color-black;
+  }
+
+  &.in_progress {
+    background-color: #b99445;
+    color: $color-white;
+  }
+
+  &.completed {
+    background-color: #b9a845;
+    color: white;
+  }
+
+  &.final {
+    background-color: #9cb945;
+    color: white;
+  }
+}

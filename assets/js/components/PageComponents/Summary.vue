@@ -44,7 +44,8 @@
                   <router-link :to="'/edit/' + item.id + '/' + examinator.id ">
                     <button class="btn btn-windesheim">{{ $t('summary.open') }}</button>
                   </router-link>
-                  <div class="badge badge-pill badge-secondary">{{ $t('status.' + assessment.status) }}</div>   
+                  <div class="badge badge-pill badge" v-bind:class="assessment.status">{{ $t('status.' + assessment.status) }}</div>
+                  
                 </span>
                 <span v-else>
                   <h5 class="card-title mb-3">{{ $t('summary.form_empty')}}</h5>
