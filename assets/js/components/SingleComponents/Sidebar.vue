@@ -79,6 +79,8 @@
         openMenu() {
           this.$emit('openMenu');
           this.isSideBarOpen = true;
+          this.$refs.sideNav.classList.add("sidebar-menu--open");
+          this.$refs.sidebarButton.classList.add("open-button--open");
 
           if (this.right) {
             this.$refs.sideNav.style.left = 'auto';
@@ -95,6 +97,8 @@
           this.$emit('closeMenu');
           this.isSideBarOpen = false;
           this.$refs.sideNav.style.width = '0px';
+          this.$refs.sideNav.classList.remove("sidebar-menu--open");
+          this.$refs.sidebarButton.classList.remove("open-button--open");
         },
 
         closeMenuOnEsc(e) {

@@ -1,4 +1,10 @@
 .wizard {
+  width: 90% !important;
+
+  @include media-breakpoint-up(sm) {
+    width: 100% !important;
+  }
+
   &__body {
     border-radius: 2px !important;
     margin-left: 0 !important;

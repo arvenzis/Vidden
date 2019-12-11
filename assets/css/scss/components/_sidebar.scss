@@ -17,12 +17,17 @@
     flex-direction: column;
     z-index: 97;
     box-sizing: border-box;
-    width: 40px;
+    width: 0;
     transition: 0.3s;
     padding-top: 5px;
     background-color: $color-white;
     overflow: hidden;
     box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.18);
+    opacity: 0.9;
+
+    &--open {
+
+    }
 
     @include media-breakpoint-up(sm) {
       width: 0;
@@ -52,7 +57,7 @@
 
   & .open-button {    
     position: fixed;
-    width: 25px;
+    width: 40px;
     height: 100vh;
     top: 0px;
     right: 0px;
@@ -64,6 +69,10 @@
 
     @include media-breakpoint-up(sm) {
       right: 0;
+    }
+
+    &--open {
+      box-shadow: none;
     }
   }
 
