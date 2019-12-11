@@ -116,7 +116,8 @@
                 currentSlot: "",
                 dataReady: false,
                 errorMessage: null,
-                tmpMenu: []
+                tmpMenu: [],
+                prefersNumbers: true
             }
         },
         created () {
@@ -161,28 +162,28 @@
                                          "id": question.question.answers[0].id,
                                          "description": question.question.answers[0].text,
                                          "grade": "excellent",
-                                         "result": question.question.answers[0].mark,
+                                         "result": (self.prefersNumbers ? question.question.answers[0].mark : self.$t('assessment.excellent')),
                                          "chosen": question.question.answers[0].chosen
                                      },
                                      "good": {
                                          "id": question.question.answers[1].id,
                                          "description": question.question.answers[1].text,
                                          "grade": "good",
-                                         "result":  question.question.answers[1].mark,
+                                         "result": (self.prefersNumbers ? question.question.answers[1].mark : self.$t('assessment.good')),
                                          "chosen": question.question.answers[1].chosen
                                      },
                                      "proficient": {
                                          "id": question.question.answers[2].id,
                                          "description": question.question.answers[2].text,
                                          "grade": "proficient",
-                                         "result":  question.question.answers[2].mark,
+                                         "result": (self.prefersNumbers ? question.question.answers[2].mark : self.$t('assessment.proficient')),
                                          "chosen": question.question.answers[2].chosen
                                      },
                                      "poor": {
                                          "id": question.question.answers[3].id,
                                          "description": question.question.answers[3].text,
                                          "grade": "poor",
-                                         "result":  question.question.answers[3].mark,
+                                         "result": (self.prefersNumbers ? question.question.answers[3].mark : self.$t('assessment.poor')),
                                          "chosen": question.question.answers[3].chosen
                                      }
                                  },

@@ -58,7 +58,11 @@
         "details": "Details",
         "overview": "Overzicht",
         "keywords": "Sleutelwoorden",
-        "comments": "Opmerkingen"
+        "comments": "Opmerkingen",
+        "excellent": "Perfect",
+        "good": "Goed",
+        "proficient": "Voldoende",
+        "poor": "Onvoldoende"
     },
     "settings": {
         "give_assessment_in": "Beoordeling geven in...",
