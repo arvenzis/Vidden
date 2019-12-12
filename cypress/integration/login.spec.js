@@ -43,9 +43,9 @@ describe('Login page', function () {
     cy.loginFalse('test@test.com', 'password123')
 
     // we should have visible errors now
-    cy.get('label.alert.alert-danger.col-md-6.offset-md-4')
+    cy.get('.toasted-container.top-right')
       .should('be.visible')
-      .and('contain', 'Uw gebruikersnaam en / of wachtwoord is onjuist.')
+      .and('contain', 'Je gebruikersnaam en / of wachtwoord is onjuist')
   })
 
   it('Should redirect to /dashboard on success', function () {

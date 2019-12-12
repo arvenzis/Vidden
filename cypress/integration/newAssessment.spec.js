@@ -12,11 +12,11 @@ describe('New assessment page', function () {
 
   it('Should show a warning if meta-data is missing', function () {
     // new assessment: fill in first page
-    cy.get('.form-group').contains('Soort beoordeling').parent().click()
+    cy.get('.form-group').contains('Selecteer een sjabloon').parent().click()
     cy.get('.form-group').contains('HBOICT Beoordelingsformulier stage- en afstudeerproject 2019-2020').click()
     cy.get('.form-group').contains('Student').parent().click()
     cy.get('.form-group').contains('Joost Reijmer').click()
-    cy.get('.form-group').contains('Onderwijseenheid').parent().click()
+    cy.get('.form-group').contains('Selecteer het vak').parent().click()
     cy.get('.form-group').contains('Afstudeeropdracht Software Engineering 2019-2020').click()
     cy.get('a').contains('Volgende').click()
 

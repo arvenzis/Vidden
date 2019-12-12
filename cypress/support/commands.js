@@ -27,21 +27,21 @@ Cypress.Commands.add('logout', () => {
     status: 200
   })
   cy.route('GET', 'Logout', '').as('logout')
-  cy.get('div').contains('UITLOGGEN').click()
+  cy.get('div').contains('Uitloggen').click()
   cy.wait('@logout')
 })
 
 Cypress.Commands.add('openBrowsePage', () => {
   cy.server()
   cy.route('GET', 'GetAssessments', 'fixture:mockAssessments').as('assessments')
-  cy.get('a').contains('BLADEREN').click()
+  cy.get('a').contains('Bladeren').click()
   cy.wait('@assessments')
 })
 
 Cypress.Commands.add('backToBrowsePage', () => {
   cy.server()
   cy.route('GET', 'GetAssessments', 'fixture:mockAssessments').as('getAssessments')
-  cy.get('a').contains('Terug naar overzicht').click()
+  cy.get('a').contains('Bladeren').click()
   cy.wait(['@getAssessments'])
 })
 
@@ -49,7 +49,7 @@ Cypress.Commands.add('openNewAssessmentPage', () => {
   cy.server()
   cy.route('GET', 'GetStudents', 'fixture:mockStudents').as('getStudents')
   cy.route('GET', 'Template', 'fixture:mockTemplate').as('getTemplate')
-  cy.get('a').contains('NIEUW').click()
+  cy.get('a').contains('Nieuw').click()
   cy.wait(['@getStudents', '@getTemplate'])
 })
 
@@ -85,6 +85,13 @@ Cypress.Commands.add('openSummaryPage', () => {
   cy.wait(['@getSummary'])
 })
 
+Cypress.Commands.add('backToSummaryPage', () => {
+  cy.server()
+  cy.route('GET', '1', 'fixture:mockSummary').as('getSummary')
+  cy.get('a').contains('Samenvatting beoordeling').click()
+  cy.wait(['@getSummary'])
+})
+
 Cypress.Commands.add('backToDashboardPage', () => {
-  cy.get('a').contains('Terug naar dashboard').click()
+  cy.get('a').contains('Dashboard').click()
 })
