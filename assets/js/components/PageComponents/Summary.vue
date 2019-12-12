@@ -103,7 +103,7 @@
           tmpItems.push({
             id: response.data.id,
             templateId: response.data.templateId,
-            templateName: response.data.name,
+            templateName: response.data.templateName,
             status: this.$parent.getStatusText(response.data.status),
             oeCode: response.data.oeCode,
             finalmark: response.data.finalMark,
