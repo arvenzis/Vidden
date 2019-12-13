@@ -1,7 +1,24 @@
 module.exports = function(grunt) {
-    const sass = require('node-sass');
+  const sass = require('node-sass');
+  var envify = require('envify/custom')
+  require('load-grunt-tasks')(grunt);
+  
 
-    require('load-grunt-tasks')(grunt);
+  browserify: {
+    dist: {
+      options: {
+        // Function to deviate from grunt-browserify's default order
+        configure: b => b
+          .transform('vueify')
+          .transform(
+            // Required in order to process node_modules files
+            { global: true },
+            envify({ NODE_ENV: 'production' })
+          )
+          .bundle()
+      }
+    }
+  }
 
     grunt.initConfig({
         browserify: {
@@ -15,7 +32,12 @@ module.exports = function(grunt) {
                 },
                 transform: ["babelify", "vueify"]
 
-            }
+             },
+             resolve: {
+                alias: {
+                  vue: process.env.NODE_ENV != 'production' ? 'vue/dist/common.prod.js' : 'vue/dist/common.dev.js'
+                }
+             }
         },
         sass: {
             options: {
