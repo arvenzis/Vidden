@@ -14,7 +14,8 @@ export const store = new Vuex.Store({
 		currentUser: "",
 		currentUserId: null,
 		accountNumber: "",
-		apiBaseUrl: "https://localhost:5001/api/"
+		apiBaseUrl: "https://vidden-api.azurewebsites.net/api/",
+		//apiBaseUrl: "https://localhost:5001/api/"
 	},
 	mutations: {
 		login: state => {

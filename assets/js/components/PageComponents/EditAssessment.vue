@@ -441,6 +441,7 @@
             },
             deepLinkHeading(index) {
                 this.currentStep = index;
+                this.currentSlot = this.getCurrentSlot();
                 this.$refs.wizard.goTo(index);
                 this.scrollToTop();
 
