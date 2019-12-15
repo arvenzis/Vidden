@@ -65,6 +65,10 @@ $poor: #F16682;
             top: 0;
             opacity: 0;
         }
+
+        &.active {
+            animation: 800ms fadeIn;
+        }
     }
 }
 
@@ -119,4 +123,18 @@ $poor: #F16682;
 
 .keyword + .keyword:before {
     content: ", ";
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+.fadeIn {
+    animation-name: fadeIn;
 }

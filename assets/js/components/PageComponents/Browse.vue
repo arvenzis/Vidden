@@ -8,7 +8,7 @@
           <tab v-bind:title="$t('browse.all')">
             <div id="assessment-listAll" v-if="showAll">
               <p class="mt-2">{{ $t('browse.pages', { page: pageAll, total: totalPagesAll }) }}</p>
-              <div class="card" v-for="item in itemsCurrentPageAll" v-bind:key="item.id">
+              <div class="card flipInX" v-for="item in itemsCurrentPageAll" v-bind:key="item.id">
                 <div class="card-body">
                   <h5 class="card-title">
                     {{ $tc('common.assessment', 1) }}
@@ -41,7 +41,7 @@
           <tab v-bind:title="$t('browse.my')">
             <div id="assessment-listAll" v-if="!showAll">
               <p class="mt-2">{{ $t('browse.pages', { page: pageAccount, total: totalPagesAccount }) }}</p>
-              <div class="card" v-for="item in itemsCurrentPageAccount" v-bind:key="item.id">
+              <div class="card flipInX" v-for="item in itemsCurrentPageAccount" v-bind:key="item.id">
                 <div class="card-body">
                   <h5 class="card-title">
                     {{ $tc('common.assessment', 1) }}
