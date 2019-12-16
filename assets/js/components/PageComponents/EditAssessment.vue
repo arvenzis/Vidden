@@ -42,7 +42,7 @@
                                                     <div class="popper">
                                                         <span v-for="keywords in question.children" v-bind:key="keywords" class="keyword"><strong>{{ $t('assessment.keywords') }}:</strong> {{ keywords }}</span>
                                                     </div>
-                                                    <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
+                                                    <i class="fa fa-info-circle cursor-pointer" slot="reference"/>
                                                 </popper>
                                             </h4>
                                             <div class="row row-eq-height">
@@ -117,8 +117,22 @@
                 dataReady: false,
                 errorMessage: null,
                 tmpMenu: [],
-                prefersNumbers: true
+                prefersNumbers: false
             }
+        },
+        mounted() {
+            let endpoints = `userpreference/getshowgradinginwords/${this.$store.state.currentUserId}`;
+
+            axios.get(this.$store.state.apiBaseUrl + endpoints, {
+                headers: {"Authorization" : this.$session.get('jwt')},
+            }).then(response => {
+                this.prefersNumbers = response.data;
+            }).catch(() => {
+                Vue.toasted.show(this.$t('error.loading'), {
+                    type: 'error',
+                    duration: 1000
+                });
+            });
         },
         created () {
             const ENDPOINTS = `assessment/${this.assessmentMetadataId}/question/${this.examinatorId}`;
