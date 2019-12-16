@@ -10,6 +10,12 @@ describe('Summary page', function () {
     cy.logout()
   })
 
+  it('Should show "items loaded" message', function () {
+    cy.get('.toasted-container.top-right')
+      .should('be.visible')
+      .and('contain', 'Items geladen')
+  })
+
   it('Should show the chosen variables', function () {
     cy.get('h3').should('contain', 'ICT.AFSTSE.D19')
     cy.get('.mt-3').children('span').should('contain', 'Bernard Bos')

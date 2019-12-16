@@ -10,7 +10,10 @@ describe('New assessment page', function () {
     cy.logout()
   })
 
-  it('Should show a warning if meta-data is missing', function () {
+  it('Should show warnings if meta-data is missing', function () {
+    cy.get('a').contains('Volgende').click()
+    cy.get('.alert.alert-danger').should('contain', 'Je hebt geen template, student of onderwijseenheid gekozen.')
+
     // new assessment: fill in first page
     cy.get('.form-group').contains('Selecteer een sjabloon').parent().click()
     cy.get('.form-group').contains('HBOICT Beoordelingsformulier stage- en afstudeerproject 2019-2020').click()
