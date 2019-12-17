@@ -5,10 +5,9 @@
     <article class="mt-5 mb-5">
       <spinner id="spinner" v-if="loading"></spinner>
       <div v-else v-for="item in this.items" :key="item.id">
-        <h3 class="mt-3">Beoordeling {{ item.oeCode }} voor
-          <span v-for="student in item.student" v-bind:key="student.account">{{ student.name }}
-            ({{ student.account }})</span>
-        </h3>
+        <span v-for="student in item.student" v-bind:key="student.account">
+          <h3 class="mt-3">{{ $t('summary.title', { oeCode: item.oeCode, user: student.name + ' (' + student.account + ')' }) }}</h3>  
+        </span>
         <table class="table">
           <tr>
             <td>{{ $t('summary.course') }}</td>
