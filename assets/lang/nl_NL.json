@@ -37,8 +37,6 @@
         "no_form_result": "Er is nog geen resultaat berekend",
         "form_by": "Invulling door {user}",
         "open": "Open invulling",
-        "form_empty": "Er is nog geen invulling geopend",
-        "start": "Start een nieuwe invulling",
         "details": "Details",
         "finalize_mark": "Cijfer definitief maken"
     },
@@ -50,6 +48,8 @@
         "student_select": "Selecteer een student",
         "course": "Vak",
         "course_select": "Selecteer het vak",
+        "second_teacher": "Tweede beoordelaar",
+        "second_teacher_select": "Selecteer een tweede beoordelaar",
         "period": "Periode",
         "period_from": "Van",
         "period_to": "Tot",
@@ -72,12 +72,12 @@
     },
     "settings": {
         "give_assessment_in": "Beoordeling geven in cijfers",
-        "terms_instead_of_numbers_explanation": "Toon bij de antwoorden van een vraag termen (zoals excellent, goed, etc) in plaats van cijfers (zoals 4, 6, etc)",
+        "terms_instead_of_numbers_explanation": "Toon bij de antwoorden van een vraag termen (zoals excellent, goed, etc) in plaats van cijfers (zoals 4, 6, etc)"
     },
     "error": {
         "loading": "Er was een probleem met het laden van de gegevens. Herlaad de pagina om het opnieuw te proberen.",
         "new_assessment_save": "Er is iets misgegaan bij het opslaan van de beoordeling.",
-        "new_assessment_validation_first_step": "Je hebt geen template, student of onderwijseenheid gekozen.",
+        "new_assessment_validation_first_step": "Je hebt geen template, student, onderwijseenheid of tweede beoordelaar gekozen.",
         "new_assessment_validation_second_step": "Niet alle gegevens zijn ingevuld.",
         "new_assessment_validation_date": "De begindatum mag niet na de einddatum liggen.",
         "answer_save": "Antwoord niet opgeslagen",

@@ -38,20 +38,11 @@
           <div class="row justify-content-center">
             <div class="card col-12 col-md-5" v-for="assessment in item.assessments" :key="assessment.id">
               <div class="card-body" v-for="examinator in assessment.examinator" :key="examinator.account">
-                <span v-if="examinator.id != null">
                   <h5 class="card-title mb-3">{{ $t('summary.form_by', { user: examinator.name + ' (' + examinator.account + ')' }) }}</h5>
                   <router-link :to="'/edit/' + item.id + '/' + examinator.id ">
                     <button class="btn btn-windesheim">{{ $t('summary.open') }}</button>
                   </router-link>
-                  <div class="badge badge-pill badge" v-bind:class="assessment.status">{{ $t('status.' + assessment.status) }}</div>
-                  
-                </span>
-                <span v-else>
-                  <h5 class="card-title mb-3">{{ $t('summary.form_empty')}}</h5>
-                  <router-link :to="'/edit/' + item.id + '/' + currentUserId ">
-                    <button class="btn btn-windesheim">{{ $t('summary.start')}}</button>
-                  </router-link>
-                </span>
+                  <div class="badge badge-pill badge" v-bind:class="assessment.status">{{ $t('status.' + assessment.status) }}</div>                  
               </div>              
             </div>
           </div>
