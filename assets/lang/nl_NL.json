@@ -64,10 +64,15 @@
         "details": "Details",
         "overview": "Overzicht",
         "keywords": "Sleutelwoorden",
-        "comments": "Opmerkingen"
+        "comments": "Opmerkingen",
+        "excellent": "Excellent",
+        "good": "Goed",
+        "proficient": "Voldoende",
+        "poor": "Onvoldoende"
     },
     "settings": {
-
+        "give_assessment_in": "Beoordeling geven in cijfers",
+        "terms_instead_of_numbers_explanation": "Toon bij de antwoorden van een vraag termen (zoals excellent, goed, etc) in plaats van cijfers (zoals 4, 6, etc)",
     },
     "error": {
         "loading": "Er was een probleem met het laden van de gegevens. Herlaad de pagina om het opnieuw te proberen.",
@@ -77,6 +82,7 @@
         "new_assessment_validation_date": "De begindatum mag niet na de einddatum liggen.",
         "answer_save": "Antwoord niet opgeslagen",
         "comment_save": "Opmerking niet opgeslagen",
+        "setting_save": "De voorkeur kon niet worden aangepast",
         "mark_final": "Je beoordeling kon niet definitief worden gemaakt. Probeer het nog eens",
         "get_summary": "Er is iets misgegaan bij het ophalen van de samenvatting.",
         "login_400": "Je gebruikersnaam en / of wachtwoord is onjuist",
@@ -88,6 +94,7 @@
         "new_assessment_save": "Je beoordeling is succesvol aangemaakt",
         "answer_save": "Antwoord opgeslagen",
         "comment_save": "Opmerking opgeslagen",
+        "setting_save": "Voorkeur opgeslagen",
         "mark_final": "Je beoordeling is definitief"
     },
     "status": {
