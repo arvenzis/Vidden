@@ -22,6 +22,25 @@
                             </popper>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label for="langSwitch">{{ $t('settings.select_lang') }}</label>
+                                <model-select :options="langOptions"
+                                      v-model="langPreference"
+                                      :placeholder="$t('settings.select_lang')">
+                                </model-select>
+                            </div>
+                        </td>
+                        <td>
+                            <popper trigger="hover" :options="{ placement: 'top' }">
+                                <div class="popper">
+                                    <span>{{ $t('settings.lang_explanation') }}</span>
+                                </div>
+                                <i class="fa fa-info-circle cursor-pointer" slot="reference"/>
+                            </popper>
+                        </td>
+                    </tr>
                 </table>
             </div>
         </div>
@@ -33,6 +52,7 @@
     import Popper from "vue-popperjs";
     import axios from "axios";
     import Spinner from "vue-simple-spinner";
+    import { ModelSelect } from 'vue-search-select'
 
     Vue.use(Popper);
 
@@ -41,7 +61,15 @@
         data() {
           return {
               dataReady: false,
-              prefersNumbers: false
+              prefersNumbers: false,
+              langOptions: [
+                  "nl_NL", 
+                  "en_US"
+              ],
+              langPreference: {
+                value: '',
+                text: '' 
+             },
           }
         },
         created() {
