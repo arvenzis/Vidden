@@ -16,8 +16,10 @@ const router = new VueRouter({routes});
 
 const i18n = new VueI18n({
   locale: 'nl_NL',
+  fallbackLocale: 'en_US',
   messages: {
-    'nl_NL': require('../lang/nl_NL.json')
+    'nl_NL': require('../lang/nl_NL.json'),
+    'en_US': require('../lang/en_US.json')
   }
 })
 

@@ -1,0 +1,112 @@
+{
+    "common": {
+        "assessment": "Assessment | Assessments",
+        "form": "Form | Forms",
+        "dashboard": "Dashboard",
+        "new": "New",
+        "edit": "Edit",
+        "browse": "Browse",
+        "settings": "Settings",
+        "logout": "Logout",
+        "summary": "Summary assessment",
+        "finish": "Summary form",
+        "group": "Competence"
+    },
+    "login": {
+        "title": "Login",
+        "username": "E-mail",
+        "password": "Password",
+        "password_forgot": "Forgot password"
+    },
+    "browse": {
+        "title": "Browse",
+        "all": "All assessments",
+        "my": "My assessments",
+        "pages": "Page {page} of {total}",
+        "last_updated": "Last updated {date} by {user}",
+        "open": "Open assessment"
+    },
+    "summary": {
+        "course": "Course",
+        "status": "Status",
+        "template": "Template",
+        "result": "Result",
+        "title": "Summary assessment {oeCode} for {user}",
+        "computed_result": "Calculated result",
+        "no_final_result": "There isn't a calculated endresult yet",
+        "no_form_result": "There isn't a calculated result yet",
+        "form_by": "Form by {user}",
+        "open": "Open form",
+        "form_empty": "A form hasn't been created",
+        "start": "Start a new form",
+        "details": "Details",
+        "finalize_mark": "Make result final"
+    },
+    "assessment": {
+        "new": "New assessment",
+        "template": "Template",
+        "template_select": "Selecteer a template",
+        "student": "Student",
+        "student_select": "Select a student",
+        "course": "Course",
+        "course_select": "Select a course",
+        "period": "Period",
+        "period_from": "From",
+        "period_to": "To",
+        "company": "Company",
+        "company_name": "Name",
+        "company_address": "Address",
+        "summary": "Summary assessment",
+        "previous": "Previous",
+        "next": "Next",
+        "confirm": "Confirm",
+        "general": "General information",
+        "details": "Details",
+        "overview": "Overview",
+        "keywords": "Keywords",
+        "comments": "Comments",
+        "excellent": "Excellent",
+        "good": "Good",
+        "proficient": "Proficient",
+        "poor": "Poor"
+    },
+    "settings": {
+        "give_assessment_in": "Grade assessment with numbers",
+        "terms_instead_of_numbers_explanation": "Show terms (excellent, good, etc.) instead of numbers (4, 6, etc.) when filling out a form"
+    },
+    "error": {
+        "loading": "There was a problem with loading the data. Please refresh the page to try again",
+        "new_assessment_save": "Something went wrong on saving the assessment",
+        "new_assessment_validation_first_step": "You didn't choose a template, student or course",
+        "new_assessment_validation_second_step": "You did't fill out all the fields",
+        "new_assessment_validation_date": "The startdate can't be after the enddate",
+        "answer_save": "Something went wrong on saving the answer",
+        "comment_save": "Something went wrong on saving the comment",
+        "setting_save": "Something went wrong on saving the preference",
+        "mark_final": "Your assessment couldn't be made final. Please try again",
+        "get_summary": "Something went wrong on retrieving the summary",
+        "login_400": "JYour username and/of password isn't correct",
+        "login_500": "Something went wrong on communicating with the server. Please try again",
+        "login_else": "{error} Please try again"
+    },
+    "success": {
+        "loading": "Items loaded",
+        "new_assessment_save": "Your assessment was successfully saved",
+        "answer_save": "Answer saved",
+        "comment_save": "Comment saved",
+        "setting_save": "Preference saved",
+        "mark_final": "Assessment made final"
+    },
+    "status": {
+        "new": "New",
+        "in_progress": "In progress",
+        "completed": "Completed",
+        "final": "Final"
+    },
+    "mark": {
+        "excellent": "Excellent",
+        "good": "Good",
+        "proficient": "Proficient",
+        "poor": "Poor"
+    }
+}
