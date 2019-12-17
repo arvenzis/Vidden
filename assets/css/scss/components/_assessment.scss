@@ -52,6 +52,10 @@ $poor: #F16682;
             &.active {
             	color: $color-white;
             }
+
+            &-terms {
+                display: block;
+            }
         }
 
         &-radio {

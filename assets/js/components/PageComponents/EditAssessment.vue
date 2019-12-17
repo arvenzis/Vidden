@@ -45,17 +45,19 @@
                                                     <i class="fa fa-info-circle cursor-pointer" slot="reference"/>
                                                 </popper>
                                             </h4>
-                                            <div class="row row-eq-height">
-                                                <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
-                                                    <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
-                                                        <div class="assessment__answer-body">
-                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
-                                                            <label class="form-check-label" v-bind:for="option.grade">
-                                                                <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: option.chosen === true }]">
-                                                                    {{ option.result }}
-                                                                </h1>
-                                                                {{ option.description }}
-                                                            </label>
+                                            <div v-if="answerReady">
+                                                <div class="row row-eq-height">
+                                                    <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
+                                                            <div class="assessment__answer-body">
+                                                                <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
+                                                                <label class="form-check-label" v-bind:for="option.grade">
+                                                                    <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark-terms': !this.prefersNumbers, 'assessment__answer-mark': this.prefersNumbers}]">
+                                                                        {{ option.result }}
+                                                                    </h1>
+                                                                    {{ option.description }}
+                                                                </label>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -115,6 +117,7 @@
                 currentStep: 0,
                 currentSlot: "",
                 dataReady: false,
+                answerReady: false,
                 errorMessage: null,
                 tmpMenu: [],
                 prefersNumbers: false
@@ -127,6 +130,7 @@
                 headers: {"Authorization" : this.$session.get('jwt')},
             }).then(response => {
                 this.prefersNumbers = response.data;
+                this.answerReady = true;
             }).catch(() => {
                 Vue.toasted.show(this.$t('error.loading'), {
                     type: 'error',
