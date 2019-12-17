@@ -52,7 +52,7 @@
                                                             <div class="assessment__answer-body">
                                                                 <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
                                                                 <label class="form-check-label" v-bind:for="option.grade">
-                                                                    <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark-terms': !this.prefersNumbers, 'assessment__answer-mark': this.prefersNumbers}]">
+                                                                    <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark terms': !this.prefersNumbers, 'assessment__answer-mark': this.prefersNumbers}]">
                                                                         {{ option.result }}
                                                                     </h1>
                                                                     {{ option.description }}
