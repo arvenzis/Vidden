@@ -4,6 +4,7 @@ import NewAssessment from './components/PageComponents/NewAssessment.vue';
 import EditAssessment from './components/PageComponents/EditAssessment.vue';
 import Browse from './components/PageComponents/Browse.vue';
 import Settings from './components/PageComponents/Settings.vue';
+import Finish from './components/PageComponents/Finish.vue';
 
 const routes = [{
 		path: '/',
@@ -24,6 +25,10 @@ const routes = [{
 	{
 		path: '/edit/:assessmentMetadataId/:examinatorId',
 		component: EditAssessment
+	},
+	{
+		path: '/finish/:assessmentMetadataId/:examinatorId',
+		component: Finish
 	},
 	{
 		path: '/browse',

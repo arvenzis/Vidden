@@ -5,7 +5,7 @@
         <div class="card">
           <spinner id="spinner" v-if="loading"></spinner>
           <div class="card-body" v-bind:class="{ overlay : loading}">
-            <h5 class="card-title mb-3">Inloggen</h5>
+            <h5 class="card-title mb-3">{{ $t('login.title') }}</h5>
             <form id="app" @submit="validateCredentials" method="post">
               <flash-message class="flashpool"></flash-message>
               <div class="form-group row">
@@ -56,7 +56,7 @@
 
               <div class="form-group row mb-0">
                 <div class="col-md-8 offset-md-4" id="buttonLoader">
-                  <button type="submit" class="btn btn-primary btn-windesheim">{{ $t("login.login") }}</button>
+                  <button type="submit" class="btn btn-primary btn-windesheim">{{ $t('login.title') }}</button>
                 </div>
               </div>
             </form>

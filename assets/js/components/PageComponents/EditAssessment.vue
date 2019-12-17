@@ -255,7 +255,7 @@
                     return true;
                 }
 
-                this.$router.push('/browse');
+                this.$router.push('/finish/' + this.assessmentMetadataId + '/' + this.examinatorId);
                 return false;
             },
             backClicked() {

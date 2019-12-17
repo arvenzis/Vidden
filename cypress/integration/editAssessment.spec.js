@@ -5,6 +5,7 @@ describe('Assessment editing page', function () {
   })
 
   after(function () {
+    cy.backToSummaryPage()
     cy.backToBrowsePage()
     cy.backToDashboardPage()
     cy.logout()
