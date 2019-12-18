@@ -20,7 +20,7 @@ module.exports = function(grunt) {
                     './dist/js/bundle.min.js' : './assets/js/app.js'
                 },
                 options: {
-                    transform: ["envify", "vueify", "babelify", "uglifyify"],
+                    transform: ["envify", "vueify", "babelify", "uglifyify"]
                 } 
             }
         },

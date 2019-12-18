@@ -73,6 +73,6 @@
     "vuex-persistedstate": "^2.5.4"
   },
   "browser": {
-    "vue": "vue/dist/vue.common.js"
+    "vue": "vue/dist/vue.common.prod.js"
   }
 }
