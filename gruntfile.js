@@ -66,14 +66,31 @@ module.exports = function(grunt) {
                 },
             },
         },
-        env: {
-            prod: {
-                NODE_ENV: 'production',
-                DEST: 'dist'
+        terser: {
+            dist: {
+                files: {
+                    './dist/js/bundle.min.js' : './dist/js/bundle.min.js'
+                },
+                options: {
+                    output: {
+                        beautify: false,
+                        comments: false
+                    },
+                    compress: {
+                        ecma: 6
+                    }
+                }
+            }
+        },
+        cssmin: {
+            dist: {
+                files: {
+                    './dist/css/plugins.min.css' : './dist/css/plugins.min.css'
+                } 
             }
         }
     });
 
     grunt.registerTask('build-dev', ['browserify:src', 'sass:src', 'concat']);
-    grunt.registerTask('build', ['clean','env:prod', 'browserify:dist', 'sass:dist', 'concat'])
+    grunt.registerTask('build', ['clean', 'browserify:dist', 'terser', 'sass:dist', 'concat', 'cssmin'])
 };
