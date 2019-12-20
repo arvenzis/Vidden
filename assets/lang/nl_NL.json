@@ -38,7 +38,8 @@
         "form_by": "Invulling door {user}",
         "open": "Open invulling",
         "details": "Details",
-        "finalize_mark": "Cijfer definitief maken"
+        "finalize_mark": "Cijfer definitief maken",
+        "finalize_mark_confirm": "Weet je zeker dat je de beoordeling definitief wilt maken? De beoordeling is hierna niet meer te wijzigen."
     },
     "assessment": {
         "new": "Nieuwe beoordeling",

@@ -161,30 +161,33 @@ export default {
       })
     },
     completeAssessment(mark) {
-      const ENDPOINTS = 'assessment/finalize';
+      if (confirm(this.$t('summary.finalize_mark_confirm'))) {
+        const ENDPOINTS = 'assessment/finalize';
 
-      axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
-      	{
-          "userId": this.examinatorId,
-          "assessmentMetaId": this.assessmentMetadataId,
-          "finalMark": mark
-      	}, {
-      		headers: {
-      			"Authorization": this.$session.get('jwt')
-      		}
-        })
-        .then(() => {
-          Vue.toasted.show(this.$t('success.mark_final'), {
-            type: 'success',
-            duration: 1000
-          });
-        })
-        .catch(() => {
-          Vue.toasted.show(this.$t('error.mark_final'), {
-            type: 'error',
-            duration: 1000
-          });
-        });
+        axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
+                {
+                  "userId": this.examinatorId,
+                  "assessmentMetaId": this.assessmentMetadataId,
+                  "finalMark": mark
+                }, {
+                  headers: {
+                    "Authorization": this.$session.get('jwt')
+                  }
+                })
+                .then(() => {
+                  Vue.toasted.show(this.$t('success.mark_final'), {
+                    type: 'success',
+                    duration: 1000
+                  });
+                })
+                .catch(() => {
+                  Vue.toasted.show(this.$t('error.mark_final'), {
+                    type: 'error',
+                    duration: 1000
+                  });
+                });
+      }
+
     }
   },
   components: {
