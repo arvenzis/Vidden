@@ -42,6 +42,14 @@ module.exports = function(grunt) {
                 }
             }            
         },
+        concat: {
+            dist: {
+                src: ['./node_modules/bootstrap/dist/css/bootstrap.min.css',
+                      './node_modules/vue-popperjs/dist/vue-popper.css',
+                      './node_modules/vue-search-select/dist/VueSearchSelect.css'],
+                dest: './dist/css/plugins.min.css'
+            }
+        },
         watcher: {
             css: {
                 files: 'assets/css/**/*.scss',
@@ -66,6 +74,6 @@ module.exports = function(grunt) {
         }
     });
 
-    grunt.registerTask('build-dev', ['browserify:src', 'sass:src']);
-    grunt.registerTask('build', ['clean','env:prod', 'browserify:dist', 'sass:dist'])
+    grunt.registerTask('build-dev', ['browserify:src', 'sass:src', 'concat']);
+    grunt.registerTask('build', ['clean','env:prod', 'browserify:dist', 'sass:dist', 'concat'])
 };
