@@ -1,16 +1,17 @@
 <template>
-  <div class="container dashboard-container">
-    <flash-message class="flashpool"></flash-message>
+  <spinner id="spinner" v-if="loading"></spinner>
+  <div class="container dashboard-container" v-else>
+    <flash-message class="flashpool"/>
     <div class="path">
-      <router-link
-        :to="'/edit/' + this.assessmentMetadataId + '/' + this.examinatorId"
-        class="ml-2"
-      >{{ $t('common.edit') }}</router-link>
+      <router-link to="/browse" class="ml-2" v-if="this.items[0].definitive">{{ $t('common.browse') }}</router-link>
+
+      <router-link :to="'/edit/' + this.assessmentMetadataId + '/' + this.examinatorId" class="ml-2" v-else>
+        {{ $t('common.edit') }}
+      </router-link>
       &gt; {{ $t('common.finish') }}
     </div>
     <article class="mt-5 mb-5">
-      <spinner id="spinner" v-if="loading"></spinner>
-      <div v-else v-for="item in this.items" :key="item.id">
+      <div v-for="item in this.items" :key="item.id">
         <span v-for="student in item.student" v-bind:key="student.accountNumber">
           <h3
             class="mt-3"
@@ -39,8 +40,8 @@
               <div class="card" :class="finalMark.description.toLowerCase()">
                 <div class="card-body">
                   <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
-                  <h1 class="text-center"><input type="number" v-model.number="finalMark.result" step="any" class="finalMarkInput" /></h1>
-                  <button type="button" class="btn btn-light btn-block mt-1" @click="completeAssessment(finalMark.result)">{{ $t('summary.finalize_mark') }}</button>
+                  <h1 class="text-center"><input type="number" v-model.number="finalMark.result" step="any" class="finalMarkInput" :disabled="item.definitive" /></h1>
+                  <button type="button" class="btn btn-light btn-block mt-1" @click="completeAssessment(finalMark.result)" :disabled="item.definitive">{{ $t('summary.finalize_mark') }}</button>
                 </div>
               </div>
             </span>
@@ -114,6 +115,7 @@ export default {
           templateName: response[1].data.templateName,
           status: this.$parent.getStatusText(response[1].data.status),
           oeCode: response[1].data.oeCode,
+          definitive: true, //ToDo: ophalen uit api
           student: [{
             id: response[1].data.studentId,
             accountNumber: response[1].data.student.accountNumber,
@@ -125,7 +127,7 @@ export default {
           }],
           groups: {}
         };
-        
+
         for(var i in response[0].data.summaries) {
           let groupData = {
             groupId: response[0].data.summaries[i].group.id,
@@ -147,11 +149,10 @@ export default {
           duration: 1000
         });
 
-        console.log(self.items);
         this.loading = false;
       })
       .catch(error => {
-        
+
         Vue.toasted.show(this.$t("error.loading"), {
           type: "error",
           duration: 2000
@@ -161,6 +162,10 @@ export default {
       })
     },
     completeAssessment(mark) {
+      if (this.items[0].definitive) {
+        return false;
+      }
+
       if (confirm(this.$t('summary.finalize_mark_confirm'))) {
         const ENDPOINTS = 'assessment/finalize';
 

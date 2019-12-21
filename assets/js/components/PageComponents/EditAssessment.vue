@@ -285,11 +285,11 @@
                 }
 
                 //If the user has a preference set for using terms, translate it back to a number result.
-                result = (grade == 'excellent' ? 9.0
-                        : grade == 'good' ? 8.0
-                        : grade == 'proficient' ? 6.0
-                        : grade == 'poor' ? 4.0
-                        : 0.0)
+                result = (grade === 'excellent' ? 9.0
+                        : grade === 'good' ? 8.0
+                        : grade === 'proficient' ? 6.0
+                        : grade === 'poor' ? 4.0
+                        : 0.0);
 
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {

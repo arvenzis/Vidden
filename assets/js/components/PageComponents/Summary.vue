@@ -39,10 +39,19 @@
             <div class="card col-12 col-md-5" v-for="assessment in item.assessments" :key="assessment.id">
               <div class="card-body" v-for="examinator in assessment.examinator" :key="examinator.account">
                   <h5 class="card-title mb-3">{{ $t('summary.form_by', { user: examinator.name + ' (' + examinator.account + ')' }) }}</h5>
-                  <router-link :to="'/edit/' + item.id + '/' + examinator.id ">
-                    <button class="btn btn-windesheim">{{ $t('summary.open') }}</button>
-                  </router-link>
-                  <div class="badge badge-pill badge" v-bind:class="assessment.status">{{ $t('status.' + assessment.status) }}</div>                  
+                  <div class="row">
+                    <div class="col-6 col-md-4">
+                      <router-link :to="'/edit/' + item.id + '/' + examinator.id ">
+                        <button class="btn btn-windesheim" :disabled="assessment.status === 'final'">{{ $t('summary.open') }}</button>
+                      </router-link>
+                    </div>
+                    <div class="col-6 col-md-5">
+                      <router-link :to="'/finish/' + item.id + '/' + examinator.id ">
+                        <button class="btn btn-windesheim" :disabled="assessment.status !== 'final'">{{ $t('summary.show_summary') }}</button>
+                      </router-link>
+                    </div>
+                  </div>
+                <div class="badge badge-pill badge" v-bind:class="assessment.status">{{ $t('status.' + assessment.status) }}</div>
               </div>              
             </div>
           </div>

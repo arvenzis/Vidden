@@ -39,7 +39,8 @@
         "open": "Open invulling",
         "details": "Details",
         "finalize_mark": "Cijfer definitief maken",
-        "finalize_mark_confirm": "Weet je zeker dat je de beoordeling definitief wilt maken? De beoordeling is hierna niet meer te wijzigen."
+        "finalize_mark_confirm": "Weet je zeker dat je de beoordeling definitief wilt maken? De beoordeling is hierna niet meer te wijzigen.",
+        "show_summary": "Samenvatting inzien"
     },
     "assessment": {
         "new": "Nieuwe beoordeling",
