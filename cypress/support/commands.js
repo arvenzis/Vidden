@@ -51,8 +51,9 @@ Cypress.Commands.add('openNewAssessmentPage', () => {
   cy.server()
   cy.route('GET', 'GetStudents', 'fixture:mockStudents').as('getStudents')
   cy.route('GET', 'Template', 'fixture:mockTemplate').as('getTemplate')
+  cy.route('GET', 'GetTeachers', 'fixture:mockTeachers').as('getTeachers')
   cy.get('a').contains('Nieuw').click()
-  cy.wait(['@getStudents', '@getTemplate'])
+  cy.wait(['@getStudents', '@getTemplate', '@getTeachers'])
 })
 
 Cypress.Commands.add('openEditAssessmentPage', () => {

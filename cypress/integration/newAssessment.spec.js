@@ -12,7 +12,7 @@ describe('New assessment page', function () {
 
   it('Should show warnings if meta-data is missing', function () {
     cy.get('a').contains('Volgende').click()
-    cy.get('.alert.alert-danger').should('contain', 'Je hebt geen template, student of onderwijseenheid gekozen.')
+    cy.get('.alert.alert-danger').should('contain', 'Je hebt geen template, student, onderwijseenheid of tweede beoordelaar gekozen.')
 
     // new assessment: fill in first page
     cy.get('.form-group').contains('Selecteer een sjabloon').parent().click()
@@ -21,6 +21,8 @@ describe('New assessment page', function () {
     cy.get('.form-group').contains('Joost Reijmer').click()
     cy.get('.form-group').contains('Selecteer het vak').parent().click()
     cy.get('.form-group').contains('Afstudeeropdracht Software Engineering 2019-2020').click()
+    cy.get('.form-group').contains('Selecteer een tweede beoordelaar').parent().click()
+    cy.get('.form-group').contains('Eugene van Roden').click()
     cy.get('a').contains('Volgende').click()
 
     // new assessment: fill in second page
