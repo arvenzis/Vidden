@@ -72,7 +72,8 @@
     },
     "settings": {
         "give_assessment_in": "Beoordeling geven in cijfers",
-        "terms_instead_of_numbers_explanation": "Toon bij de antwoorden van een vraag termen (zoals excellent, goed, etc) in plaats van cijfers (zoals 4, 6, etc)"
+        "terms_instead_of_numbers_explanation": "Toon bij de antwoorden van een vraag termen (zoals excellent, goed, etc) in plaats van cijfers (zoals 4, 6, etc)",
+        "language": "Selecteer je voorkeurstaal"
     },
     "error": {
         "loading": "Er was een probleem met het laden van de gegevens. Herlaad de pagina om het opnieuw te proberen.",

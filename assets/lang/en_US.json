@@ -72,7 +72,8 @@
     },
     "settings": {
         "give_assessment_in": "Grade assessment with numbers",
-        "terms_instead_of_numbers_explanation": "Show terms (excellent, good, etc.) instead of numbers (4, 6, etc.) when filling out a form"
+        "terms_instead_of_numbers_explanation": "Show terms (excellent, good, etc.) instead of numbers (4, 6, etc.) when filling out a form",
+        "language": "Please select your preferred language",
     },
     "error": {
         "loading": "There was a problem with loading the data. Please refresh the page to try again",
