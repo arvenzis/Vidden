@@ -115,7 +115,7 @@ export default {
           templateName: response[1].data.templateName,
           status: this.$parent.getStatusText(response[1].data.status),
           oeCode: response[1].data.oeCode,
-          definitive: true, //ToDo: ophalen uit api
+          definitive: (response[0].data.status === 3), //ToDo: is 3 vanwege een bug. wordt straks 2.
           student: [{
             id: response[1].data.studentId,
             accountNumber: response[1].data.student.accountNumber,
@@ -170,29 +170,43 @@ export default {
         const ENDPOINTS = 'assessment/finalize';
 
         axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
-                {
-                  "userId": this.examinatorId,
-                  "assessmentMetaId": this.assessmentMetadataId,
-                  "finalMark": mark
-                }, {
-                  headers: {
-                    "Authorization": this.$session.get('jwt')
-                  }
-                })
-                .then(() => {
-                  Vue.toasted.show(this.$t('success.mark_final'), {
-                    type: 'success',
-                    duration: 1000
-                  });
-                })
-                .catch(() => {
-                  Vue.toasted.show(this.$t('error.mark_final'), {
-                    type: 'error',
-                    duration: 1000
-                  });
-                });
-      }
+                  {
+                    "userId": this.examinatorId,
+                    "assessmentMetaId": this.assessmentMetadataId,
+                    "finalMark": mark
+                  }, { headers: { "Authorization": this.$session.get('jwt') }})
+              .then(() => {
+                  axios.get(this.$store.state.apiBaseUrl + `assessment/${this.assessmentMetadataId}`,
+                        { headers: { Authorization: this.$session.get("jwt") } })
+                        .then((response) => {
+                            let assessmentIsFinal = true;
+                            response.data.assesments.forEach(function(assessment) {
+                                if(assessment.isFinal === false) {
+                                  assessmentIsFinal = false;
+                                }
+                            });
 
+                            if(assessmentIsFinal) {
+                                axios.post(this.$store.state.apiBaseUrl + 'assessment/finalizemeta',
+                                      {
+                                        "userId": this.examinatorId,
+                                        "assessmentMetaId": this.assessmentMetadataId,
+                                        "finalMark": mark // ToDo: de twee invullingen samen
+                                      }, { headers: { "Authorization": this.$session.get('jwt') }})
+                            }
+
+                            Vue.toasted.show(this.$t('success.mark_final'), {
+                              type: 'success',
+                              duration: 1000
+                            });
+                        });
+            }).catch(() => {
+                Vue.toasted.show(this.$t('error.mark_final'), {
+                  type: 'error',
+                  duration: 1000
+              });
+        });
+      }
     }
   },
   components: {
