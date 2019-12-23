@@ -37,8 +37,6 @@
         "no_form_result": "There isn't a calculated result yet",
         "form_by": "Form by {user}",
         "open": "Open form",
-        "form_empty": "A form hasn't been created",
-        "start": "Start a new form",
         "details": "Details",
         "finalize_mark": "Make result final"
     },
@@ -50,6 +48,8 @@
         "student_select": "Select a student",
         "course": "Course",
         "course_select": "Select a course",
+        "second_teacher": "Second assessor",
+        "second_teacher_select": "Select a second assessor",
         "period": "Period",
         "period_from": "From",
         "period_to": "To",
@@ -76,9 +76,10 @@
     },
     "error": {
         "loading": "There was a problem with loading the data. Please refresh the page to try again",
+        "menu": "There was a problem with loading the menu. Please refresh the page to try again",
         "new_assessment_save": "Something went wrong on saving the assessment",
         "new_assessment_validation_first_step": "You didn't choose a template, student or course",
-        "new_assessment_validation_second_step": "You did't fill out all the fields",
+        "new_assessment_validation_second_step": "You didn't fill out all the fields",
         "new_assessment_validation_date": "The startdate can't be after the enddate",
         "answer_save": "Something went wrong on saving the answer",
         "comment_save": "Something went wrong on saving the comment",
@@ -91,6 +92,7 @@
     },
     "success": {
         "loading": "Items loaded",
+        "menu": "Menu loaded",
         "new_assessment_save": "Your assessment was successfully saved",
         "answer_save": "Answer saved",
         "comment_save": "Comment saved",
