@@ -14,7 +14,9 @@ export const store = new Vuex.Store({
 		currentUser: "",
 		currentUserId: null,
 		accountNumber: "",
-		apiBaseUrl: "https://vidden-api.azurewebsites.net/api/"
+		apiBaseUrl: "https://localhost:5001/api/",
+		numbers: true,
+		language: "nl_NL"
 	},
 	mutations: {
 		login: state => {
@@ -35,6 +37,16 @@ export const store = new Vuex.Store({
 		},
 		setAccountNumber: (state, payload) => {
 			state.accountNumber = payload
+		},
+		useTerms: (state) => {
+			state.numbers = false
+		},
+		useNumbers: (state) => {
+			state.numbers = true
+		},
+		switchLanguage: (state, payload) => {
+			state.language = payload
 		}
+
 	}
 });

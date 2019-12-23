@@ -45,7 +45,7 @@
                                                     <i class="fa fa-info-circle cursor-pointer" slot="reference"/>
                                                 </popper>
                                             </h4>
-                                            <div v-if="answerReady">
+                                            <div>
                                                 <div class="row row-eq-height">
                                                     <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
                                                         <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
@@ -117,26 +117,10 @@
                 currentStep: 0,
                 currentSlot: "",
                 dataReady: false,
-                answerReady: false,
                 errorMessage: null,
                 tmpMenu: [],
-                prefersNumbers: false
+                prefersNumbers: this.$store.state.numbers
             }
-        },
-        mounted() {
-            let endpoints = `userpreference/getshowgradinginwords/${this.$store.state.currentUserId}`;
-
-            axios.get(this.$store.state.apiBaseUrl + endpoints, {
-                headers: {"Authorization" : this.$session.get('jwt')},
-            }).then(response => {
-                this.prefersNumbers = response.data;
-                this.answerReady = true;
-            }).catch(() => {
-                Vue.toasted.show(this.$t('error.loading'), {
-                    type: 'error',
-                    duration: 1000
-                });
-            });
         },
         created () {
             const ENDPOINTS = `assessment/${this.assessmentMetadataId}/question/${this.examinatorId}`;
