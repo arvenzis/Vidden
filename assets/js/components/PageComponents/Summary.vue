@@ -24,7 +24,7 @@
           <tr>
             <td>{{ $t('summary.result') }}</td>
             <td>
-              <span v-if="item.finalmark == 0">
+              <span v-if="item.finalmark === 0">
                 {{ $t('summary.no_final_result') }}
               </span>
               <span v-else>

@@ -115,7 +115,7 @@ export default {
           templateName: response[1].data.templateName,
           status: this.$parent.getStatusText(response[1].data.status),
           oeCode: response[1].data.oeCode,
-          definitive: (response[0].data.status === 3), //ToDo: is 3 vanwege een bug. wordt straks 2.
+          definitive: (response[0].data.status === 2), //ToDo: is 3 vanwege een bug. wordt straks 2.
           student: [{
             id: response[1].data.studentId,
             accountNumber: response[1].data.student.accountNumber,
