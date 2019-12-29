@@ -1,6 +1,6 @@
 describe('Footer', function () {
   beforeEach(function () {
-    cy.visit('http://vidden.karenbrakband.nl')
+    cy.visit('https://vidden.karenbrakband.nl')
   })
 
   it('Should display an error on absent credentials', function () {
