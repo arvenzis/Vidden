@@ -65,8 +65,8 @@ describe('Assessment editing page', function () {
   })
 
   it('Should show "comment saved" message when a complexity comment is made', function () {
-    // wait 1 second: comment saved-message has gone
-    cy.wait(1000)
+    // wait 10 seconds: comment saved-message has gone
+    cy.wait(10000)
     cy.get('.toasted-container.top-right')
       .and('not.contain', 'Opmerking opgeslagen')
     cy.addComment('test', 'Complexiteit blijkt uit:')
