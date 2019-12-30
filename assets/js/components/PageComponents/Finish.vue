@@ -129,7 +129,7 @@ export default {
           groups: {}
         };
 
-        for(var i in response[0].data.summaries) {
+        for(let i in response[0].data.summaries) {
           let groupData = {
             groupId: response[0].data.summaries[i].group.id,
             groupName: response[0].data.summaries[i].group.name,
@@ -140,7 +140,7 @@ export default {
             }]
           };
           dataObj.push(groupData);
-        };
+        }
 
         metaData.groups = dataObj;
         self.items.push(metaData);
