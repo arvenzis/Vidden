@@ -24,7 +24,7 @@
           <tr>
             <td>{{ $t('summary.result') }}</td>
             <td>
-              <span v-if="item.finalmark === 0">
+              <span v-if="item.finalMark === 0">
                 {{ $t('summary.no_final_result') }}
               </span>
               <span v-else>
@@ -105,7 +105,7 @@
             templateName: response.data.templateName,
             status: this.$parent.getStatusText(response.data.status),
             oeCode: response.data.oeCode,
-            finalmark: response.data.finalMark,
+            finalMark: response.data.finalMark,
             student: [{
               id: response.data.studentId,
               account: response.data.student.accountNumber,
