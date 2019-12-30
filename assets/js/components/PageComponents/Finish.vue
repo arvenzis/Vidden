@@ -1,10 +1,11 @@
 <template>
-  <spinner id="spinner" v-if="loading"></spinner>
+  <spinner id="spinner" v-if="loading"/>
   <div class="container dashboard-container" v-else>
     <flash-message class="flashpool"/>
     <div class="path">
+      <router-link :to="'/summary/' + this.assessmentMetadataId" class="ml-2">{{ $t('common.summary') }}</router-link>
+      &gt;
       <router-link to="/browse" class="ml-2" v-if="this.items[0].definitive">{{ $t('common.browse') }}</router-link>
-
       <router-link :to="'/edit/' + this.assessmentMetadataId + '/' + this.examinatorId" class="ml-2" v-else>
         {{ $t('common.edit') }}
       </router-link>
@@ -13,9 +14,9 @@
     <article class="mt-5 mb-5">
       <div v-for="item in this.items" :key="item.id">
         <span v-for="student in item.student" v-bind:key="student.accountNumber">
-          <h3
-            class="mt-3"
-          >{{ $t('summary.title', { oeCode: item.oeCode, user: student.fullName + ' (' + student.accountNumber + ')' }) }}</h3>
+          <h3 class="mt-3">
+            {{ $t('summary.title', { oeCode: item.oeCode, user: student.fullName + ' (' + student.accountNumber + ')' }) }}
+          </h3>
         </span>
 
         <div class="row">
@@ -40,7 +41,7 @@
               <div class="card" :class="finalMark.description.toLowerCase()">
                 <div class="card-body">
                   <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
-                  <h1 class="text-center"><input type="number" v-model.number="finalMark.result" step="any" class="finalMarkInput" :disabled="item.definitive" /></h1>
+                  <h1 class="text-center"><input type="number" v-model.number="finalMark.result" step="0.01" class="finalMarkInput" :disabled="item.definitive" /></h1>
                   <button type="button" class="btn btn-light btn-block mt-1" @click="completeAssessment(finalMark.result)" :disabled="item.definitive">{{ $t('summary.finalize_mark') }}</button>
                 </div>
               </div>
@@ -115,7 +116,7 @@ export default {
           templateName: response[1].data.templateName,
           status: this.$parent.getStatusText(response[1].data.status),
           oeCode: response[1].data.oeCode,
-          definitive: (response[0].data.status === 2), //ToDo: is 3 vanwege een bug. wordt straks 2.
+          definitive: (response[0].data.status === 2),
           student: [{
             id: response[1].data.studentId,
             accountNumber: response[1].data.student.accountNumber,
@@ -151,7 +152,7 @@ export default {
 
         this.loading = false;
       })
-      .catch(error => {
+      .catch(() => {
 
         Vue.toasted.show(this.$t("error.loading"), {
           type: "error",
@@ -176,30 +177,10 @@ export default {
                     "finalMark": mark
                   }, { headers: { "Authorization": this.$session.get('jwt') }})
               .then(() => {
-                  axios.get(this.$store.state.apiBaseUrl + `assessment/${this.assessmentMetadataId}`,
-                        { headers: { Authorization: this.$session.get("jwt") } })
-                        .then((response) => {
-                            let assessmentIsFinal = true;
-                            response.data.assesments.forEach(function(assessment) {
-                                if(assessment.isFinal === false) {
-                                  assessmentIsFinal = false;
-                                }
-                            });
-
-                            if(assessmentIsFinal) {
-                                axios.post(this.$store.state.apiBaseUrl + 'assessment/finalizemeta',
-                                      {
-                                        "userId": this.examinatorId,
-                                        "assessmentMetaId": this.assessmentMetadataId,
-                                        "finalMark": mark // ToDo: de twee invullingen samen
-                                      }, { headers: { "Authorization": this.$session.get('jwt') }})
-                            }
-
-                            Vue.toasted.show(this.$t('success.mark_final'), {
-                              type: 'success',
-                              duration: 1000
-                            });
-                        });
+                Vue.toasted.show(this.$t('success.mark_final'), {
+                  type: 'success',
+                  duration: 1000
+                });
             }).catch(() => {
                 Vue.toasted.show(this.$t('error.mark_final'), {
                   type: 'error',
