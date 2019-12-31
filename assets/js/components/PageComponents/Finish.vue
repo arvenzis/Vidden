@@ -124,7 +124,7 @@ export default {
           }],
           finalMark: [{
             result: response[0].data.suggestedMark,
-            description: (response[0].data.suggestedMarkDescription === 'Insufficient' ? 'poor' : response[0].data.suggestedMarkDescription)
+            description: (response[0].data.suggestedMarkDescription === 'Insufficient' ? 'poor' : response[0].data.suggestedMarkDescription === 'Sufficient' ? 'proficient' : response[0].data.suggestedMarkDescription)
           }],
           groups: {}
         };
