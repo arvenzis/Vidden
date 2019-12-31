@@ -193,7 +193,7 @@
 
           this.items = tmpItems;
 
-          this.finalMark = this.calculateAverageMark(9, 10); //ToDo: response.data.firstTeacherMark & response.data.secondTeacherMark
+          this.finalMark = this.calculateAverageMark(response.data.firstTeacherMark, response.data.secondTeacherMark);
           this.finalMarkDescription = this.getMarkDescription(this.finalMark);
 
           Vue.toasted.show(this.$t('success.loading'), {
