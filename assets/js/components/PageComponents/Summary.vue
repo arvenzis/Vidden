@@ -96,7 +96,7 @@
       getAssessmentStatus(assessments, teacherId) {
         if (assessments.length === 0) { return 0 }
         let p = assessments.find(assessment => assessment.createdById === teacherId);
-        if (p === null) { return 0 }
+        if (p === undefined) { return 0 }
         return p.status
       },
       calculateAverageMark(firstTeacherMark, secondTeacherMark) {
@@ -151,7 +151,7 @@
           "Authorization": this.$session.get('jwt')
         }
       })
-        .then(response => {          
+        .then(response => {
           let tmpItems = [];
           tmpItems.push({
             id: response.data.id,
@@ -159,7 +159,7 @@
             templateName: response.data.templateName,
             status: this.$parent.getStatusText(response.data.status),
             oeCode: response.data.oeCode,
-            definitive: (response.data.status === 0), //ToDo: bug in api. Moet 2 zijn.
+            definitive: (response.data.status === 3), //ToDo: bug in api. Moet 2 zijn.
             finalMark: response.data.finalMark,
             student: [{
               id: response.data.studentId,
