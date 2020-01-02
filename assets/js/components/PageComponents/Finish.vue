@@ -114,9 +114,9 @@ export default {
         let metaData = {
           templateId: response[1].data.templateId,
           templateName: response[1].data.templateName,
-          status: this.$parent.getStatusText(response[1].data.status),
+          status: this.$parent.getStatusText(response[0].data.status),
           oeCode: response[1].data.oeCode,
-          definitive: (response[0].data.status === 2),
+          definitive: (response[0].data.status === 3),
           student: [{
             id: response[1].data.studentId,
             accountNumber: response[1].data.student.accountNumber,
@@ -141,7 +141,7 @@ export default {
           };
           dataObj.push(groupData);
         }
-
+console.log(response[0].data.status );
         metaData.groups = dataObj;
         self.items.push(metaData);
 

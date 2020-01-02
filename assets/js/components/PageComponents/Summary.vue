@@ -159,7 +159,7 @@
             templateName: response.data.templateName,
             status: this.$parent.getStatusText(response.data.status),
             oeCode: response.data.oeCode,
-            definitive: (response.data.status === 3), //ToDo: bug in api. Moet 2 zijn.
+            definitive: (response.data.status === 3),
             finalMark: response.data.finalMark,
             student: [{
               id: response.data.studentId,
@@ -190,7 +190,7 @@
             startDatePeriod: response.data.startDatePeriod,
             endDatePeriod: response.data.endDatePeriod
           });
-
+console.log(response.data.status);
           this.items = tmpItems;
 
           this.finalMark = this.calculateAverageMark(response.data.firstTeacherMark, response.data.secondTeacherMark);
