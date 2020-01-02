@@ -14,9 +14,9 @@ export const store = new Vuex.Store({
 		currentUser: "",
 		currentUserId: null,
 		accountNumber: "",
-		apiBaseUrl: "https://localhost:5001/api/",
-		numbers: true,
-		language: "nl_NL"
+		apiBaseUrl: "https://vidden-api.azurewebsites.net/api/",
+		useNumbers: null,
+		language: null
 	},
 	mutations: {
 		login: state => {
@@ -24,10 +24,12 @@ export const store = new Vuex.Store({
 		},
 		logout: state => {
 			state.loggedIn = false,
-				state.loggedOutSuccessful = true,
-				state.currentUser = '',
-				state.currentUserId = null,
-				state.accountNumber = ''
+			state.loggedOutSuccessful = true,
+			state.currentUser = '',
+			state.currentUserId = null,
+			state.accountNumber = '',
+			state.useNumbers = null,
+			state.language = null
 		},
 		setCurrentUser: (state, payload) => {
 			state.currentUser = payload
@@ -38,15 +40,16 @@ export const store = new Vuex.Store({
 		setAccountNumber: (state, payload) => {
 			state.accountNumber = payload
 		},
-		useTerms: (state) => {
-			state.numbers = false
+		setUseNumbersInGrading: (state, payload) => {
+			state.useNumbers = payload
 		},
-		useNumbers: (state) => {
-			state.numbers = true
-		},
-		switchLanguage: (state, payload) => {
+		setLanguage: (state, payload) => {
 			state.language = payload
 		}
-
-	}
+	},
+	getters: {
+		language: state => {
+		  return state.language
+		}
+	  }
 });

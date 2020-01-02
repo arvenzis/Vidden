@@ -74,6 +74,7 @@
         "give_assessment_in": "Grade assessment with numbers",
         "terms_instead_of_numbers_explanation": "Show terms (excellent, good, etc.) instead of numbers (4, 6, etc.) when filling out a form",
         "language": "Please select your preferred language",
+        "language_explanation": "Change the language of the app to the language of your choice"
     },
     "error": {
         "loading": "There was a problem with loading the data. Please refresh the page to try again",
@@ -111,5 +112,9 @@
         "good": "Good",
         "proficient": "Proficient",
         "poor": "Poor"
-    }
+    },
+    "language": {
+        "nl_NL": "Dutch",
+        "en_US": "English"
+    }    
 }

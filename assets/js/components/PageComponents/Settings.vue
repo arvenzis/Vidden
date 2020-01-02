@@ -9,7 +9,7 @@
                     <tr>
                         <td>
                             <div class="custom-control custom-switch">
-                                <input type="checkbox" v-model="prefersNumbers" data-toggle="toggle" class="custom-control-input" id="termsOrNumbersSwitch">
+                                <input type="checkbox" v-model="useNumbers" data-toggle="toggle" class="custom-control-input" id="termsOrNumbersSwitch">
                                 <label class="custom-control-label" for="termsOrNumbersSwitch">{{ $t('settings.give_assessment_in') }}</label>
                             </div>
                         </td>
@@ -26,11 +26,19 @@
                         <td>
                             <div class="form-group">
                                 <label for="langSwitch">{{ $t('settings.language') }}</label>
-                                <model-select :options="langOptions"
-                                      v-model="switchLanguage"
-                                      :placeholder="$t('settings.language')">
-                                </model-select>
+                                <select class="form-control" v-on:change="setLanguage($event)" v-model="this.currentLanguage">
+                                    <option value="nl_NL">🇳🇱 {{ $t('language.nl_NL') }}</option>
+                                    <option value="en_US">🇺🇸 {{ $t('language.en_US') }}</option>
+                                </select>
                             </div>
+                        </td>
+                        <td>
+                            <popper trigger="hover" :options="{ placement: 'top' }">
+                                <div class="popper">
+                                    <span>{{ $t('settings.terms_instead_of_numbers_explanation') }}</span>
+                                </div>
+                                <i class="fa fa-info-circle cursor-pointer" slot="reference"/>
+                            </popper>
                         </td>
                     </tr>
                 </table>
@@ -44,7 +52,6 @@
     import Popper from "vue-popperjs";
     import axios from "axios";
     import Spinner from "vue-simple-spinner";
-    import { ModelSelect } from 'vue-search-select'
 
     Vue.use(Popper);
 
@@ -52,59 +59,25 @@
         name: 'settings',
         data() {
           return {
-              dataReady: false,
-              prefersNumbers: false,
-              language: "nl_NL",
-              langOptions: [
-                  "nl_NL", 
-                  "en_US"
-              ],
-              langPreference: {
-                value: '',
-                text: '' 
-             },
+            dataReady: false,
+            useNumbers: this.$store.state.useNumbers,
+            currentLanguage: this.$store.getters.language,
           }
         },
         created() {
-            let self = this;
-            
-            // Since we have a different endpoint for each preference
-            // we put all endpoints in an array for use in axios all
-            let settingsEndpointsArray = [
-                `userpreference/getshowgradinginwords/${self.$store.state.currentUserId}`
-            ];
-
-            axios.all(
-                settingsEndpointsArray
-                .map(u => axios
-                    .get(self.$store.state.apiBaseUrl + u, {
-                        headers: {
-                            "Authorization": self.$session.get('jwt')
-                        }
-                    }))
-            ).then(response => {
-                this.prefersNumbers = response.data;
-                this.dataReady = true;
-            }).catch(() => {
-                Vue.toasted.show(this.$t('error.loading'), {
-                    type: 'error',
-                    duration: 1000
-                });
-            });
-
+            this.dataReady = true;
         },
-        watch: {
-            prefersNumbers: function (val) {
-                let endpoints = `userpreference/putshowgradinginwords/${this.$store.state.currentUserId}/${val}`;
+        methods: {
+            setLanguage(event) {
+                let lang = event.target.value;
+                let endpoints = `userpreference/putlanguagepreference/${this.$store.state.currentUserId}/${lang}`;
 
                 axios.put(this.$store.state.apiBaseUrl + endpoints, {}, {
                     headers: {"Authorization" : this.$session.get('jwt')}
                 }).then(() => {
-                    if(val) {
-                        this.$store.commit("useNumbers");
-                    } else {
-                        this.$store.commit("useTerms");
-                    }                    
+                    this.$store.commit("setLanguage", lang);
+                    this.$root.$i18n.locale = this.$store.getters.language;
+
                     Vue.toasted.show(this.$t('success.setting_save'), {
                         type: 'success',
                         duration: 1000
@@ -115,15 +88,20 @@
                         duration: 1000
                     });
                 });
-            },
-            switchLanguage: function (lang) {
-                let endpoints = '';
+            }
+        },
+        watch: {
+            useNumbers: function (val) {
+                let endpoints = `userpreference/putshowgradinginwords/${this.$store.state.currentUserId}/${val}`;
 
                 axios.put(this.$store.state.apiBaseUrl + endpoints, {}, {
                     headers: {"Authorization" : this.$session.get('jwt')}
                 }).then(() => {
-                    this.$store.commit("switchLanguage", lang);
-
+                    if(val) {
+                        this.$store.commit("setUseNumbersInGrading", true);
+                    } else {
+                        this.$store.commit("setUseNumbersInGrading", false);
+                    }                    
                     Vue.toasted.show(this.$t('success.setting_save'), {
                         type: 'success',
                         duration: 1000

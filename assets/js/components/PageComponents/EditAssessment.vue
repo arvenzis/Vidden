@@ -52,7 +52,7 @@
                                                             <div class="assessment__answer-body">
                                                                 <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
                                                                 <label class="form-check-label" v-bind:for="option.grade">
-                                                                    <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark terms': !this.prefersNumbers, 'assessment__answer-mark': this.prefersNumbers}]">
+                                                                    <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark terms': !this.useNumbers, 'assessment__answer-mark': this.useNumbers}]">
                                                                         {{ option.result }}
                                                                     </h1>
                                                                     {{ option.description }}
@@ -119,7 +119,7 @@
                 dataReady: false,
                 errorMessage: null,
                 tmpMenu: [],
-                prefersNumbers: this.$store.state.numbers
+                useNumbers: this.$store.state.useNumbers
             }
         },
         created () {
@@ -164,28 +164,28 @@
                                          "id": question.question.answers[0].id,
                                          "description": question.question.answers[0].text,
                                          "grade": "excellent",
-                                         "result": (self.prefersNumbers ? question.question.answers[0].mark : self.$t('assessment.excellent')),
+                                         "result": (self.useNumbers ? question.question.answers[0].mark : self.$t('assessment.excellent')),
                                          "chosen": question.question.answers[0].chosen
                                      },
                                      "good": {
                                          "id": question.question.answers[1].id,
                                          "description": question.question.answers[1].text,
                                          "grade": "good",
-                                         "result": (self.prefersNumbers ? question.question.answers[1].mark : self.$t('assessment.good')),
+                                         "result": (self.useNumbers ? question.question.answers[1].mark : self.$t('assessment.good')),
                                          "chosen": question.question.answers[1].chosen
                                      },
                                      "proficient": {
                                          "id": question.question.answers[2].id,
                                          "description": question.question.answers[2].text,
                                          "grade": "proficient",
-                                         "result": (self.prefersNumbers ? question.question.answers[2].mark : self.$t('assessment.proficient')),
+                                         "result": (self.useNumbers ? question.question.answers[2].mark : self.$t('assessment.proficient')),
                                          "chosen": question.question.answers[2].chosen
                                      },
                                      "poor": {
                                          "id": question.question.answers[3].id,
                                          "description": question.question.answers[3].text,
                                          "grade": "poor",
-                                         "result": (self.prefersNumbers ? question.question.answers[3].mark : self.$t('assessment.poor')),
+                                         "result": (self.useNumbers ? question.question.answers[3].mark : self.$t('assessment.poor')),
                                          "chosen": question.question.answers[3].chosen
                                      }
                                  },

@@ -73,7 +73,8 @@
     "settings": {
         "give_assessment_in": "Beoordeling geven in cijfers",
         "terms_instead_of_numbers_explanation": "Toon bij de antwoorden van een vraag termen (zoals excellent, goed, etc) in plaats van cijfers (zoals 4, 6, etc)",
-        "language": "Selecteer je voorkeurstaal"
+        "language": "Selecteer je voorkeurstaal",
+        "language_explanation": "Verander de taal van de applicatie naar de gekozen taal"
     },
     "error": {
         "loading": "Er was een probleem met het laden van de gegevens. Herlaad de pagina om het opnieuw te proberen.",
@@ -111,5 +112,9 @@
         "good": "Goed",
         "proficient": "Voldoende",
         "poor": "Onvoldoende"
+    },
+    "language": {
+        "nl_NL": "Nederlands",
+        "en_US": "Engels"
     }
 }
