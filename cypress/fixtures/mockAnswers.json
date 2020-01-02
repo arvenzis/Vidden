@@ -10,7 +10,7 @@
           "groupId": 1,
           "createdById": 6,
           "question": "Betreft producten:",
-          "answer": "Ik ben een test"
+          "answer": "verslag test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost tes t Joost test Joost t est Joost test Joost test Joost test \ndJoost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost"
         },
         {
           "id": 2,
@@ -18,7 +18,7 @@
           "groupId": 1,
           "createdById": 6,
           "question": "Complexiteit blijkt uit:",
-          "answer": "Alles."
+          "answer": "Alles.  test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost test Joost"
         }
       ],
       "questions": [
@@ -79,7 +79,7 @@
                 "id": 6,
                 "text": "Reageert en anticipeert uit zichzelf op knelpunten en meevallers.",
                 "mark": 8.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 7,
@@ -91,7 +91,7 @@
                 "id": 8,
                 "text": "Ongestructureerde beheeraanpak leidt tot weinig grip en sturing.",
                 "mark": 4.0,
-                "chosen": true
+                "chosen": false
               }
             ],
             "templateId": 1,
@@ -112,7 +112,7 @@
                 "id": 9,
                 "text": "Verzamelt alternatieven, onderzoekt de impact, maakt onderbouwde keuzes; blijft gekozen routes en kaders valideren.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 10,
@@ -124,7 +124,7 @@
                 "id": 11,
                 "text": "Verzamelt alternatieven, onderzoekt de impact en maakt keuzes.",
                 "mark": 6.0,
-                "chosen": true
+                "chosen": false
               },
               {
                 "id": 12,
@@ -151,13 +151,13 @@
                 "id": 13,
                 "text": "Beheert het onderhanden project, stemt af met stakeholders en houdt rekening met overdracht aan de organisatie.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 14,
                 "text": "Beheert het onderhanden project en stemt af met stakeholders.",
                 "mark": 8.0,
-                "chosen": true
+                "chosen": false
               },
               {
                 "id": 15,
@@ -190,7 +190,7 @@
                 "id": 17,
                 "text": "Volgt status van eigen werk, bepaalt mogelijke aanpassingen, voert deze door en blijft kritisch op eigen gedrag.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 18,
@@ -202,7 +202,7 @@
                 "id": 19,
                 "text": "Volgt status van eigen werk en bepaalt mogelijke aanpassingen.",
                 "mark": 6.0,
-                "chosen": true
+                "chosen": false
               },
               {
                 "id": 20,
@@ -229,7 +229,7 @@
           "groupId": 2,
           "createdById": 6,
           "question": "Betreft producten:",
-          "answer": "eindverslag,<aanvullen>"
+          "answer": "eindverslag,<aanvullen> "
         },
         {
           "id": 4,
@@ -237,7 +237,7 @@
           "groupId": 2,
           "createdById": 6,
           "question": "Complexiteit blijkt uit:",
-          "answer": "Gezeur"
+          "answer": "Gezeur "
         }
       ],
       "questions": [
@@ -259,7 +259,7 @@
                 "id": 2,
                 "text": "Werkt volgens geplande stappen naar een mijlpaal en verwerkt nieuwe inzichten.",
                 "mark": 8.0,
-                "chosen": true
+                "chosen": false
               },
               {
                 "id": 3,
@@ -271,7 +271,7 @@
                 "id": 4,
                 "text": "Ongestructureerde beheeraanpak leidt tot weinig grip en sturing.",
                 "mark": 4.0,
-                "chosen": false
+                "chosen": true
               }
             ],
             "templateId": 1,
@@ -292,7 +292,7 @@
                 "id": 5,
                 "text": "Reageert en anticipeert uit zichzelf op knelpunten en meevallers en vangt onverwachte situaties op.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 6,
@@ -304,7 +304,7 @@
                 "id": 7,
                 "text": "Werkt volgens geplande stappen naar een mijlpaal.",
                 "mark": 6.0,
-                "chosen": true
+                "chosen": false
               },
               {
                 "id": 8,
@@ -331,7 +331,7 @@
                 "id": 9,
                 "text": "Verzamelt alternatieven, onderzoekt de impact, maakt onderbouwde keuzes; blijft gekozen routes en kaders valideren.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 10,
@@ -349,7 +349,7 @@
                 "id": 12,
                 "text": "Toont weinig vaardigheid in het maken van geschikte keuzes.",
                 "mark": 4.0,
-                "chosen": true
+                "chosen": false
               }
             ],
             "templateId": 1,
@@ -370,7 +370,7 @@
                 "id": 13,
                 "text": "Beheert het onderhanden project, stemt af met stakeholders en houdt rekening met overdracht aan de organisatie.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 14,
@@ -382,7 +382,7 @@
                 "id": 15,
                 "text": "Beheert het onderhanden project.",
                 "mark": 6.0,
-                "chosen": true
+                "chosen": false
               },
               {
                 "id": 16,
@@ -409,7 +409,7 @@
                 "id": 17,
                 "text": "Volgt status van eigen werk, bepaalt mogelijke aanpassingen, voert deze door en blijft kritisch op eigen gedrag.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 18,
@@ -427,7 +427,7 @@
                 "id": 20,
                 "text": "Is weinig genegen naar status van eigen werk te kijken.",
                 "mark": 4.0,
-                "chosen": true
+                "chosen": false
               }
             ],
             "templateId": 1,
@@ -478,7 +478,7 @@
                 "id": 2,
                 "text": "Werkt volgens geplande stappen naar een mijlpaal en verwerkt nieuwe inzichten.",
                 "mark": 8.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 3,
@@ -529,7 +529,7 @@
                 "id": 8,
                 "text": "Ongestructureerde beheeraanpak leidt tot weinig grip en sturing.",
                 "mark": 4.0,
-                "chosen": false
+                "chosen": true
               }
             ],
             "templateId": 1,
@@ -550,7 +550,7 @@
                 "id": 9,
                 "text": "Verzamelt alternatieven, onderzoekt de impact, maakt onderbouwde keuzes; blijft gekozen routes en kaders valideren.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 10,
@@ -589,7 +589,7 @@
                 "id": 13,
                 "text": "Beheert het onderhanden project, stemt af met stakeholders en houdt rekening met overdracht aan de organisatie.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 14,
@@ -628,7 +628,7 @@
                 "id": 17,
                 "text": "Volgt status van eigen werk, bepaalt mogelijke aanpassingen, voert deze door en blijft kritisch op eigen gedrag.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 18,
@@ -703,7 +703,7 @@
                 "id": 3,
                 "text": "Werkt volgens geplande stappen naar een mijlpaal.",
                 "mark": 6.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 4,
@@ -736,7 +736,7 @@
                 "id": 6,
                 "text": "Reageert en anticipeert uit zichzelf op knelpunten en meevallers.",
                 "mark": 8.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 7,
@@ -769,7 +769,7 @@
                 "id": 9,
                 "text": "Verzamelt alternatieven, onderzoekt de impact, maakt onderbouwde keuzes; blijft gekozen routes en kaders valideren.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 10,
@@ -820,7 +820,7 @@
                 "id": 15,
                 "text": "Beheert het onderhanden project.",
                 "mark": 6.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 16,
@@ -865,7 +865,7 @@
                 "id": 20,
                 "text": "Is weinig genegen naar status van eigen werk te kijken.",
                 "mark": 4.0,
-                "chosen": false
+                "chosen": true
               }
             ],
             "templateId": 1,
@@ -922,7 +922,7 @@
                 "id": 3,
                 "text": "Werkt volgens geplande stappen naar een mijlpaal.",
                 "mark": 6.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 4,
@@ -955,7 +955,7 @@
                 "id": 6,
                 "text": "Reageert en anticipeert uit zichzelf op knelpunten en meevallers.",
                 "mark": 8.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 7,
@@ -988,7 +988,7 @@
                 "id": 9,
                 "text": "Verzamelt alternatieven, onderzoekt de impact, maakt onderbouwde keuzes; blijft gekozen routes en kaders valideren.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 10,
@@ -1027,7 +1027,7 @@
                 "id": 13,
                 "text": "Beheert het onderhanden project, stemt af met stakeholders en houdt rekening met overdracht aan de organisatie.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 14,
@@ -1066,7 +1066,7 @@
                 "id": 17,
                 "text": "Volgt status van eigen werk, bepaalt mogelijke aanpassingen, voert deze door en blijft kritisch op eigen gedrag.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 18,
@@ -1113,7 +1113,7 @@
           "groupId": 6,
           "createdById": 6,
           "question": "Aanvullende opmerkingen:",
-          "answer": "geen."
+          "answer": "toch wel."
         }
       ],
       "questions": [
@@ -1135,7 +1135,7 @@
                 "id": 22,
                 "text": "Is proactief, stelt uitdagende doelen en prioriteiten en handelt daar consequent naar.",
                 "mark": 8.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 23,
@@ -1168,7 +1168,7 @@
                 "id": 25,
                 "text": "Is actief bezig met de eigen ontwikkeling. Onderzoekt passende, originele oplossingen en mogelijkheden.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 26,
@@ -1213,7 +1213,7 @@
                 "id": 30,
                 "text": "Reflecteert diepgaand op eigen handelen, denken en resultaten en benoemt de effecten daarvan.",
                 "mark": 8.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 31,
@@ -1246,7 +1246,7 @@
                 "id": 33,
                 "text": "Laat een win-win houding zien en werkt effectief samen, geeft en ontvangt feedback en doet dit op constructieve wijze. Creëert win-win situaties en toont leiderschap.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 34,
@@ -1285,7 +1285,7 @@
                 "id": 37,
                 "text": "Gaat bewust om met beroepsmatige en ethische dilemma’s. Toont respect en inlevingsvermogen bij cultuurverschillen, handelt in overeenstemming met normen en waarden van de omgeving.",
                 "mark": 9.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 38,
@@ -1330,7 +1330,7 @@
                 "id": 42,
                 "text": "Communiceert effectief in het Nederlands (en Engels). Gebruikt geschikte communicatievormen en -middelen.",
                 "mark": 8.0,
-                "chosen": false
+                "chosen": true
               },
               {
                 "id": 43,
