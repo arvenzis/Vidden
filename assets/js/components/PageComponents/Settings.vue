@@ -35,7 +35,7 @@
                         <td>
                             <popper trigger="hover" :options="{ placement: 'top' }">
                                 <div class="popper">
-                                    <span>{{ $t('settings.terms_instead_of_numbers_explanation') }}</span>
+                                    <span>{{ $t('settings.language_explanation') }}</span>
                                 </div>
                                 <i class="fa fa-info-circle cursor-pointer" slot="reference"/>
                             </popper>
