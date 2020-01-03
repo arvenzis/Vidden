@@ -1,0 +1,247 @@
+{
+  "group": {
+    "id": 6,
+    "name": "Professionele Ontwikkeling",
+    "comments": null,
+    "questions": [
+      {
+        "id": 0,
+        "name": "",
+        "question": {
+          "question": "Communiceert effectief in het Nederlands (en Engels); gebruikt gangbare communicatievormen en -middelen.",
+          "keywords": "Effectief communiceren, geschikte communicatievormen en -middelen",
+          "name": null,
+          "answers": [
+            {
+              "id": 41,
+              "text": "Communiceert zeer effectief in het Nederlands (en Engels). Gebruikt passende communicatievormen en -middelen.",
+              "mark": 9.0,
+              "chosen": false
+            },
+            {
+              "id": 42,
+              "text": "Communiceert effectief in het Nederlands (en Engels). Gebruikt geschikte communicatievormen en -middelen.",
+              "mark": 8.0,
+              "chosen": true
+            },
+            {
+              "id": 43,
+              "text": "Communiceert effectief in het Nederlands (en Engels). Gebruikt gangbare communicatievormen en -middelen.",
+              "mark": 6.0,
+              "chosen": false
+            },
+            {
+              "id": 44,
+              "text": "Communiceert niet effectief in het Nederlands (en Engels). Gebruikt ongeschikte communicatievormen en -middelen.",
+              "mark": 4.0,
+              "chosen": false
+            }
+          ],
+          "templateId": 0,
+          "groupId": 6,
+          "categoryId": 3,
+          "questionId": 11
+        }
+      },
+      {
+        "id": 0,
+        "name": "",
+        "question": {
+          "question": "Houdt rekening met normen en waarden van de omgeving. Is zich bewust van beroepsmatige en ethische dilemma’s. Toont respect voor cultuurverschillen. Handelt in overeenstemming met normen en waarden van de omgeving.",
+          "keywords": "Normen en waarden, ethische dilemma’s, omgang met cultuurverschillen",
+          "name": null,
+          "answers": [
+            {
+              "id": 37,
+              "text": "Gaat bewust om met beroepsmatige en ethische dilemma’s. Toont respect en inlevingsvermogen bij cultuurverschillen, handelt in overeenstemming met normen en waarden van de omgeving.",
+              "mark": 9.0,
+              "chosen": true
+            },
+            {
+              "id": 38,
+              "text": "Houdt rekening met normen en waarden van de omgeving, is zich bewust van beroepsmatige en ethische dilemma’s. Toont respect voor cultuurverschillen, handelt in overeenstemming met normen en waarden van de omgeving.",
+              "mark": 8.0,
+              "chosen": false
+            },
+            {
+              "id": 39,
+              "text": "Houdt rekening met normen en waarden van de omgeving, is zich bewust van beroepsmatige en ethische dilemma’s. Toont respect voor cultuurverschillen.",
+              "mark": 6.0,
+              "chosen": false
+            },
+            {
+              "id": 40,
+              "text": "Houdt weinig rekening met normen en waarden van de omgeving, is zich nauwelijks bewust van beroepsmatige en ethische dilemma’s. Is zich niet bewust van en/of toont geen respect voor cultuurverschillen.",
+              "mark": 4.0,
+              "chosen": false
+            }
+          ],
+          "templateId": 0,
+          "groupId": 6,
+          "categoryId": 3,
+          "questionId": 10
+        }
+      },
+      {
+        "id": 0,
+        "name": "",
+        "question": {
+          "question": "De student laat een win-win houding zien en werkt effectief samen; geeft en ontvangt feedback en doet dit op constructieve wijze. Toont daarnaast leiderschap en creert win-win situaties.",
+          "keywords": "Effectief samenwerken, win-win, omgaan met feedback, leiderschap",
+          "name": null,
+          "answers": [
+            {
+              "id": 33,
+              "text": "Laat een win-win houding zien en werkt effectief samen, geeft en ontvangt feedback en doet dit op constructieve wijze. Creëert win-win situaties en toont leiderschap.",
+              "mark": 9.0,
+              "chosen": true
+            },
+            {
+              "id": 34,
+              "text": "Laat een win-win houding zien en werkt effectief samen, geeft en ontvangt feedback en doet dit op constructieve wijze.",
+              "mark": 8.0,
+              "chosen": false
+            },
+            {
+              "id": 35,
+              "text": "Laat een win-win houding zien en werkt effectief samen.",
+              "mark": 6.0,
+              "chosen": false
+            },
+            {
+              "id": 36,
+              "text": "Werkt weinig effectief samen en/of laat geen win-win houding zien. Geeft geen constructieve feedback en/of staat niet open voor feedback.",
+              "mark": 4.0,
+              "chosen": false
+            }
+          ],
+          "templateId": 0,
+          "groupId": 6,
+          "categoryId": 3,
+          "questionId": 9
+        }
+      },
+      {
+        "id": 0,
+        "name": "",
+        "question": {
+          "question": "De student reflecteert op eigen handelen, denken en resultaten en benoemt de effecten daarvan. Daarbij worden handelen en denken bij gesteld.",
+          "keywords": "Effecten van eigen handelen",
+          "name": null,
+          "answers": [
+            {
+              "id": 29,
+              "text": "Reflecteert diepgaand op eigen handelen, denken en resultaten, benoemt de effecten daarvan en stelt handelen en denken bij.",
+              "mark": 9.0,
+              "chosen": false
+            },
+            {
+              "id": 30,
+              "text": "Reflecteert diepgaand op eigen handelen, denken en resultaten en benoemt de effecten daarvan.",
+              "mark": 8.0,
+              "chosen": true
+            },
+            {
+              "id": 31,
+              "text": "Reflecteert op eigen handelen, denken en resultaten en benoemt de effecten daarvan.",
+              "mark": 6.0,
+              "chosen": false
+            },
+            {
+              "id": 32,
+              "text": "Reflecteert nauwelijks op eigen handelen, denken en resultaten en toont weinig inzicht in de effecten daarvan.",
+              "mark": 4.0,
+              "chosen": false
+            }
+          ],
+          "templateId": 0,
+          "groupId": 6,
+          "categoryId": 3,
+          "questionId": 8
+        }
+      },
+      {
+        "id": 0,
+        "name": "",
+        "question": {
+          "question": "De student zet stappen in eigen ontwikkeling. Zoekt nieuwe kennis daarnaast analyseert en doorziet problemen. Kiest daarbij voor bekende oplossingen.",
+          "keywords": "Analyseert eigen ontwikkeling, doorziet problemen, ziet mogelijkheden en oplossingen",
+          "name": null,
+          "answers": [
+            {
+              "id": 25,
+              "text": "Is actief bezig met de eigen ontwikkeling. Onderzoekt passende, originele oplossingen en mogelijkheden.",
+              "mark": 9.0,
+              "chosen": true
+            },
+            {
+              "id": 26,
+              "text": "Zet stappen in de eigen ontwikkeling, zoekt nieuwe kennis. Analyseert en doorziet problemen. Onderzoekt nieuwe mogelijkheden, maar kiest ook voor bekende oplossingen.",
+              "mark": 8.0,
+              "chosen": false
+            },
+            {
+              "id": 27,
+              "text": "Zet stappen in de eigen ontwikkeling, zoekt nieuwe kennis. Analyseert en doorziet problemen.",
+              "mark": 6.0,
+              "chosen": false
+            },
+            {
+              "id": 28,
+              "text": "Is weinig bezig met de eigen ontwikkeling. Toont onvoldoende inzicht in de analyse van problemen. Beperkt zich tot bestaande kennis en oplossingen.",
+              "mark": 4.0,
+              "chosen": false
+            }
+          ],
+          "templateId": 0,
+          "groupId": 6,
+          "categoryId": 3,
+          "questionId": 7
+        }
+      },
+      {
+        "id": 0,
+        "name": "",
+        "question": {
+          "question": "De student is vooral proactief. Stelt uitdagende doelen en prioriteiten. Daarnaast handelt hij hier consequent naar en kan deze doelen realiseren.",
+          "keywords": "Doelgerichtheid, pro-activiteit, prioriteiten stellen",
+          "name": null,
+          "answers": [
+            {
+              "id": 21,
+              "text": "Is proactief, stelt uitdagende doelen en prioriteiten en handelt daar consequent naar. Realiseert de gestelde doelen.",
+              "mark": 9.0,
+              "chosen": false
+            },
+            {
+              "id": 22,
+              "text": "Is proactief, stelt uitdagende doelen en prioriteiten en handelt daar consequent naar.",
+              "mark": 8.0,
+              "chosen": true
+            },
+            {
+              "id": 23,
+              "text": "Is proactief, maar een enkele keer afwachtend en afhankelijk. Stelt uitdagende doelen en prioriteiten.",
+              "mark": 6.0,
+              "chosen": false
+            },
+            {
+              "id": 24,
+              "text": "Stelt zich afwachtend en afhankelijk op, stelt geen (uitdagende) doelen en prioriteiten en/of houdt zich er niet aan.",
+              "mark": 4.0,
+              "chosen": false
+            }
+          ],
+          "templateId": 0,
+          "groupId": 6,
+          "categoryId": 3,
+          "questionId": 6
+        }
+      }
+    ]
+  },
+  "mark": 8.5,
+  "markDescription": "Good",
+  "succeedingGroupId": 6,
+  "groupStatus": 2
+}

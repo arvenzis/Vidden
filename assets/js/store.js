@@ -6,16 +6,16 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
 	plugins: [createPersistedState({
-		storage: window.sessionStorage
+		storage: window.localStorage
 	})],
 	state: {
 		loggedIn: false,
-		loggedOutSuccessful: false,
-		currentUser: "",
+		currentUser: null,
 		currentUserId: null,
-		accountNumber: "",
+		accountNumber: null,
 		apiBaseUrl: "https://vidden-api.azurewebsites.net/api/",
-		//apiBaseUrl: "https://localhost:5001/api/"
+		useNumbers: null,
+		language: null
 	},
 	mutations: {
 		login: state => {
@@ -23,10 +23,9 @@ export const store = new Vuex.Store({
 		},
 		logout: state => {
 			state.loggedIn = false,
-				state.loggedOutSuccessful = true,
-				state.currentUser = '',
-				state.currentUserId = null,
-				state.accountNumber = ''
+			state.currentUser = null,
+			state.currentUserId = null,
+			state.accountNumber = null
 		},
 		setCurrentUser: (state, payload) => {
 			state.currentUser = payload
@@ -36,6 +35,17 @@ export const store = new Vuex.Store({
 		},
 		setAccountNumber: (state, payload) => {
 			state.accountNumber = payload
+		},
+		setUseNumbersInGrading: (state, payload) => {
+			state.useNumbers = payload
+		},
+		setLanguage: (state, payload) => {
+			state.language = payload
 		}
-	}
+	},
+	getters: {
+		language: state => {
+		  return state.language
+		}
+	  }
 });

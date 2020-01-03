@@ -32,6 +32,13 @@
                                       :placeholder="$t('assessment.course_select')">
                         </model-select>
                     </div>
+                    <div class="form-group">
+                        <label>{{ $t('assessment.second_teacher') }}</label>
+                        <model-select :options="teacherOptions"
+                                      v-model="teacher"
+                                      :placeholder="$t('assessment.second_teacher_select')">
+                        </model-select>
+                    </div>
                 </div>
                 <div slot="step-2">
                     <h2 class="mb-3">{{ $t('assessment.details') }}</h2>
@@ -85,9 +92,11 @@
         name: 'new-assessment',
         data () {
             return {
+                currentUserId: this.$store.state.currentUserId,
                 studentOptions: [],
                 templateOptions: [],
                 oecodeOptions: [],
+                teacherOptions: [],
                 student: {
                     value: '',
                     text: ''
@@ -99,6 +108,10 @@
                 oecode: {
                     value: '',
                     text: '' 
+                },
+                teacher: {
+                    value: '',
+                    text: ''
                 },
                 startDate: '',
                 endDate: '',
@@ -128,6 +141,7 @@
             this.getTemplateType();
             this.getStudents();
             this.getOeCodes();
+            this.getTeachers();
         },
         methods: {
             getTemplateType() {
@@ -152,6 +166,20 @@
                         this.studentOptions = students;
                      });
             },
+            getTeachers() {
+                const ENDPOINTS = 'Teacher/GetTeachers';
+                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
+                     .then(response => {
+                        let self = this;
+                        let teachers = [];
+                        response.data.forEach(function(teacher) {
+                            if(teacher.id != self.currentUserId) {
+                                teachers.push({ value: teacher.id, text: teacher.fullName + ' (' + teacher.accountNumber + ')'});
+                            }
+                        });
+                        this.teacherOptions = teachers;
+                     });
+            },
             getOeCodes() {
                 this.oecodeOptions = [
                     {
@@ -173,6 +201,7 @@
                     "StudentId": this.student.value,
                     "CompanyId": 1,
                     "FirstTeacherId": this.$store.state.currentUserId,
+                    "secondTeacherId": this.teacher.value,
                     "OeCode": this.oecode.value,
                     "AssessmentDate": new Date().toISOString().slice(0,10),
                     "StartDatePeriod": this.startDate,
@@ -211,7 +240,7 @@
                 }
             },
             validateStepOne() {
-                if (this.student.text === "" || this.template.text === "" || this.oecode.text === "") {
+                if (this.student.text === "" || this.template.text === "" || this.oecode.text === "" || this.teacher.text === "") {
                     this.errorMessage = this.$t('error.new_assessment_validation_first_step');
                     return false;
                 }

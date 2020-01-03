@@ -42,7 +42,7 @@
                                                     <div class="popper">
                                                         <span v-for="keywords in question.children" v-bind:key="keywords" class="keyword"><strong>{{ $t('assessment.keywords') }}:</strong> {{ keywords }}</span>
                                                     </div>
-                                                    <i class="fa fa-info-circle cursor-pointer" slot="reference"></i>
+                                                    <i class="fa fa-info-circle cursor-pointer" slot="reference"/>
                                                 </popper>
                                             </h4>
                                             <div class="row row-eq-height">
@@ -51,7 +51,7 @@
                                                         <div class="assessment__answer-body">
                                                             <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
                                                             <label class="form-check-label" v-bind:for="option.grade">
-                                                                <h1 class="assessment__answer-mark" v-bind:class="[option.grade, { active: option.chosen === true }]">
+                                                                <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark terms': !this.useNumbers, 'assessment__answer-mark': this.useNumbers}]">
                                                                     {{ option.result }}
                                                                 </h1>
                                                                 {{ option.description }}
@@ -116,7 +116,8 @@
                 currentSlot: "",
                 dataReady: false,
                 errorMessage: null,
-                tmpMenu: []
+                tmpMenu: [],
+                useNumbers: this.$store.state.useNumbers
             }
         },
         created () {
@@ -161,28 +162,28 @@
                                          "id": question.question.answers[0].id,
                                          "description": question.question.answers[0].text,
                                          "grade": "excellent",
-                                         "result": question.question.answers[0].mark,
+                                         "result": (self.useNumbers ? question.question.answers[0].mark : self.$t('assessment.excellent')),
                                          "chosen": question.question.answers[0].chosen
                                      },
                                      "good": {
                                          "id": question.question.answers[1].id,
                                          "description": question.question.answers[1].text,
                                          "grade": "good",
-                                         "result":  question.question.answers[1].mark,
+                                         "result": (self.useNumbers ? question.question.answers[1].mark : self.$t('assessment.good')),
                                          "chosen": question.question.answers[1].chosen
                                      },
                                      "proficient": {
                                          "id": question.question.answers[2].id,
                                          "description": question.question.answers[2].text,
                                          "grade": "proficient",
-                                         "result":  question.question.answers[2].mark,
+                                         "result": (self.useNumbers ? question.question.answers[2].mark : self.$t('assessment.proficient')),
                                          "chosen": question.question.answers[2].chosen
                                      },
                                      "poor": {
                                          "id": question.question.answers[3].id,
                                          "description": question.question.answers[3].text,
                                          "grade": "poor",
-                                         "result":  question.question.answers[3].mark,
+                                         "result": (self.useNumbers ? question.question.answers[3].mark : self.$t('assessment.poor')),
                                          "chosen": question.question.answers[3].chosen
                                      }
                                  },
@@ -236,7 +237,7 @@
                     return true;
                 }
 
-                this.$router.push('/browse');
+                this.$router.push('/finish/' + this.assessmentMetadataId + '/' + this.examinatorId);
                 return false;
             },
             backClicked() {
@@ -264,6 +265,13 @@
                         answer.chosen = false;
                     }
                 }
+
+                //If the user has a preference set for using terms, translate it back to a number result.
+                result = (grade == 'excellent' ? 9.0
+                        : grade == 'good' ? 8.0
+                        : grade == 'proficient' ? 6.0
+                        : grade == 'poor' ? 4.0
+                        : 0.0)
 
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
@@ -322,78 +330,57 @@
                     });
                 });
             },
-            buildMenu: function (array) {
+            buildMenu: function (menuItems) {
                 let self = this;
+                let urlArray = [];
+                let tmpMenu = [];
+                let a = 0;
 
-                const timeOut = (t) => {
-                    return new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            resolve(`Completed in ${t}`)
-                        }, t)
-                    })
-                };
-
-                array.forEach(function (subject) {
-                    let endpoints = `assessment/GetSummary/${self.assessmentMetadataId}/${subject.groupId}/${self.examinatorId}`;
-
-                    axios.get(self.$store.state.apiBaseUrl + endpoints, {
-                        headers: {"Authorization" : self.$session.get('jwt')},
-                    }).then(response => {
-                        let menuObj = [];
-                        let groupId = subject.groupId;
-                        let groupData = {
-                            groupName: subject.groupName,
-                            groupId: subject.groupId,
-                            groupMark: response.data.mark,
-                            children: {}
-                        };
-
-                        for (let i in subject.questions) {
-                            let children = {
-                                uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
-                                title: subject.questions[i].assertionName,
-                                result:
-                                    subject.questions[i].answers.excellent.chosen ? 'excellent'
-                                        : subject.questions[i].answers.good.chosen ? 'good'
-                                        : subject.questions[i].answers.proficient.chosen ? 'proficient'
-                                            : subject.questions[i].answers.poor.chosen ? 'poor'
-                                                : ''
-                            };
-                            menuObj.push(children);
-                            i++;
-                        }
-
-                        groupData.children = menuObj;
-                        self.tmpMenu.push(groupData);
-                    }).catch(() => {
-                        Vue.toasted.show(self.$t('error.get_summary'), {
-                            type: 'error',
-                            duration: 1500
-                        });
-                    });
+                menuItems.forEach(function (subject) {
+                    urlArray.push(`assessment/GetSummary/${self.assessmentMetadataId}/${subject.groupId}/${self.examinatorId}`)
                 });
-
-                // Not the best way to do this, but since the promises are called dynamically (based on an array that variates in length), I don't know how else to do this
-                Promise.all([timeOut(1000)])
-                    .then(() => {
-                        function mapOrder (array, order, key) {
-                            array.sort( function (a, b) {
-                                var A = a[key], B = b[key];
-
-                                if (order.indexOf(A) > order.indexOf(B)) {
-                                    return 1;
-                                } else {
-                                    return -1;
+                axios.all(
+                        urlArray
+                        .map(u => axios
+                            .get(self.$store.state.apiBaseUrl + u, {
+                                headers: {
+                                    "Authorization": self.$session.get('jwt')
                                 }
+                            }))
+                    )
+                    .then(response => {
+                        menuItems.forEach(function (subject) {
+                            let menuObj = [];
+                            let groupId = subject.groupId;
+                            let groupData = {
+                                groupName: subject.groupName,
+                                groupId: subject.groupId,
+                                groupMark: Math.round(response[a].data.mark * 10) / 10,
+                                children: {}
+                            };
 
-                            });
+                            for (let i in subject.questions) {
+                                let children = {
+                                    uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
+                                    title: subject.questions[i].assertionName,
+                                    result: subject.questions[i].answers.excellent.chosen ? 'excellent' 
+                                            : subject.questions[i].answers.good.chosen ? 'good' 
+                                            : subject.questions[i].answers.proficient.chosen ? 'proficient' 
+                                            : subject.questions[i].answers.poor.chosen ? 'poor' 
+                                            : ''
+                                };
+                                menuObj.push(children);
+                                i++;
+                            }
 
-                            return array;
-                        }
+                            groupData.children = menuObj;
+                            tmpMenu.push(groupData);
+                        a++;    
+                        })
 
-                        self.tmpMenu = mapOrder(self.tmpMenu, array.map(g => g.groupId), 'groupId'); //Sort the sidebar menu again, as the promise(s) screwed over the order because of its "asyncness"
+                        tmpMenu = this.mapOrder(tmpMenu, menuItems.map(g => g.groupId), 'groupId'); //Sort the sidebar menu again, as the promise(s) screwed over the order because of its "asyncness"
 
-                        var output = self.tmpMenu.reduce(function (o, cur) {
+                        var output = tmpMenu.reduce(function (o, cur) {
 
                             // Get the index of the key-value pair.
                             var occurs = o.reduce(function (n, item, i) {
@@ -407,6 +394,7 @@
                                 o[occurs].children = o[occurs].children.concat(cur.children);
 
                                 // Otherwise,
+
                             } else {
 
                                 // add the current item to o.
@@ -415,14 +403,25 @@
                                     groupId: cur.groupId,
                                     groupMark: cur.groupMark,
                                     children: cur.children
-                                };
+                                }
+
                                 o = o.concat([obj]);
                             }
 
                             return o;
                         }, []);
 
+                        Vue.toasted.show(self.$t('success.menu'), {
+                            type: 'success',
+                            duration: 1500
+                        });
+
                         return this.menu = output;
+                    }).catch(error => {
+                        Vue.toasted.show(self.$t('error.menu'), {
+                            type: 'error',
+                            duration: 1500
+                        });
                     });
             },
             deepLink(index, target) {
@@ -446,6 +445,21 @@
                 this.scrollToTop();
 
                 return true;
+            },
+            mapOrder(array, order, key) {
+                array.sort(function (a, b) {
+                    var A = a[key],
+                        B = b[key];
+
+                    if (order.indexOf(A) > order.indexOf(B)) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+
+                });
+
+                return array;
             }
         },
         components: {

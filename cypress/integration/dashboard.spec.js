@@ -5,9 +5,9 @@ describe('Dashboard page', function () {
 
   after(function () {
     cy.logout()
-    cy.get('label.alert.alert-success.col-md-6.offset-md-4')
+    cy.get('.flash__message-content')
       .should('be.visible')
-      .and('contain', 'U bent uitgelogd.')
+      .and('contain', 'Je bent uitgelogd')
   })
 
   describe('Nieuw/bladeren/instellingen', function () {
@@ -26,7 +26,7 @@ describe('Dashboard page', function () {
     })
 
     it('Instellingen: Should redirect to settings page', function () {
-      cy.get('a').contains('INSTELLINGEN').click()
+      cy.get('a').contains('Instellingen').click()
       cy.url().should('include', '/settings')
     })
   })
