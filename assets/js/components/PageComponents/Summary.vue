@@ -54,12 +54,12 @@
                   <h5 class="card-title mb-3">{{ $t('summary.form_by', { user: examinator.name + ' (' + examinator.account + ')' }) }}</h5>
                   <div class="row">
                     <div class="col-6 col-md-4">
-                      <router-link :to="'/edit/' + item.id + '/' + examinator.id ">
+                      <router-link :to="(assessment.status === 'final') ? '/edit/' + item.id + '/' + examinator.id : '#' ">
                         <button class="btn btn-windesheim" :disabled="assessment.status === 'final'">{{ $t('summary.open') }}</button>
                       </router-link>
                     </div>
                     <div class="col-6 col-md-5">
-                      <router-link :to="'/finish/' + item.id + '/' + examinator.id ">
+                      <router-link :to="(assessment.status === 'final') ? '/finish/' + item.id + '/' + examinator.id : '#'">
                         <button class="btn btn-windesheim" :disabled="assessment.status !== 'final'">{{ $t('summary.show_summary') }}</button>
                       </router-link>
                     </div>
