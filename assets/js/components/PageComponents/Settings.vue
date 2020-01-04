@@ -72,7 +72,7 @@
                     headers: {"Authorization" : this.$session.get('jwt')}
                 }).then(() => {
                     this.$store.commit("setLanguage", lang);
-                    this.$root.$i18n.locale = this.$store.getters.language;
+                    this.$root.$i18n.locale = this.$store.getters.getLanguage;
 
                     Vue.toasted.show(this.$t('success.setting_save'), {
                         type: 'success',
