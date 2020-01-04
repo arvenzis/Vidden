@@ -348,78 +348,57 @@
                     });
                 });
             },
-            buildMenu: function (array) {
+            buildMenu: function (menuItems) {
                 let self = this;
+                let urlArray = [];
+                let tmpMenu = [];
+                let a = 0;
 
-                const timeOut = (t) => {
-                    return new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            resolve(`Completed in ${t}`)
-                        }, t)
-                    })
-                };
-
-                array.forEach(function (subject) {
-                    let endpoints = `assessment/GetSummary/${self.assessmentMetadataId}/${subject.groupId}/${self.examinatorId}`;
-
-                    axios.get(self.$store.state.apiBaseUrl + endpoints, {
-                        headers: {"Authorization" : self.$session.get('jwt')},
-                    }).then(response => {
-                        let menuObj = [];
-                        let groupId = subject.groupId;
-                        let groupData = {
-                            groupName: subject.groupName,
-                            groupId: subject.groupId,
-                            groupMark: response.data.mark,
-                            children: {}
-                        };
-
-                        for (let i in subject.questions) {
-                            let children = {
-                                uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
-                                title: subject.questions[i].assertionName,
-                                result:
-                                    subject.questions[i].answers.excellent.chosen ? 'excellent'
-                                        : subject.questions[i].answers.good.chosen ? 'good'
-                                        : subject.questions[i].answers.proficient.chosen ? 'proficient'
-                                            : subject.questions[i].answers.poor.chosen ? 'poor'
-                                                : ''
-                            };
-                            menuObj.push(children);
-                            i++;
-                        }
-
-                        groupData.children = menuObj;
-                        self.tmpMenu.push(groupData);
-                    }).catch(() => {
-                        Vue.toasted.show(self.$t('error.get_summary'), {
-                            type: 'error',
-                            duration: 1500
-                        });
-                    });
+                menuItems.forEach(function (subject) {
+                    urlArray.push(`assessment/GetSummary/${self.assessmentMetadataId}/${subject.groupId}/${self.examinatorId}`)
                 });
-
-                // Not the best way to do this, but since the promises are called dynamically (based on an array that variates in length), I don't know how else to do this
-                Promise.all([timeOut(1000)])
-                    .then(() => {
-                        function mapOrder (array, order, key) {
-                            array.sort( function (a, b) {
-                                var A = a[key], B = b[key];
-
-                                if (order.indexOf(A) > order.indexOf(B)) {
-                                    return 1;
-                                } else {
-                                    return -1;
+                axios.all(
+                        urlArray
+                        .map(u => axios
+                            .get(self.$store.state.apiBaseUrl + u, {
+                                headers: {
+                                    "Authorization": self.$session.get('jwt')
                                 }
+                            }))
+                    )
+                    .then(response => {
+                        menuItems.forEach(function (subject) {
+                            let menuObj = [];
+                            let groupId = subject.groupId;
+                            let groupData = {
+                                groupName: subject.groupName,
+                                groupId: subject.groupId,
+                                groupMark: Math.round(response[a].data.mark * 10) / 10,
+                                children: {}
+                            };
 
-                            });
+                            for (let i in subject.questions) {
+                                let children = {
+                                    uuid: 'q' + groupId + '' + subject.questions[i].categoryId + '' + subject.questions[i].questionId,
+                                    title: subject.questions[i].assertionName,
+                                    result: subject.questions[i].answers.excellent.chosen ? 'excellent' 
+                                            : subject.questions[i].answers.good.chosen ? 'good' 
+                                            : subject.questions[i].answers.proficient.chosen ? 'proficient' 
+                                            : subject.questions[i].answers.poor.chosen ? 'poor' 
+                                            : ''
+                                };
+                                menuObj.push(children);
+                                i++;
+                            }
 
-                            return array;
-                        }
+                            groupData.children = menuObj;
+                            tmpMenu.push(groupData);
+                        a++;    
+                        })
 
-                        self.tmpMenu = mapOrder(self.tmpMenu, array.map(g => g.groupId), 'groupId'); //Sort the sidebar menu again, as the promise(s) screwed over the order because of its "asyncness"
+                        tmpMenu = this.mapOrder(tmpMenu, menuItems.map(g => g.groupId), 'groupId'); //Sort the sidebar menu again, as the promise(s) screwed over the order because of its "asyncness"
 
-                        var output = self.tmpMenu.reduce(function (o, cur) {
+                        var output = tmpMenu.reduce(function (o, cur) {
 
                             // Get the index of the key-value pair.
                             var occurs = o.reduce(function (n, item, i) {
@@ -433,6 +412,7 @@
                                 o[occurs].children = o[occurs].children.concat(cur.children);
 
                                 // Otherwise,
+
                             } else {
 
                                 // add the current item to o.
@@ -441,14 +421,25 @@
                                     groupId: cur.groupId,
                                     groupMark: cur.groupMark,
                                     children: cur.children
-                                };
+                                }
+
                                 o = o.concat([obj]);
                             }
 
                             return o;
                         }, []);
 
+                        Vue.toasted.show(self.$t('success.menu'), {
+                            type: 'success',
+                            duration: 1500
+                        });
+
                         return this.menu = output;
+                    }).catch(error => {
+                        Vue.toasted.show(self.$t('error.menu'), {
+                            type: 'error',
+                            duration: 1500
+                        });
                     });
             },
             deepLink(index, target) {
@@ -472,6 +463,21 @@
                 this.scrollToTop();
 
                 return true;
+            },
+            mapOrder(array, order, key) {
+                array.sort(function (a, b) {
+                    var A = a[key],
+                        B = b[key];
+
+                    if (order.indexOf(A) > order.indexOf(B)) {
+                        return 1;
+                    } else {
+                        return -1;
+                    }
+
+                });
+
+                return array;
             }
         },
         components: {

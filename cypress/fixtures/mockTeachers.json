@@ -1,0 +1,28 @@
+[
+  {
+    "id": 6,
+    "firstName": "Arjen",
+    "lastName": "Korevaar",
+    "insertion": null,
+    "emailAddress": "BV0111996@windesheim.nl",
+    "password": "Welkom01!",
+    "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjYiLCJyb2xlIjoiVGVhY2hlciIsImVtYWlsIjoiQlYwMTExOTk2QHdpbmRlc2hlaW0ubmwiLCJuYmYiOjE1NzcwODQwNjMsImV4cCI6MTU3NzE3MDQ2MywiaWF0IjoxNTc3MDg0MDYzfQ.d0XJY1vBce_o5YNu1vx4YH0A0geSKi5r8OUjHZhKWLY",
+    "accountNumber": "BV0111996",
+    "role": 0,
+    "isShowGradingInWordsEnabled": true,
+    "fullName": "Arjen Korevaar"
+  },
+  {
+    "id": 7,
+    "firstName": "Eugene",
+    "lastName": "Roden",
+    "insertion": "van",
+    "emailAddress": "RNE02@windesheim.nl",
+    "password": "Welkom01!",
+    "token": null,
+    "accountNumber": "P69750694",
+    "role": 0,
+    "isShowGradingInWordsEnabled": false,
+    "fullName": "Eugene van Roden"
+  }
+]

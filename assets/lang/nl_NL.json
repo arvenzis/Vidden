@@ -78,6 +78,7 @@
     },
     "error": {
         "loading": "Er was een probleem met het laden van de gegevens. Herlaad de pagina om het opnieuw te proberen.",
+        "menu": "Er was een probleem bij het laden van het menu. Herlaad de pagina om het opnieuw te proberen.",
         "new_assessment_save": "Er is iets misgegaan bij het opslaan van de beoordeling.",
         "new_assessment_validation_first_step": "Je hebt geen template, student, onderwijseenheid of tweede beoordelaar gekozen.",
         "new_assessment_validation_second_step": "Niet alle gegevens zijn ingevuld.",
@@ -95,6 +96,7 @@
     },
     "success": {
         "loading": "Items geladen",
+        "menu": "Menu geladen",
         "new_assessment_save": "Je beoordeling is succesvol aangemaakt",
         "answer_save": "Antwoord opgeslagen",
         "comment_save": "Opmerking opgeslagen",
