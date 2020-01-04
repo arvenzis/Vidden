@@ -92,7 +92,7 @@
         name: 'new-assessment',
         data () {
             return {
-                currentUserId: this.$store.state.currentUserId,
+                currentUserId: this.$store.getters.getCurrentUserId,
                 studentOptions: [],
                 templateOptions: [],
                 oecodeOptions: [],
@@ -146,7 +146,7 @@
         methods: {
             getTemplateType() {
                 const ENDPOINTS = 'Template/';
-                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
+                axios.get(this.$store.getters.getApiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
                      .then(response => {
                          let templates = [];
                          response.data.forEach(function(template) {
@@ -157,7 +157,7 @@
             },
             getStudents() {
                 const ENDPOINTS = 'Student/GetStudents';
-                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
+                axios.get(this.$store.getters.getApiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
                      .then(response => {
                         let students = [];
                         response.data.forEach(function(student) {
@@ -168,7 +168,7 @@
             },
             getTeachers() {
                 const ENDPOINTS = 'Teacher/GetTeachers';
-                axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
+                axios.get(this.$store.getters.getApiBaseUrl + ENDPOINTS, { headers: {"Authorization" : this.$session.get('jwt')} })
                      .then(response => {
                         let self = this;
                         let teachers = [];
@@ -190,17 +190,17 @@
             },
             createAssessmentMetaData() {
                 const ENDPOINTS = 'assessment';
-                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
+                axios.post(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
                     "Name": this.template.text,
                     "IsActive": 1,
                     "CreatedAt": new Date().toISOString().slice(0,10),
-                    "CreatedbyId": this.$store.state.currentUserId,
+                    "CreatedbyId": this.$store.getters.getCurrentUserId,
                     "UpdatedAt": new Date().toISOString().slice(0,10),
-                    "UpdatedbyId": this.$store.state.currentUserId,
+                    "UpdatedbyId": this.$store.getters.getCurrentUserId,
                     "TemplateId": this.template.value,
                     "StudentId": this.student.value,
                     "CompanyId": 1,
-                    "FirstTeacherId": this.$store.state.currentUserId,
+                    "FirstTeacherId": this.$store.getters.getCurrentUserId,
                     "secondTeacherId": this.teacher.value,
                     "OeCode": this.oecode.value,
                     "AssessmentDate": new Date().toISOString().slice(0,10),

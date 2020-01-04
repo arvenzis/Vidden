@@ -54,10 +54,10 @@ new Vue({
   },
   created: function () {
     if (Vue.prototype.$session.exists()) {
-      this.$store.state.loggedIn = true;
+      this.$store.commit("login");
     }
 
-    this.$i18n.locale = this.$store.getters.language;
+    this.$i18n.locale = this.$store.getters.getLanguage;
   },
   components: {
     AppLogin,

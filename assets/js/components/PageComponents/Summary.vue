@@ -66,7 +66,7 @@
       return {
         id: this.$route.params.id,
         items: [],
-        currentUserId: this.$store.state.currentUserId,
+        currentUserId: this.$store.getters.getCurrentUserId,
         loading: false
       }
     },
@@ -83,7 +83,7 @@
     created() {
       this.loading = true;
       const ENDPOINTS = 'Assessment/' + this.id;
-      axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, {
+      axios.get(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
         headers: {
           "Authorization": this.$session.get('jwt')
         }

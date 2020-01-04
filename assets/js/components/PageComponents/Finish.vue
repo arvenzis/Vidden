@@ -89,7 +89,7 @@ export default {
       assessmentMetadataId: this.$route.params.assessmentMetadataId,
       examinatorId: this.$route.params.examinatorId,
       items: [],
-      currentUserId: this.$store.state.currentUserId,
+      currentUserId: this.$store.getters.getCurrentUserId,
       loading: false
     };
   },
@@ -100,8 +100,8 @@ export default {
   methods: {
     getData() {
       axios.all([
-        axios.get(this.$store.state.apiBaseUrl + `assessment/${this.assessmentMetadataId}/fullsummary/${this.examinatorId}`, { headers: { Authorization: this.$session.get("jwt") } }),
-        axios.get(this.$store.state.apiBaseUrl + `assessment/${this.assessmentMetadataId}`, { headers: { Authorization: this.$session.get("jwt") } }),
+        axios.get(this.$store.getters.getApiBaseUrl + `assessment/${this.assessmentMetadataId}/fullsummary/${this.examinatorId}`, { headers: { Authorization: this.$session.get("jwt") } }),
+        axios.get(this.$store.getters.getApiBaseUrl + `assessment/${this.assessmentMetadataId}`, { headers: { Authorization: this.$session.get("jwt") } }),
       ])
       .then(response => {
         // response[0] = the summary response
@@ -163,7 +163,7 @@ export default {
     completeAssessment(mark) {
       const ENDPOINTS = 'assessment/finalize';
 
-      axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
+      axios.post(this.$store.getters.getApiBaseUrl + ENDPOINTS,
       	{
           "userId": this.examinatorId,
           "assessmentMetaId": this.assessmentMetadataId,

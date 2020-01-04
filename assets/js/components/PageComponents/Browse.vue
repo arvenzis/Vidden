@@ -135,7 +135,7 @@
       },
       //alle items van de account-lijst
       getItemsAccount: function (items) {
-        var accountLoggedIn = (this.$store.state.accountNumber)
+        var accountLoggedIn = (this.$store.getters.getAccountNumber)
         var allAccountItems = []
         for (var i = 0; i < items.length; i++) {
           if (accountLoggedIn == items[i].examinator[0].account) {
@@ -159,7 +159,7 @@
         this.loading = true;
         const ENDPOINTS = "Assessment/GetAssessments/";
         axios
-          .get(this.$store.state.apiBaseUrl + ENDPOINTS, {
+          .get(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
             headers: {
               Authorization: this.$session.get("jwt")
             }
