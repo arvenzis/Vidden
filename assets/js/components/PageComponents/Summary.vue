@@ -153,7 +153,6 @@
       })
         .then(response => {
           let tmpItems = [];
-          console.log(response.data.status);
           tmpItems.push({
             id: response.data.id,
             templateId: response.data.templateId,
