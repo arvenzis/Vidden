@@ -125,7 +125,7 @@ export default {
           }],
           groups: {}
         };
-        
+
         for(var i in response[0].data.summaries) {
           let groupData = {
             groupId: response[0].data.summaries[i].group.id,
@@ -147,7 +147,6 @@ export default {
           duration: 1000
         });
 
-        console.log(self.items);
         this.loading = false;
       })
       .catch(error => {
