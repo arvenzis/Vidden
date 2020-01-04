@@ -45,19 +45,17 @@
                                                     <i class="fa fa-info-circle cursor-pointer" slot="reference"/>
                                                 </popper>
                                             </h4>
-                                            <div v-if="answerReady">
-                                                <div class="row row-eq-height">
-                                                    <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
-                                                        <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
-                                                            <div class="assessment__answer-body">
-                                                                <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
-                                                                <label class="form-check-label" v-bind:for="option.grade">
-                                                                    <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark terms': !this.prefersNumbers, 'assessment__answer-mark': this.prefersNumbers}]">
-                                                                        {{ option.result }}
-                                                                    </h1>
-                                                                    {{ option.description }}
-                                                                </label>
-                                                            </div>
+                                            <div class="row row-eq-height">
+                                                <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
+                                                    <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
+                                                        <div class="assessment__answer-body">
+                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
+                                                            <label class="form-check-label" v-bind:for="option.grade">
+                                                                <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark terms': !this.useNumbers, 'assessment__answer-mark': this.useNumbers}]">
+                                                                    {{ option.result }}
+                                                                </h1>
+                                                                {{ option.description }}
+                                                            </label>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -117,26 +115,10 @@
                 currentStep: 0,
                 currentSlot: "",
                 dataReady: false,
-                answerReady: false,
                 errorMessage: null,
                 tmpMenu: [],
-                prefersNumbers: false
+                useNumbers: this.$store.state.useNumbers
             }
-        },
-        mounted() {
-            let endpoints = `userpreference/getshowgradinginwords/${this.$store.state.currentUserId}`;
-
-            axios.get(this.$store.state.apiBaseUrl + endpoints, {
-                headers: {"Authorization" : this.$session.get('jwt')},
-            }).then(response => {
-                this.prefersNumbers = response.data;
-                this.answerReady = true;
-            }).catch(() => {
-                Vue.toasted.show(this.$t('error.loading'), {
-                    type: 'error',
-                    duration: 1000
-                });
-            });
         },
         created () {
             const ENDPOINTS = `assessment/${this.assessmentMetadataId}/question/${this.examinatorId}`;
@@ -180,28 +162,28 @@
                                          "id": question.question.answers[0].id,
                                          "description": question.question.answers[0].text,
                                          "grade": "excellent",
-                                         "result": (self.prefersNumbers ? question.question.answers[0].mark : self.$t('assessment.excellent')),
+                                         "result": (self.useNumbers ? question.question.answers[0].mark : self.$t('assessment.excellent')),
                                          "chosen": question.question.answers[0].chosen
                                      },
                                      "good": {
                                          "id": question.question.answers[1].id,
                                          "description": question.question.answers[1].text,
                                          "grade": "good",
-                                         "result": (self.prefersNumbers ? question.question.answers[1].mark : self.$t('assessment.good')),
+                                         "result": (self.useNumbers ? question.question.answers[1].mark : self.$t('assessment.good')),
                                          "chosen": question.question.answers[1].chosen
                                      },
                                      "proficient": {
                                          "id": question.question.answers[2].id,
                                          "description": question.question.answers[2].text,
                                          "grade": "proficient",
-                                         "result": (self.prefersNumbers ? question.question.answers[2].mark : self.$t('assessment.proficient')),
+                                         "result": (self.useNumbers ? question.question.answers[2].mark : self.$t('assessment.proficient')),
                                          "chosen": question.question.answers[2].chosen
                                      },
                                      "poor": {
                                          "id": question.question.answers[3].id,
                                          "description": question.question.answers[3].text,
                                          "grade": "poor",
-                                         "result": (self.prefersNumbers ? question.question.answers[3].mark : self.$t('assessment.poor')),
+                                         "result": (self.useNumbers ? question.question.answers[3].mark : self.$t('assessment.poor')),
                                          "chosen": question.question.answers[3].chosen
                                      }
                                  },

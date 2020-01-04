@@ -104,11 +104,13 @@ export default {
             this.$session.start();
             this.$session.set("jwt", response.data.token);
           }
-          this.loading = false;
           this.$store.commit("login");
           this.$store.commit("setCurrentUser", response.data.fullName);
           this.$store.commit("setCurrentUserId", response.data.id);
           this.$store.commit("setAccountNumber", response.data.accountNumber);
+          
+          this.getUserPreferences(response.data.id);
+          this.loading = false;
         })
         .catch(e => {
           this.loading = false;
@@ -135,10 +137,42 @@ export default {
       hidePassword() {
         this.$refs.passwordToggle.innerHTML = "🙈";
         this.$refs.passwordInput.setAttribute('type','password');
-      }
+      },
+      getUserPreferences(userId) {
+        let self = this;
+
+        // Since we have a different endpoint for each preference
+        // we put all endpoints in an array for use in axios all
+        let settingsEndpointsArray = [
+            `userpreference/getshowgradinginwords/${userId}`,
+            `userpreference/getlanguagepreference/${userId}`
+        ];
+
+        axios.all(
+            settingsEndpointsArray
+            .map(u => axios
+                .get(self.$store.state.apiBaseUrl + u, {
+                    headers: {
+                        "Authorization": self.$session.get('jwt')
+                    }
+                }))
+        ).then(axios.spread(function (useNumbersInGrading, languagePreference) {
+            self.$store.commit("setUseNumbersInGrading", useNumbersInGrading.data)
+            self.$store.commit("setLanguage", languagePreference.data)
+            
+            // If in a magical way the languagepreference was changed
+            // outside the app, then set use this one
+            self.$root.$i18n.locale = languagePreference.data;
+          })
+        ).catch(() => {
+            // Failed to set the preferences, set the defaults
+            self.$store.commit("setUseNumbersInGrading", true)
+            self.$store.commit("setLanguage", "nl_NL")
+        })     
     },
     components: {
       Spinner
     }
-  };
+  }
+}
 </script>
