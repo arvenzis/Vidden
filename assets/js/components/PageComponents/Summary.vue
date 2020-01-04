@@ -54,7 +54,7 @@
                   <h5 class="card-title mb-3">{{ $t('summary.form_by', { user: examinator.name + ' (' + examinator.account + ')' }) }}</h5>
                   <div class="row">
                     <div class="col-6 col-md-4">
-                      <router-link :to="(assessment.status === 'final') ? '/edit/' + item.id + '/' + examinator.id : '#' ">
+                      <router-link :to="(assessment.status !== 'final') ? '/edit/' + item.id + '/' + examinator.id : '#' ">
                         <button class="btn btn-windesheim" :disabled="assessment.status === 'final'">{{ $t('summary.open') }}</button>
                       </router-link>
                     </div>
@@ -153,6 +153,7 @@
       })
         .then(response => {
           let tmpItems = [];
+          console.log(response.data.status);
           tmpItems.push({
             id: response.data.id,
             templateId: response.data.templateId,
