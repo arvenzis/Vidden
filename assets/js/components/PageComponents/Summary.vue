@@ -190,7 +190,7 @@
             startDatePeriod: response.data.startDatePeriod,
             endDatePeriod: response.data.endDatePeriod
           });
-console.log(response.data.status);
+
           this.items = tmpItems;
 
           this.finalMark = this.calculateAverageMark(response.data.firstTeacherMark, response.data.secondTeacherMark);
