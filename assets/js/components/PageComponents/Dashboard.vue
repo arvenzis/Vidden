@@ -53,7 +53,9 @@ export default {
         })
         .then(response => {
           if (response.status === 200) {
+            // Destroy the session
             this.$session.destroy();
+            // Make sure to remove user specific variables from the store. Let's Marie Condo this thing.
             this.$store.commit("logout");
             this.flash('Je bent uitgelogd', 'success', {
                 timeout: 2000

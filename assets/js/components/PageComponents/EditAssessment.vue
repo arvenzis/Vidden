@@ -195,6 +195,7 @@
                          self.assertions.push(groupData);
                     });
 
+                    // Build the "slot" labels. The things at the top of the wizard.
                     let array = [];
                     for (let i = 0; i < this.assertions.length; i++) {
                         let label = this.assertions[i].groupName;
@@ -206,6 +207,7 @@
 
                     this.steps = array;
                     this.currentSlot = this.getCurrentSlot();
+                    // Build the sidebar
                     this.buildMenu(this.assertions);
                     this.dataReady = true;
 
@@ -236,7 +238,7 @@
                     this.scrollToTop();
                     return true;
                 }
-
+                // Push to the finish page
                 this.$router.push('/finish/' + this.assessmentMetadataId + '/' + this.examinatorId);
                 return false;
             },
@@ -336,6 +338,7 @@
                 let tmpMenu = [];
                 let a = 0;
 
+                // Build an endpoint foreach compentence
                 menuItems.forEach(function (subject) {
                     urlArray.push(`assessment/GetSummary/${self.assessmentMetadataId}/${subject.groupId}/${self.examinatorId}`)
                 });
@@ -446,6 +449,7 @@
 
                 return true;
             },
+            // Reset an array order previously messed up by another action
             mapOrder(array, order, key) {
                 array.sort(function (a, b) {
                     var A = a[key],

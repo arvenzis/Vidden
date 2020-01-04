@@ -161,7 +161,7 @@ export default {
             self.$store.commit("setLanguage", languagePreference.data)
             
             // If in a magical way the languagepreference was changed
-            // outside the app, then set use this one
+            // outside the app, then use this one
             self.$root.$i18n.locale = languagePreference.data;
           })
         ).catch(() => {
