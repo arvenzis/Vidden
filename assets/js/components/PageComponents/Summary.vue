@@ -160,7 +160,7 @@
             templateName: response.data.templateName,
             status: this.$parent.getStatusText(response.data.status),
             oeCode: response.data.oeCode,
-            definitive: (response.data.status === 3),
+            definitive: (response.data.status === 2),
             finalMark: response.data.finalMark,
             student: [{
               id: response.data.studentId,
