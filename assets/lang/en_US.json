@@ -90,7 +90,7 @@
         "setting_save": "Something went wrong on saving the preference",
         "mark_final": "Your assessment couldn't be made final. Please try again",
         "get_summary": "Something went wrong on retrieving the summary",
-        "login_400": "JYour username and/of password isn't correct",
+        "login_400": "Your username and/of password isn't correct",
         "login_500": "Something went wrong on communicating with the server. Please try again",
         "login_else": "{error} Please try again",
         "wrong_examinator_id": "Only the teacher that created this assessment can complete it.",
