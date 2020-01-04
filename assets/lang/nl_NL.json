@@ -70,7 +70,8 @@
         "excellent": "Excellent",
         "good": "Goed",
         "proficient": "Voldoende",
-        "poor": "Onvoldoende"
+        "poor": "Onvoldoende",
+        "disabled": "Deze invulling staat in alleen-lezen modus omdat de bovenliggende beoordeling definitief is gemaakt"
     },
     "settings": {
         "give_assessment_in": "Beoordeling geven in cijfers",

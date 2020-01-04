@@ -70,7 +70,8 @@
         "excellent": "Excellent",
         "good": "Good",
         "proficient": "Proficient",
-        "poor": "Poor"
+        "poor": "Poor",
+        "disabled": "This form is in read-only mode because the parent assessment has been finalized"
     },
     "settings": {
         "give_assessment_in": "Grade assessment with numbers",
