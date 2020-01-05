@@ -21,7 +21,7 @@ const i18n = new VueI18n({
     'nl_NL': require('../lang/nl_NL.json'),
     'en_US': require('../lang/en_US.json')
   }
-})
+});
 
 new Vue({
   router,
@@ -54,7 +54,9 @@ new Vue({
   },
   created: function () {
     if (Vue.prototype.$session.exists()) {
-      this.$store.commit("login");
+      this.$store.state.loggedIn = true;
+    } else {
+      this.$store.commit("logout");
     }
 
     this.$i18n.locale = this.$store.getters.getLanguage;
