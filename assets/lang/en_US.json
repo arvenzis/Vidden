@@ -45,7 +45,7 @@
     "assessment": {
         "new": "New assessment",
         "template": "Template",
-        "template_select": "Selecteer a template",
+        "template_select": "Select a template",
         "student": "Student",
         "student_select": "Select a student",
         "course": "Course",
