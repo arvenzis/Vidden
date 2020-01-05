@@ -3,16 +3,15 @@
     <div class="row justify-content-center">
       <div class="col-md-7">
         <div class="card">
-          <spinner id="spinner" v-if="loading"></spinner>
+          <spinner id="spinner" v-if="loading"/>
           <div class="card-body" v-bind:class="{ overlay : loading}">
             <h5 class="card-title mb-3">{{ $t('login.title') }}</h5>
             <form id="app" @submit="validateCredentials" method="post">
-              <flash-message class="flashpool"></flash-message>
+              <flash-message class="flashpool"/>
               <div class="form-group row">
-                <label
-                  for="emailaddress"
-                  class="col-md-4 col-form-label text-md-right"
-                >{{ $t("login.username") }}</label>
+                <label for="emailaddress" class="col-md-4 col-form-label text-md-right">
+                  {{ $t("login.username") }}
+                </label>
 
                 <div class="col-md-6">
                   <input

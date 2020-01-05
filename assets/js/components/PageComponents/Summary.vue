@@ -37,7 +37,7 @@
             </table>
           </div>
           <div class="col-sm-4 col-md-4">
-            <div class="card" :class="finalMarkDescription">
+            <div :class="'card--' + finalMarkDescription">
               <div class="card-body">
                   <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
                   <h1 class="text-center"><input type="number" v-model.number="finalMark" step="0.0" class="final-mark" :disabled="modifyFinalMarkDisabled" /></h1>

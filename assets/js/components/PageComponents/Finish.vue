@@ -38,7 +38,7 @@
           </div>
           <div class="col-sm-4 col-md-4">
             <span v-for="finalMark in item.finalMark" :key="finalMark.result">
-              <div class="card" :class="finalMark.description.toLowerCase()">
+              <div :class="'card--' + finalMark.description.toLowerCase()">
                 <div class="card-body">
                   <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
                   <h1 class="text-center"><input type="number" v-model.number="finalMark.result" step="0.01" class="final-mark" :disabled="item.definitive" /></h1>
