@@ -6,16 +6,16 @@
             <spinner id="spinner--full-top" v-if="!dataReady"/>
             <div v-else>
                 <Sidebar class="sidebar" right :crossIcon="false">
-                    <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
-                        <h6 class="group-title">
+                    <div v-for="(item, index) in menu" v-bind:key="item.index" class="sidebar__group">
+                        <h6 class="group--title">
                             <router-link to="#" @click.native="deepLinkHeading(index)" class="no-link">{{ item.groupName }}</router-link>
                             <span class="badge badge-pill" v-bind:class="{ 'badge-success': item.groupMark >= 5.5, 'badge-danger': item.groupMark <= 5.5 }" v-if="item.groupMark !== 0">
                                 {{ item.groupMark }}
                             </span>
                         </h6>
-                        <span v-for="child in item.children" v-bind:key="child.uuid" class="child" v-bind:class="child.result">
+                        <span v-for="child in item.children" v-bind:key="child.uuid" class="sidebar__group--child" v-bind:class="'sidebar__group--child--' + child.result">
                             <router-link to="#" @click.native="deepLink(index, child.uuid)" class="link">    
-                                <span class="child-title">{{ child.title }}</span>
+                                <span class="sidebar__group--child--title">{{ child.title }}</span>
                             </router-link>
                         </span>
                     </div>    
