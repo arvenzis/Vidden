@@ -125,6 +125,6 @@ $poor: #F16682;
     content: ", ";
 }
 
-input:disabled {
+input:disabled, button:disabled {
     cursor: not-allowed;
 }
