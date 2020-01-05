@@ -124,3 +124,7 @@ $poor: #F16682;
 .keyword + .keyword:before {
     content: ", ";
 }
+
+input:disabled, button:disabled {
+    cursor: not-allowed;
+}
