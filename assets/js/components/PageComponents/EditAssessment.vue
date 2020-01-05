@@ -1,8 +1,9 @@
 <template>
     <div class="container dashboard-container">
         <div class="path"><router-link :to="'/summary/' + this.assessmentMetadataId" class="ml-2">{{ $t('common.summary') }}</router-link> &gt; {{ $t('common.edit') }}</div>
+        <div class="alert alert-warning mt-3 mb-3" role="alert" v-if="this.metaFinal">{{ $t('assessment.disabled') }}</div> 
         <section class="mt-5 mb-5">
-            <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
+            <spinner id="spinner--full-top" v-if="!dataReady"/>
             <div v-else>
                 <Sidebar class="sidebar" right :crossIcon="false">
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
@@ -49,7 +50,7 @@
                                                 <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
                                                     <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
                                                         <div class="assessment__answer-body">
-                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" />
+                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" :disabled="metaFinal" />
                                                             <label class="form-check-label" v-bind:for="option.grade">
                                                                 <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark terms': !this.useNumbers, 'assessment__answer-mark': this.useNumbers}]">
                                                                     {{ option.result }}
@@ -69,7 +70,7 @@
                                         <div v-for="comment in item.comments" v-bind:key="comment.question">
                                             <div class="form-group">
                                                 <label for="opmerkingen">{{ comment.question }}</label>
-                                                <textarea name="opmerkingen" id="opmerkingen" v-model="comment.answer" v-on:change="saveComment(item.groupId, comment)" class="form-control" rows="3"></textarea>
+                                                <textarea name="opmerkingen" id="opmerkingen" v-model="comment.answer" v-on:change="saveComment(item.groupId, comment)" class="form-control" rows="3" :disabled="metaFinal"></textarea>
                                             </div>
                                         </div>
                                     </footer>
@@ -117,107 +118,121 @@
                 dataReady: false,
                 errorMessage: null,
                 tmpMenu: [],
-                useNumbers: this.$store.state.useNumbers
+                useNumbers: this.$store.state.useNumbers,
+                metaFinal: null
             }
         },
         created () {
-            const ENDPOINTS = `assessment/${this.assessmentMetadataId}/question/${this.examinatorId}`;
-            axios.get(this.$store.state.apiBaseUrl + ENDPOINTS,
-                {
-                    headers: {"Authorization" : this.$session.get('jwt')}
-                })
-                .then(response => {
-                    let self = this;
-                     response.data.groups.forEach(function(group) {
-                         let questionObj = [];
-                         let groupData = {
-                             "groupId": group.id,
-                             "groupName": group.name,
-                             "comments": {
-                                 "product": {
-                                     "id": group.comments[0].id,
-                                     "question": group.comments[0].question,
-                                     "answer": group.comments[0].answer
-                                 },
-                                 "complexity": {
-                                     "id": group.comments[1].id,
-                                     "question": group.comments[1].question,
-                                     "answer": group.comments[1].answer
-                                 }
-                             },
-                             "questions": {}
-                         };
+            let metaStatus = '';
+            let self = this;
 
-                         group.questions.forEach(function(question) {
-                            let questionsData = {
-                                 "templateId": question.question.templateId,
-                                 "assertionName": question.question.name,
-                                 "categoryName": question.name,
-                                 "categoryId": question.question.categoryId,
-                                 "questionId": question.question.questionId,
-                                 "children": [question.question.keywords],
-                                 "question": question.question.question,
-                                 "answers": {
-                                     "excellent": {
-                                         "id": question.question.answers[0].id,
-                                         "description": question.question.answers[0].text,
-                                         "grade": "excellent",
-                                         "result": (self.useNumbers ? question.question.answers[0].mark : self.$t('assessment.excellent')),
-                                         "chosen": question.question.answers[0].chosen
-                                     },
-                                     "good": {
-                                         "id": question.question.answers[1].id,
-                                         "description": question.question.answers[1].text,
-                                         "grade": "good",
-                                         "result": (self.useNumbers ? question.question.answers[1].mark : self.$t('assessment.good')),
-                                         "chosen": question.question.answers[1].chosen
-                                     },
-                                     "proficient": {
-                                         "id": question.question.answers[2].id,
-                                         "description": question.question.answers[2].text,
-                                         "grade": "proficient",
-                                         "result": (self.useNumbers ? question.question.answers[2].mark : self.$t('assessment.proficient')),
-                                         "chosen": question.question.answers[2].chosen
-                                     },
-                                     "poor": {
-                                         "id": question.question.answers[3].id,
-                                         "description": question.question.answers[3].text,
-                                         "grade": "poor",
-                                         "result": (self.useNumbers ? question.question.answers[3].mark : self.$t('assessment.poor')),
-                                         "chosen": question.question.answers[3].chosen
-                                     }
-                                 },
-                             };
-                             questionObj.push(questionsData);
-                         });
-
-                         groupData.questions = questionObj;
-                         self.assertions.push(groupData);
-                    });
-
-                    // Build the "slot" labels. The things at the top of the wizard.
-                    let array = [];
-                    for (let i = 0; i < this.assertions.length; i++) {
-                        let label = this.assertions[i].groupName;
-                        let obj = { label: label, slot: label.toLowerCase().replace(' ', '-') };
-                        if (!this.containsObject(obj, array)) {
-                            array.push(obj);
-                        }
+            let ENDPOINTS = [
+                `assessment/${this.assessmentMetadataId}`,
+                `assessment/${this.assessmentMetadataId}/question/${this.examinatorId}`          
+            ] 
+            
+            axios.all(
+            ENDPOINTS
+            .map(e => axios
+                .get(this.$store.state.apiBaseUrl + e, {
+                    headers: {
+                        "Authorization": this.$session.get('jwt')
                     }
+                }))
+            ).then(axios.spread(function (assessmentMetadata, assessmentFormdata) {
+                // Pull up the status of the metadata
+                (assessmentMetadata.data.status === 3 ? metaStatus = true : metaStatus = false)
+                
+                // Process the form data
+                assessmentFormdata.data.groups.forEach(function(group) {
+                    let questionObj = [];
+                    let groupData = {
+                        "groupId": group.id,
+                        "groupName": group.name,
+                        "comments": {
+                            "product": {
+                                "id": group.comments[0].id,
+                                "question": group.comments[0].question,
+                                "answer": group.comments[0].answer
+                            },
+                            "complexity": {
+                                "id": group.comments[1].id,
+                                "question": group.comments[1].question,
+                                "answer": group.comments[1].answer
+                            }
+                        },
+                        "questions": {}
+                    };
 
-                    this.steps = array;
-                    this.currentSlot = this.getCurrentSlot();
-                    // Build the sidebar
-                    this.buildMenu(this.assertions);
-                    this.dataReady = true;
-
-                    Vue.toasted.show(this.$t('success.loading'), {
-                        type: 'success',
-                        duration: 1000
+                    group.questions.forEach(function(question) {
+                        let questionsData = {
+                            "templateId": question.question.templateId,
+                            "assertionName": question.question.name,
+                            "categoryName": question.name,
+                            "categoryId": question.question.categoryId,
+                            "questionId": question.question.questionId,
+                            "children": [question.question.keywords],
+                            "question": question.question.question,
+                            "answers": {
+                                "excellent": {
+                                    "id": question.question.answers[0].id,
+                                    "description": question.question.answers[0].text,
+                                    "grade": "excellent",
+                                    "result": (self.useNumbers ? question.question.answers[0].mark : self.$t('assessment.excellent')),
+                                    "chosen": question.question.answers[0].chosen
+                                },
+                                "good": {
+                                    "id": question.question.answers[1].id,
+                                    "description": question.question.answers[1].text,
+                                    "grade": "good",
+                                    "result": (self.useNumbers ? question.question.answers[1].mark : self.$t('assessment.good')),
+                                    "chosen": question.question.answers[1].chosen
+                                },
+                                "proficient": {
+                                    "id": question.question.answers[2].id,
+                                    "description": question.question.answers[2].text,
+                                    "grade": "proficient",
+                                    "result": (self.useNumbers ? question.question.answers[2].mark : self.$t('assessment.proficient')),
+                                    "chosen": question.question.answers[2].chosen
+                                },
+                                "poor": {
+                                    "id": question.question.answers[3].id,
+                                    "description": question.question.answers[3].text,
+                                    "grade": "poor",
+                                    "result": (self.useNumbers ? question.question.answers[3].mark : self.$t('assessment.poor')),
+                                    "chosen": question.question.answers[3].chosen
+                                }
+                            },
+                        };
+                        questionObj.push(questionsData);
                     });
-                }).catch(() => {
-                    this.errorMessage = this.$t('error.loading');
-            });
+
+                    groupData.questions = questionObj;
+                    self.assertions.push(groupData);
+                });
+
+                let array = [];
+                for (let i = 0; i < self.assertions.length; i++) {
+                    let label = self.assertions[i].groupName;
+                    let obj = { label: label, slot: label.toLowerCase().replace(' ', '-') };
+                    if (!self.containsObject(obj, array)) {
+                        array.push(obj);
+                    }
+                }
+
+                self.metaFinal = metaStatus;
+                self.steps = array;
+                self.currentSlot = self.getCurrentSlot();
+                self.buildMenu(self.assertions);                              
+                self.dataReady = true;
+
+                Vue.toasted.show(self.$t('success.loading'), {
+                    type: 'success',
+                    duration: 1000
+                });
+            })).catch(() => {
+                this.errorMessage = self.$t('error.loading');
+            })
         },
         methods: {
             getCurrentSlot() {
@@ -269,11 +284,11 @@
                 }
 
                 //If the user has a preference set for using terms, translate it back to a number result.
-                result = (grade == 'excellent' ? 9.0
-                        : grade == 'good' ? 8.0
-                        : grade == 'proficient' ? 6.0
-                        : grade == 'poor' ? 4.0
-                        : 0.0)
+                result = (grade === 'excellent' ? 9.0
+                        : grade === 'good' ? 8.0
+                        : grade === 'proficient' ? 6.0
+                        : grade === 'poor' ? 4.0
+                        : 0.0);
 
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
