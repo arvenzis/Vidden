@@ -38,7 +38,9 @@
         "form_by": "Form by {user}",
         "open": "Open form",
         "details": "Details",
-        "finalize_mark": "Make result final"
+        "finalize_mark": "Make result final",
+        "finalize_mark_confirm": "Are you sure that you want to complete this assessment? You cannot adjust the assessment once completed.",
+        "show_summary": "View summary"
     },
     "assessment": {
         "new": "New assessment",
@@ -88,9 +90,11 @@
         "setting_save": "Something went wrong on saving the preference",
         "mark_final": "Your assessment couldn't be made final. Please try again",
         "get_summary": "Something went wrong on retrieving the summary",
-        "login_400": "JYour username and/of password isn't correct",
+        "login_400": "Your username and/of password isn't correct",
         "login_500": "Something went wrong on communicating with the server. Please try again",
-        "login_else": "{error} Please try again"
+        "login_else": "{error} Please try again",
+        "wrong_examinator_id": "Only the teacher that created this assessment can complete it.",
+        "finalize_assessment": "Something went wrong completing the assessment"
     },
     "success": {
         "loading": "Items loaded",
