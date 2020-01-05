@@ -168,11 +168,12 @@ export default {
             // Failed to set the preferences, set the defaults
             self.$store.commit("setUseNumbersInGrading", true)
             self.$store.commit("setLanguage", "nl_NL")
-        })     
+          })
+      }  
     },
     components: {
       Spinner
     }
-  }
+ 
 }
 </script>

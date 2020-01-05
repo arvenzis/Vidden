@@ -1,6 +1,6 @@
 describe('Login page', function () {
   beforeEach(function () {
-    cy.visit('https://vidden.karenbrakband.nl')
+    cy.visit('')
   })
 
   after(function () {
@@ -8,7 +8,7 @@ describe('Login page', function () {
   })
 
   it('Should redirect to https://password.windesheim.nl when password is forgotten', function () {
-    cy.get('a').contains('Wachtwoord vergeten?').should('have.attr', 'href', 'https://password.windesheim.nl')
+    cy.get('a').contains('Forgot password?').should('have.attr', 'href', 'https://password.windesheim.nl')
   })
 
   it('Should display an error on absent credentials', function () {
@@ -18,11 +18,11 @@ describe('Login page', function () {
       .should('have.attr', 'required', 'required')
   })
 
-  it('Should show the password when mouse hover on field toggle', function () {    
+  it('Should show the password when mouse hover on field toggle', function () {
     cy.get('input[name=password]').type('password123')
     cy.get('input[name=password]').should('have.value', 'password123').should('have.attr', 'type', 'password')
     cy.get('.d-none.d-md-block.password_field__toggle').trigger('mouseover')
-    cy.get('input[name=password]').should('have.value', 'password123').should('have.attr', 'type', 'text')    
+    cy.get('input[name=password]').should('have.value', 'password123').should('have.attr', 'type', 'text')
   })
 
   it('Should display a spinner when loading', function () {
@@ -34,7 +34,7 @@ describe('Login page', function () {
     })
     cy.route('POST', 'Authenticate').as('authenticate')
     cy.get('input[name=emailaddress]').type('test@test.com')
-    cy.get('input[name=password]').type('password123{enter}') 
+    cy.get('input[name=password]').type('password123{enter}')
 
     // spinner should be visible during loading
     cy.get('.vue-simple-spinner').should('be.visible')
@@ -56,7 +56,7 @@ describe('Login page', function () {
     // we should have visible errors now
     cy.get('.toasted-container.top-right')
       .should('be.visible')
-      .and('contain', 'Je gebruikersnaam en / of wachtwoord is onjuist')
+      .and('contain', "Your username and/of password isn't correct")
   })
 
   it('Should redirect to /dashboard on success', function () {
@@ -67,3 +67,4 @@ describe('Login page', function () {
     cy.get('span.header__user').should('contain', 'Arjen Korevaar')
   })
 })
+
