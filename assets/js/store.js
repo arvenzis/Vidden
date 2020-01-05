@@ -44,7 +44,28 @@ export const store = new Vuex.Store({
 		}
 	},
 	getters: {
-		language: state => {
+		getLoginStatus: state => {
+			return state.loggedIn
+		},
+		getCurrentUser: state => {
+			return state.currentUser
+		},
+		getCurrentUserId: state => {
+			return state.currentUserId
+		},
+		getCurrentUserFull: state => {
+			return state.currentUser + ' (' + state.accountNumber + ')'
+		},
+		getAccountNumber: state => {
+			return state.accountNumber
+		},
+		getApiBaseUrl: state => {
+			return state.apiBaseUrl
+		},
+		getUseNumbers: state => {
+			return state.useNumbers
+		},
+		getLanguage: state => {
 		  return state.language
 		}
 	  }

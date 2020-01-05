@@ -85,7 +85,7 @@
       return {
         id: this.$route.params.id,
         items: [],
-        currentUserId: this.$store.state.currentUserId,
+        currentUserId: this.$store.getters.getCurrentUserId,
         finalMarkDescription: null,
         loading: false
       }
@@ -123,7 +123,7 @@
 
         if (confirm(this.$t('summary.finalize_mark_confirm'))) {
           const ENDPOINTS = 'assessment/finalizemeta';
-          axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
+          axios.post(this.$store.getters.getApiBaseUrl + ENDPOINTS,
                   {
                     "userId": this.currentUserId,
                     "assessmentMetaId": this.id,
@@ -146,7 +146,7 @@
     created() {
       this.loading = true;
       const ENDPOINTS = 'Assessment/' + this.id;
-      axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, {
+      axios.get(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
         headers: {
           "Authorization": this.$session.get('jwt')
         }
