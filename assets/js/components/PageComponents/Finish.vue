@@ -1,20 +1,22 @@
 <template>
-  <div class="container dashboard-container">
-    <flash-message class="flashpool"></flash-message>
+  <spinner id="spinner" v-if="loading"/>
+  <div class="container dashboard-container" v-else>
+    <flash-message class="flashpool"/>
     <div class="path">
-      <router-link
-        :to="'/edit/' + this.assessmentMetadataId + '/' + this.examinatorId"
-        class="ml-2"
-      >{{ $t('common.edit') }}</router-link>
-      &gt; {{ $t('common.finish') }}
+      <router-link :to="'/summary/' + this.assessmentMetadataId" class="ml-2">{{ $t('common.summary') }}</router-link>
+      <span v-if="!this.items[0].definitive">
+        &gt;
+        <router-link :to="'/edit/' + this.assessmentMetadataId + '/' + this.examinatorId">{{ $t('common.edit') }}</router-link>
+      </span>
+      &gt;
+      {{ $t('common.finish') }}
     </div>
     <article class="mt-5 mb-5">
-      <spinner id="spinner" v-if="loading"></spinner>
-      <div v-else v-for="item in this.items" :key="item.id">
+      <div v-for="item in this.items" :key="item.id">
         <span v-for="student in item.student" v-bind:key="student.accountNumber">
-          <h3
-            class="mt-3"
-          >{{ $t('summary.title', { oeCode: item.oeCode, user: student.fullName + ' (' + student.accountNumber + ')' }) }}</h3>
+          <h3 class="mt-3">
+            {{ $t('summary.title', { oeCode: item.oeCode, user: student.fullName + ' (' + student.accountNumber + ')' }) }}
+          </h3>
         </span>
 
         <div class="row">
@@ -39,8 +41,8 @@
               <div class="card" :class="finalMark.description.toLowerCase()">
                 <div class="card-body">
                   <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
-                  <h1 class="text-center"><input type="number" v-model.number="finalMark.result" step="any" class="finalMarkInput" /></h1>
-                  <button type="button" class="btn btn-light btn-block mt-1" @click="completeAssessment(finalMark.result)">{{ $t('summary.finalize_mark') }}</button>
+                  <h1 class="text-center"><input type="number" v-model.number="finalMark.result" step="0.01" class="finalMarkInput" :disabled="item.definitive" /></h1>
+                  <button type="button" class="btn btn-light btn-block mt-1" @click="completeAssessment(finalMark.result)" :disabled="item.definitive">{{ $t('summary.finalize_mark') }}</button>
                 </div>
               </div>
             </span>
@@ -89,7 +91,7 @@ export default {
       assessmentMetadataId: this.$route.params.assessmentMetadataId,
       examinatorId: this.$route.params.examinatorId,
       items: [],
-      currentUserId: this.$store.state.currentUserId,
+      currentUserId: this.$store.getters.getCurrentUserId,
       loading: false
     };
   },
@@ -100,8 +102,8 @@ export default {
   methods: {
     getData() {
       axios.all([
-        axios.get(this.$store.state.apiBaseUrl + `assessment/${this.assessmentMetadataId}/fullsummary/${this.examinatorId}`, { headers: { Authorization: this.$session.get("jwt") } }),
-        axios.get(this.$store.state.apiBaseUrl + `assessment/${this.assessmentMetadataId}`, { headers: { Authorization: this.$session.get("jwt") } }),
+        axios.get(this.$store.getters.getApiBaseUrl + `assessment/${this.assessmentMetadataId}/fullsummary/${this.examinatorId}`, { headers: { Authorization: this.$session.get("jwt") } }),
+        axios.get(this.$store.getters.getApiBaseUrl + `assessment/${this.assessmentMetadataId}`, { headers: { Authorization: this.$session.get("jwt") } }),
       ])
       .then(response => {
         // response[0] = the summary response
@@ -112,8 +114,9 @@ export default {
         let metaData = {
           templateId: response[1].data.templateId,
           templateName: response[1].data.templateName,
-          status: this.$parent.getStatusText(response[1].data.status),
+          status: this.$parent.getStatusText(response[0].data.status),
           oeCode: response[1].data.oeCode,
+          definitive: (response[0].data.status === 3),
           student: [{
             id: response[1].data.studentId,
             accountNumber: response[1].data.student.accountNumber,
@@ -121,12 +124,12 @@ export default {
           }],
           finalMark: [{
             result: response[0].data.suggestedMark,
-            description: (response[0].data.suggestedMarkDescription === 'Insufficient' ? 'poor' : response[0].data.suggestedMarkDescription)
+            description: (response[0].data.suggestedMarkDescription === 'Insufficient' ? 'poor' : response[0].data.suggestedMarkDescription === 'Sufficient' ? 'proficient' : response[0].data.suggestedMarkDescription)
           }],
           groups: {}
         };
-        
-        for(var i in response[0].data.summaries) {
+
+        for(let i in response[0].data.summaries) {
           let groupData = {
             groupId: response[0].data.summaries[i].group.id,
             groupName: response[0].data.summaries[i].group.name,
@@ -137,8 +140,8 @@ export default {
             }]
           };
           dataObj.push(groupData);
-        };
-
+        }
+console.log(response[0].data.status );
         metaData.groups = dataObj;
         self.items.push(metaData);
 
@@ -147,11 +150,10 @@ export default {
           duration: 1000
         });
 
-        console.log(self.items);
         this.loading = false;
       })
-      .catch(error => {
-        
+      .catch(() => {
+
         Vue.toasted.show(this.$t("error.loading"), {
           type: "error",
           duration: 2000
@@ -161,30 +163,31 @@ export default {
       })
     },
     completeAssessment(mark) {
-      const ENDPOINTS = 'assessment/finalize';
+      if (this.items[0].definitive) {
+        return false;
+      }
 
-      axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
-      	{
-          "userId": this.examinatorId,
-          "assessmentMetaId": this.assessmentMetadataId,
-          "finalMark": mark
-      	}, {
-      		headers: {
-      			"Authorization": this.$session.get('jwt')
-      		}
-        })
-        .then(() => {
-          Vue.toasted.show(this.$t('success.mark_final'), {
-            type: 'success',
-            duration: 1000
-          });
-        })
-        .catch(() => {
-          Vue.toasted.show(this.$t('error.mark_final'), {
-            type: 'error',
-            duration: 1000
-          });
+      if (confirm(this.$t('summary.finalize_mark_confirm'))) {
+        const ENDPOINTS = 'assessment/finalize';
+
+        axios.post(this.$store.getters.getApiBaseUrl + ENDPOINTS,
+                  {
+                    "userId": this.examinatorId,
+                    "assessmentMetaId": this.assessmentMetadataId,
+                    "finalMark": mark
+                  }, { headers: { "Authorization": this.$session.get('jwt') }})
+              .then(() => {
+                Vue.toasted.show(this.$t('success.mark_final'), {
+                  type: 'success',
+                  duration: 1000
+                });
+            }).catch(() => {
+                Vue.toasted.show(this.$t('error.mark_final'), {
+                  type: 'error',
+                  duration: 1000
+              });
         });
+      }
     }
   },
   components: {
