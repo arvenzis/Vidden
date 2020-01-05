@@ -230,9 +230,8 @@
                     type: 'success',
                     duration: 1000
                 });
-            })).catch(error => {
+            })).catch(() => {
                 this.errorMessage = self.$t('error.loading');
-                console.log(error);
             })
         },
         methods: {
