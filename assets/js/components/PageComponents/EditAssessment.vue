@@ -179,28 +179,28 @@
                                     "description": question.question.answers[0].text,
                                     "grade": "excellent",
                                     "result": (self.useNumbers ? question.question.answers[0].mark : self.$t('assessment.excellent')),
-                                    "chosen": question.question.answers[0].chosen,
+                                    "chosen": question.question.answers[0].chosen
                                 },
                                 "good": {
                                     "id": question.question.answers[1].id,
                                     "description": question.question.answers[1].text,
                                     "grade": "good",
                                     "result": (self.useNumbers ? question.question.answers[1].mark : self.$t('assessment.good')),
-                                    "chosen": question.question.answers[1].chosen,
+                                    "chosen": question.question.answers[1].chosen
                                 },
                                 "proficient": {
                                     "id": question.question.answers[2].id,
                                     "description": question.question.answers[2].text,
                                     "grade": "proficient",
                                     "result": (self.useNumbers ? question.question.answers[2].mark : self.$t('assessment.proficient')),
-                                    "chosen": question.question.answers[2].chosen,
+                                    "chosen": question.question.answers[2].chosen
                                 },
                                 "poor": {
                                     "id": question.question.answers[3].id,
                                     "description": question.question.answers[3].text,
                                     "grade": "poor",
                                     "result": (self.useNumbers ? question.question.answers[3].mark : self.$t('assessment.poor')),
-                                    "chosen": question.question.answers[3].chosen,
+                                    "chosen": question.question.answers[3].chosen
                                 }
                             },
                         };
