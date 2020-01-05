@@ -110,7 +110,7 @@
     },
     methods: {
       showTab: function (e, index) {
-        if (index == 0) {
+        if (index === 0) {
           this.showAll = true
         } else {
           this.showAll = false
@@ -144,8 +144,8 @@
           else {
             //niet alle beoordelingen hebben een tweede examinator
             try {
-              if (typeof items[i].examinator[1].account != undefined) {
-                if (accountLoggedIn == items[i].examinator[1].account) {
+              if (typeof items[i].examinator[1].account !== undefined) {
+                if (accountLoggedIn === items[i].examinator[1].account) {
                   allAccountItems.push(items[i])
                 }
               }
@@ -165,10 +165,11 @@
             }
           })
           .then(response => {
-            var items = []
-            for (var x in response.data) {
-              var createdAt = new Date(response.data[x].assessmentDate);
-              var updatedAt = new Date(response.data[x].assessmentDate);
+            var items = [];
+
+            for (let x in response.data) {
+              let createdAt = new Date(response.data[x].assessmentDate);
+              let updatedAt = new Date(response.data[x].assessmentDate);
               items.push({
                 id: response.data[x].id,
                 status: this.$parent.getStatusText(response.data[x].status),
@@ -189,12 +190,12 @@
                 ]
               });
             }
-            this.itemsAll = items
-            this.totalPagesAll = this.getNumberOfPages(items)
-            this.itemsCurrentPageAll = this.getPageItems(items, this.pageAll)
-            this.itemsAccount = this.getItemsAccount(items)
-            this.totalPagesAccount = this.getNumberOfPages(this.itemsAccount)
-            this.itemsCurrentPageAccount = this.getPageItems(this.itemsAccount, this.pageAccount)
+            this.itemsAll = items;
+            this.totalPagesAll = this.getNumberOfPages(items);
+            this.itemsCurrentPageAll = this.getPageItems(items, this.pageAll);
+            this.itemsAccount = this.getItemsAccount(items);
+            this.totalPagesAccount = this.getNumberOfPages(this.itemsAccount);
+            this.itemsCurrentPageAccount = this.getPageItems(this.itemsAccount, this.pageAccount);
             this.loading = false;
           });
 
@@ -207,12 +208,12 @@
     },
     watch: {
       pageAll: function () {
-        this.itemsCurrentPageAll = this.getPageItems(this.itemsAll, this.pageAll)
+        this.itemsCurrentPageAll = this.getPageItems(this.itemsAll, this.pageAll);
       },
       pageAccount: function () {
-        this.itemsAccount = this.getItemsAccount(this.itemsAll)
-        this.totalPagesAccount = this.getNumberOfPages(this.itemsAccount)
-        this.itemsCurrentPageAccount = this.getPageItems(this.itemsAccount, this.pageAccount)
+        this.itemsAccount = this.getItemsAccount(this.itemsAll);
+        this.totalPagesAccount = this.getNumberOfPages(this.itemsAccount);
+        this.itemsCurrentPageAccount = this.getPageItems(this.itemsAccount, this.pageAccount);
       },
     },
     mounted: function () {

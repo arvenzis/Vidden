@@ -38,7 +38,9 @@
         "form_by": "Invulling door {user}",
         "open": "Open invulling",
         "details": "Details",
-        "finalize_mark": "Cijfer definitief maken"
+        "finalize_mark": "Cijfer definitief maken",
+        "finalize_mark_confirm": "Weet je zeker dat je de beoordeling definitief wilt maken? De beoordeling is hierna niet meer te wijzigen.",
+        "show_summary": "Samenvatting inzien"
     },
     "assessment": {
         "new": "Nieuwe beoordeling",
@@ -90,7 +92,9 @@
         "get_summary": "Er is iets misgegaan bij het ophalen van de samenvatting.",
         "login_400": "Je gebruikersnaam en / of wachtwoord is onjuist",
         "login_500": "Er was een probleem bij het communiceren met de server. Probeer het nog eens",
-        "login_else": "{error} Probeer het nog eens."
+        "login_else": "{error} Probeer het nog eens.",
+        "wrong_examinator_id": "Enkel de examinator die deze assessment aangemaakt heeft, kan hem afronden.",
+        "finalize_assessment": "Er is iets misgegaan bij het afronden van de beoordeling"
     },
     "success": {
         "loading": "Items geladen",
@@ -99,7 +103,7 @@
         "answer_save": "Antwoord opgeslagen",
         "comment_save": "Opmerking opgeslagen",
         "setting_save": "Voorkeur opgeslagen",
-        "mark_final": "Je beoordeling is definitief"
+        "mark_final": "Je beoordeling is definitief gemaakt"
     },
     "status": {
         "new": "Nieuw",

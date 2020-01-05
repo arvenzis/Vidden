@@ -2,7 +2,7 @@
     <div class="container dashboard-container">
         <div class="path"><router-link :to="'/summary/' + this.assessmentMetadataId" class="ml-2">{{ $t('common.summary') }}</router-link> &gt; {{ $t('common.edit') }}</div>
         <section class="mt-5 mb-5">
-            <spinner id="spinner--full-top" v-if="!dataReady"></spinner>
+            <spinner id="spinner--full-top" v-if="!dataReady"/>
             <div v-else>
                 <Sidebar class="sidebar" right :crossIcon="false">
                     <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
@@ -267,11 +267,11 @@
                 }
 
                 //If the user has a preference set for using terms, translate it back to a number result.
-                result = (grade == 'excellent' ? 9.0
-                        : grade == 'good' ? 8.0
-                        : grade == 'proficient' ? 6.0
-                        : grade == 'poor' ? 4.0
-                        : 0.0)
+                result = (grade === 'excellent' ? 9.0
+                        : grade === 'good' ? 8.0
+                        : grade === 'proficient' ? 6.0
+                        : grade === 'poor' ? 4.0
+                        : 0.0);
 
                 const ENDPOINTS = 'assessment/AnswerSave';
                 axios.post(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
