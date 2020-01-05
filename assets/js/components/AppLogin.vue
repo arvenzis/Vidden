@@ -95,7 +95,7 @@ export default {
       e.preventDefault();
       this.loading = true;
       axios
-        .post(this.$store.state.apiBaseUrl + ENDPOINTS, {
+        .post(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
           emailaddress: this.emailaddress,
           password: this.password
         })

@@ -118,7 +118,7 @@
                 dataReady: false,
                 errorMessage: null,
                 tmpMenu: [],
-                useNumbers: this.$store.state.useNumbers,
+                useNumbers: this.$store.getters.getUseNumbers,
                 metaFinal: null
             }
         },
@@ -134,7 +134,7 @@
             axios.all(
             ENDPOINTS
             .map(e => axios
-                .get(this.$store.state.apiBaseUrl + e, {
+                .get(this.$store.getters.getApiBaseUrl + e, {
                     headers: {
                         "Authorization": this.$session.get('jwt')
                     }
@@ -291,7 +291,7 @@
                         : 0.0);
 
                 const ENDPOINTS = 'assessment/AnswerSave';
-                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS, {
+                axios.post(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
                     "assessmentMetadataId": this.assessmentMetadataId,
                     "templateId": questionData.templateId,
                     "groupId": groupId,
@@ -320,7 +320,7 @@
             saveComment(groupId, comment) {
                 const ENDPOINTS = 'assessment/CommentsSave';
 
-                axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
+                axios.post(this.$store.getters.getApiBaseUrl + ENDPOINTS,
                     [
                         {
                             "id": comment.id,

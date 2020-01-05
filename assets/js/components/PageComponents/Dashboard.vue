@@ -46,7 +46,7 @@ export default {
     logout: function() {
       const ENDPOINTS = "User/Logout/";
       axios
-        .get(this.$store.state.apiBaseUrl + ENDPOINTS, {
+        .get(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
           headers: {
             Authorization: this.$session.get("jwt")
           }

@@ -149,6 +149,6 @@ input, .final-mark {
     content: ", ";
 }
 
-input:disabled {
+input:disabled, button:disabled {
     cursor: not-allowed;
 }

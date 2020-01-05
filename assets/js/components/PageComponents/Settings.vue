@@ -59,20 +59,20 @@
         data() {
           return {
             dataReady: false,
-            useNumbers: this.$store.state.useNumbers,
-            currentLanguage: this.$store.getters.language,
+            useNumbers: this.$store.getters.getUseNumbers,
+            currentLanguage: this.$store.getters.getLanguage,
           }
         },
         methods: {
             setLanguage(event) {
                 let lang = event.target.value;
-                let endpoints = `userpreference/putlanguagepreference/${this.$store.state.currentUserId}/${lang}`;
+                let endpoints = `userpreference/putlanguagepreference/${this.$store.getters.getCurrentUserId}/${lang}`;
 
-                axios.put(this.$store.state.apiBaseUrl + endpoints, {}, {
+                axios.put(this.$store.getters.getApiBaseUrl + endpoints, {}, {
                     headers: {"Authorization" : this.$session.get('jwt')}
                 }).then(() => {
                     this.$store.commit("setLanguage", lang);
-                    this.$root.$i18n.locale = this.$store.getters.language;
+                    this.$root.$i18n.locale = this.$store.getters.getLanguage;
 
                     Vue.toasted.show(this.$t('success.setting_save'), {
                         type: 'success',
@@ -88,9 +88,9 @@
         },
         watch: {
             useNumbers: function (val) {
-                let endpoints = `userpreference/putshowgradinginwords/${this.$store.state.currentUserId}/${val}`;
+                let endpoints = `userpreference/putshowgradinginwords/${this.$store.getters.getCurrentUserId}/${val}`;
 
-                axios.put(this.$store.state.apiBaseUrl + endpoints, {}, {
+                axios.put(this.$store.getters.getApiBaseUrl + endpoints, {}, {
                     headers: {"Authorization" : this.$session.get('jwt')}
                 }).then(() => {
                     this.$store.commit("setUseNumbersInGrading", val);
