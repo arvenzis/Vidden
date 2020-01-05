@@ -94,12 +94,12 @@
     },
     computed: {
       modifyFinalMarkDisabled: function() {
-        
         // If the status of the meta is equal to Final
         // OR
         // If the firstTeacherId is not equal to the currentUserId
         // OR
         // If the firstTeacherId is not equal to the currentUserId AND the status of the meta is equal to Final
+        
         return (this.final || this.firstTeacherId !== this.currentUserId || ( this.firstTeacherId !== this.currentUserId && this.final ) )
       }
     },
