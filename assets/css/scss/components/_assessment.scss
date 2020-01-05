@@ -1,8 +1,3 @@
-$excellent: $color-windesheim-green;
-$good: #B1D249;
-$proficient: $color-windesheim-yellow;
-$poor: #F16682;
-
 .assessment {
     &__question {
         margin-top: 15px;
@@ -26,39 +21,43 @@ $poor: #F16682;
         margin: 15px;
         z-index: 1;
 
-        &-body {
+        &--body {
             -ms-flex: 1 1 auto;
             flex: 1 1 auto;
             padding: 1.25rem;
         }
 
-        &-mark {
+        &--mark {
             vertical-align: middle;
             display: inline;
             margin-right: 4px;
 
-            &.excellent {
+            &--excellent {
                 color: $excellent;
             }
-            &.good {
+
+            &--good {
                 color: $good;
             }
-            &.proficient {
+
+            &--proficient {
                 color: $proficient;
             }
-            &.poor {
+
+            &--poor {
                 color: $poor;
             }
-            &.active {
+
+            &--active {
             	color: $color-white;
             }
 
-            &.terms {
+            &--terms {
                 display: block;
             }
         }
 
-        &-radio {
+        &--radio {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -72,50 +71,75 @@ $poor: #F16682;
     }
 }
 
-.excellent {
-    border-left-color: $excellent;
-    border-color: darken($excellent, 10%);
-}
+.status {
+    &--new {
+        background-color: $color-white;
+        color: $color-black;
+        border: 1px solid $color-black;
+    }
 
-#excellent {
-    &.active {
-        background-color: $excellent;
+    &--in_progress {
+        background-color: $color-windesheim-yellow;
+        color: $color-white;
+    }
+
+    &--completed {
+        background-color: $color-windesheim-light-blue;
+        color: $color-white;
+    }
+
+    &--final {
+        background-color: $color-windesheim-green;
         color: $color-white;
     }
 }
 
-.good {
-    border-left-color: $good;
-    border-color: darken($good, 10%);
+.badge-pill {
+    margin-top: 10px;
 }
 
-#good {
-    &.active {
+input, .final-mark {
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,.12);
+    display: block;
+    margin: 0 auto;
+    padding: 4px 0;
+    background: 0 0;
+    text-align: center;
+    color: inherit;
+    width: 50%;
+}
+
+.excellent {
+    border-color: darken($excellent, 10%);
+
+    &--active {
+        background-color: $excellent;
+        color: $color-white;
+    }
+}
+.good {
+    border-color: darken($good, 10%);
+
+    &--active {
         background-color: $good;
         color: $color-white;
     }
 }
 
 .proficient {
-    border-left-color: $proficient;
     border-color: darken($proficient, 10%);
-}
 
-#proficient {
-    &.active {
+    &--active {
         background-color: $proficient;
         color: $color-white;
     }
 }
 
-
 .poor {
-    border-left-color: $poor;
     border-color: darken($poor, 10%);
-}
 
-#poor {
-    &.active {
+    &--active {
         background-color: $poor;
         color: $color-white;
     }

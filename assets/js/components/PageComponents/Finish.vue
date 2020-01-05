@@ -41,7 +41,7 @@
               <div class="card" :class="finalMark.description.toLowerCase()">
                 <div class="card-body">
                   <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
-                  <h1 class="text-center"><input type="number" v-model.number="finalMark.result" step="0.01" class="finalMarkInput" :disabled="item.definitive" /></h1>
+                  <h1 class="text-center"><input type="number" v-model.number="finalMark.result" step="0.01" class="final-mark" :disabled="item.definitive" /></h1>
                   <button type="button" class="btn btn-light btn-block mt-1" @click="completeAssessment(finalMark.result)" :disabled="item.definitive">{{ $t('summary.finalize_mark') }}</button>
                 </div>
               </div>
@@ -141,7 +141,7 @@ export default {
           };
           dataObj.push(groupData);
         }
-console.log(response[0].data.status );
+
         metaData.groups = dataObj;
         self.items.push(metaData);
 

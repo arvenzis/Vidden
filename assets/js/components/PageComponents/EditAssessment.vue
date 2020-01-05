@@ -48,11 +48,11 @@
                                             </h4>
                                             <div class="row row-eq-height">
                                                 <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
-                                                    <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
-                                                        <div class="assessment__answer-body">
-                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" :disabled="metaFinal" />
+                                                    <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, [option.grade + [(option.chosen) ? '--active' : '']]]">
+                                                        <div class="assessment__answer--body">
+                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer--radio" :disabled="metaFinal" />
                                                             <label class="form-check-label" v-bind:for="option.grade">
-                                                                <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark terms': !this.useNumbers, 'assessment__answer-mark': this.useNumbers}]">
+                                                                <h1 v-bind:class="['assessment__answer--mark--' + option.grade, { 'assessment__answer--mark--active': option.chosen === true }, {'assessment__answer--mark--terms': !this.useNumbers, 'assessment__answer--mark': this.useNumbers}]">
                                                                     {{ option.result }}
                                                                 </h1>
                                                                 {{ option.description }}
@@ -129,7 +129,7 @@
             let ENDPOINTS = [
                 `assessment/${this.assessmentMetadataId}`,
                 `assessment/${this.assessmentMetadataId}/question/${this.examinatorId}`          
-            ] 
+            ];
             
             axios.all(
             ENDPOINTS

@@ -32,7 +32,7 @@
               <div class="form-group row">
                 <label for="password" class="col-md-4 col-form-label text-md-right">{{ $t("login.password") }}</label>
 
-                <div class="col-md-6 password_field">
+                <div class="col-md-6 password-field">
                   <input
                     id="password"
                     v-model="password"
@@ -44,7 +44,7 @@
                     autocomplete="current-password"
                     ref="passwordInput"
                   />
-                  <span class="d-none d-md-block password_field__toggle" @mouseover="showPassword" @mouseleave="hidePassword" ref="passwordToggle">🙈</span>
+                  <span class="d-none d-md-block password-field__toggle" @mouseover="showPassword" @mouseleave="hidePassword" ref="passwordToggle">🙈</span>
                 </div>
               </div>
 

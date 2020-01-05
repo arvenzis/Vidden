@@ -40,7 +40,7 @@
             <div class="card" :class="finalMarkDescription">
               <div class="card-body">
                 <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
-                <h1 class="text-center"><input type="number" v-model.number="finalMark" step="0.0" class="finalMarkInput" :disabled="item.assessments[0].examinator[0].id !== currentUserId" /></h1>
+                <h1 class="text-center"><input type="number" v-model.number="finalMark" step="0.0" class="final-mark" :disabled="item.assessments[0].examinator[0].id !== currentUserId" /></h1>
                 <button type="button" class="btn btn-light btn-block mt-1" @click="finalizeAssessmentMeta(finalMark)" :disabled="item.assessments[0].examinator[0].id !== currentUserId">{{ $t('summary.finalize_mark') }}</button>
               </div>
             </div>
@@ -64,7 +64,7 @@
                       </router-link>
                     </div>
                   </div>
-                <div class="badge badge-pill badge" v-bind:class="assessment.status">{{ $t('status.' + assessment.status) }}</div>
+                <div class="badge badge-pill" v-bind:class="'status--' + assessment.status">{{ $t('status.' + assessment.status) }}</div>
               </div>              
             </div>
           </div>
