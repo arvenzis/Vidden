@@ -136,9 +136,9 @@
       //alle items van de account-lijst
       getItemsAccount: function (items) {
         var accountLoggedIn = (this.$store.getters.getAccountNumber)
-        var allAccountItems = []
-        for (var i = 0; i < items.length; i++) {
-          if (accountLoggedIn == items[i].examinator[0].account) {
+        var allAccountItems = [];
+        for (let i = 0; i < items.length; i++) {
+          if (accountLoggedIn === items[i].examinator[0].account) {
             allAccountItems.push(items[i])
           }
           else {
