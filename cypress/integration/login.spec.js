@@ -1,6 +1,6 @@
 describe('Login page', function () {
   beforeEach(function () {
-    cy.visit('')
+    cy.visit('https://vidden.karenbrakband.nl')
   })
 
   after(function () {
@@ -8,7 +8,7 @@ describe('Login page', function () {
   })
 
   it('Should redirect to https://password.windesheim.nl when password is forgotten', function () {
-    cy.get('a').contains('Forgot password?').should('have.attr', 'href', 'https://password.windesheim.nl')
+    cy.get('a').contains('Wachtwoord vergeten?').should('have.attr', 'href', 'https://password.windesheim.nl')
   })
 
   it('Should display an error on absent credentials', function () {
@@ -56,7 +56,7 @@ describe('Login page', function () {
     // we should have visible errors now
     cy.get('.toasted-container.top-right')
       .should('be.visible')
-      .and('contain', "Your username and/of password isn't correct")
+      .and('contain', 'Je gebruikersnaam en / of wachtwoord is onjuist')
   })
 
   it('Should redirect to /dashboard on success', function () {

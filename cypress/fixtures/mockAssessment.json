@@ -24,19 +24,12 @@
   "secondTeacher": null,
   "secondTeacherId": null,
   "startDatePeriod": "2019-11-01T00:00:00",
-  "status": 2,
+  "status": 0,
   "student": {
-    "id": 5,
-    "firstName": "Diederick",
-    "lastName": "Prins",
-    "insertion": null,
-    "emailAddress": "s1117810@student.windesheim.nl",
-    "password": null,
-    "token": null,
-    "accountNumber": "s1117810",
-    "role": 1,
-    "isShowGradingInWordsEnabled": false,
-    "fullName": "Diederick Prins"
+    "id": 4,
+    "firstName": "Klaas",
+    "lastName": "Hakvoort",
+    "insertion": null
   },
   "accountNumber": "s1115735",
   "emailAddress": "s1115735@student.windesheim.nl",
@@ -49,6 +42,5 @@
   "role": 1,
   "token": null,
   "studentId": 4,
-  "templateId": 1,
-  "templateName": "HBOICT Beoordelingsformulier stage- en afstudeerproject 2019-2020"
+  "templateId": 1
 }

@@ -169,10 +169,10 @@ export default {
             self.$store.commit("setUseNumbersInGrading", true)
             self.$store.commit("setLanguage", "nl_NL")
         })     
-      }
     },
     components: {
       Spinner
     }
   }
+}
 </script>
