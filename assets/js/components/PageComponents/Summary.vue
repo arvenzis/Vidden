@@ -208,7 +208,7 @@
           this.final = (response.data.status === 3);
           this.firstTeacherId = response.data.firstTeacherId;
           this.finalMark = this.calculateAverageMark(response.data.firstTeacherMark, response.data.secondTeacherMark);
-          this.finalMarkDescription = (response.data.status === 3 ? this.getMarkDescription(this.finalMark) : '')
+          this.finalMarkDescription = this.getMarkDescription(this.finalMark);
 
           Vue.toasted.show(this.$t('success.loading'), {
             type: 'success',
