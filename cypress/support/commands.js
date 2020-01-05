@@ -71,15 +71,9 @@ Cypress.Commands.add('openEditAssessmentPage', () => {
   cy.route('GET', 'api/assessment/GetSummary/1/4/6', 'fixture:mockCompetence4').as('competence4')
   cy.route('GET', 'api/assessment/GetSummary/1/5/6', 'fixture:mockCompetence5').as('competence5')
   cy.route('GET', 'api/assessment/GetSummary/1/6/6', 'fixture:mockCompetence6').as('competence6')
-  cy.route('GET', 'api/Assessment/1', 'fixture:mockAssessment').as('getAssessment')
+  cy.route('GET', 'api/assessment/1', 'fixture:mockAssessment').as('getAssessment')
   cy.visit('edit/1/6')
-  cy.wait(['@getAssessmentTeacher'])  
-  cy.wait(['@competence1'])
-  cy.wait(['@competence2'])
-  cy.wait(['@competence3'])
-  cy.wait(['@competence4'])
-  cy.wait(['@competence5'])
-  cy.wait(['@competence6'])
+  cy.wait(['@getAssessmentTeacher', '@getAssessment', '@competence1', '@competence2', '@competence3', '@competence4', '@competence5', '@competence6']) 
 })
 
 Cypress.Commands.add('chooseAnswer', (answer) => {

@@ -173,7 +173,6 @@ export default {
     },
     components: {
       Spinner
-    }
- 
+    } 
 }
 </script>
