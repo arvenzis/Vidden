@@ -55,6 +55,8 @@ new Vue({
   created: function () {
     if (Vue.prototype.$session.exists()) {
       this.$store.state.loggedIn = true;
+    } else {
+      this.$store.commit("logout")
     }
 
     this.$i18n.locale = this.$store.getters.language;
