@@ -94,24 +94,28 @@ a:hover {
 }
 
 .badge.badge-pill.badge {
+  
+  margin-top: 10px;
+  
   &.new {
-    background-color: $color-windesheim-yellow;
+    background-color: $color-white;
     color: $color-black;
+    border: 1px solid $color-black;
   }
 
   &.in_progress {
-    background-color: #b99445;
+    background-color: $color-windesheim-yellow;
     color: $color-white;
   }
 
   &.completed {
-    background-color: #b9a845;
-    color: white;
+    background-color: $color-windesheim-light-blue;
+    color: $color-white;
   }
 
   &.final {
-    background-color: #9cb945;
-    color: white;
+    background-color: $color-windesheim-green;
+    color: $color-white;
   }
 }
 
