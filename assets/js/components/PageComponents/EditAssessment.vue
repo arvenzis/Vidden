@@ -50,7 +50,7 @@
                                                 <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
                                                     <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
                                                         <div class="assessment__answer-body">
-                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" v-bind:disabled="this.metaFinal" />
+                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" :disabled="metaFinal" />
                                                             <label class="form-check-label" v-bind:for="option.grade">
                                                                 <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark terms': !this.useNumbers, 'assessment__answer-mark': this.useNumbers}]">
                                                                     {{ option.result }}
@@ -70,7 +70,7 @@
                                         <div v-for="comment in item.comments" v-bind:key="comment.question">
                                             <div class="form-group">
                                                 <label for="opmerkingen">{{ comment.question }}</label>
-                                                <textarea name="opmerkingen" id="opmerkingen" v-model="comment.answer" v-on:change="saveComment(item.groupId, comment)" class="form-control" rows="3" v-bind:disabled="this.metaFinal"></textarea>
+                                                <textarea name="opmerkingen" id="opmerkingen" v-model="comment.answer" v-on:change="saveComment(item.groupId, comment)" class="form-control" rows="3" :disabled="metaFinal"></textarea>
                                             </div>
                                         </div>
                                     </footer>
@@ -119,7 +119,7 @@
                 errorMessage: null,
                 tmpMenu: [],
                 useNumbers: this.$store.state.useNumbers,
-                metaFinal: false
+                metaFinal: null
             }
         },
         created () {
@@ -140,9 +140,10 @@
                     }
                 }))
             ).then(axios.spread(function (assessmentMetadata, assessmentFormdata) {
-                if(assessmentMetadata.data.status === 3) {
-                    metaStatus= true;
-                }
+                // Pull up the status of the metadata
+                (assessmentMetadata.data.status === 3 ? metaStatus = true : metaStatus = false)
+                
+                // Process the form data
                 assessmentFormdata.data.groups.forEach(function(group) {
                     let questionObj = [];
                     let groupData = {
