@@ -38,7 +38,7 @@
           </div>
           <div class="col-sm-4 col-md-4">
             <div class="card" :class="finalMarkDescription">
-              <div class="card-body">         
+              <div class="card-body">
                   <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
                   <h1 class="text-center"><input type="number" v-model.number="finalMark" step="0.0" class="finalMarkInput" :disabled="modifyFinalMarkDisabled" /></h1>
                   <button type="button" class="btn btn-light btn-block mt-1" @click="finalizeAssessmentMeta(finalMark)" :disabled="modifyFinalMarkDisabled">{{ $t('summary.finalize_mark') }}</button>
@@ -85,7 +85,7 @@
       return {
         id: this.$route.params.id,
         items: [],
-        currentUserId: this.$store.state.currentUserId,
+        currentUserId: this.$store.getters.getCurrentUserId,
         firstTeacherId: null,
         finalMarkDescription: null,
         final: null,
@@ -99,7 +99,7 @@
         // If the firstTeacherId is not equal to the currentUserId
         // OR
         // If the firstTeacherId is not equal to the currentUserId AND the status of the meta is equal to Final
-        
+
         return (this.final || this.firstTeacherId !== this.currentUserId || ( this.firstTeacherId !== this.currentUserId && this.final ) )
       }
     },
@@ -136,7 +136,7 @@
 
         if (confirm(this.$t('summary.finalize_mark_confirm'))) {
           const ENDPOINTS = 'assessment/finalizemeta';
-          axios.post(this.$store.state.apiBaseUrl + ENDPOINTS,
+          axios.post(this.$store.getters.getApiBaseUrl + ENDPOINTS,
                   {
                     "userId": this.currentUserId,
                     "assessmentMetaId": this.id,
@@ -159,7 +159,7 @@
     created() {
       this.loading = true;
       const ENDPOINTS = 'Assessment/' + this.id;
-      axios.get(this.$store.state.apiBaseUrl + ENDPOINTS, {
+      axios.get(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
         headers: {
           "Authorization": this.$session.get('jwt')
         }

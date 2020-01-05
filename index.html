@@ -22,16 +22,16 @@
                     <div class="logo-container"></div>
                 </router-link>    
             </div>
-            <div class="col-xs-11 col-sm-10 col-md-10" v-if="this.$store.state.loggedIn">
+            <div class="col-xs-11 col-sm-10 col-md-10" v-if="this.$store.getters.getLoginStatus">
                 <current-user></current-user>
             </div>
             <div class="header"></div>
         </div>
 
-        <app-login v-if="!this.$store.state.loggedIn"></app-login>
+        <app-login v-if="!this.$store.getters.getLoginStatus"></app-login>
 
 
-        <div v-if="this.$store.state.loggedIn">
+        <div v-if="this.$store.getters.getLoginStatus">
             <router-view />
         </div>
     </div>
