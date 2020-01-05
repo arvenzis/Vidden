@@ -4,7 +4,10 @@
     <flash-message class="flashpool"/>
     <div class="path">
       <router-link :to="'/summary/' + this.assessmentMetadataId" class="ml-2">{{ $t('common.summary') }}</router-link>
-      <router-link :to="'/edit/' + this.assessmentMetadataId + '/' + this.examinatorId" v-if="!this.items[0].definitive">&gt; {{ $t('common.edit') }}</router-link>
+      <span v-if="!this.items[0].definitive">
+        &gt;
+        <router-link :to="'/edit/' + this.assessmentMetadataId + '/' + this.examinatorId">{{ $t('common.edit') }}</router-link>
+      </span>
       &gt;
       {{ $t('common.finish') }}
     </div>
