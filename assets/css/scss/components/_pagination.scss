@@ -1,15 +1,14 @@
+/** Cannot use BEM here because we're dependant on the plugins signature :-( **/
+
 .pagination {
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
+  border-radius: 2px;
   box-sizing: border-box;
   cursor: pointer;
   color: $color-windesheim-green;
   display: flex;
   margin-bottom: 8px;
   margin-top: 8px;
-  padding-left: 0px;
+  padding-left: 0;
   -webkit-tap-highlight-color: $color-black;
 
   > li {
@@ -20,31 +19,9 @@
       color: $color-windesheim-green;
       display: block;
       line-height: 20px;
-      margin-left: 0px;
+      margin-left: 0;
       padding: 8px 12px;
       position: relative;
-    }
-
-    &.page-item {
-      &.active {
-        background-color: $color-windesheim-green;
-        border: 1px solid darken($color-windesheim-green, 10%);
-
-        & > a {
-          color: $color-white;
-          margin-left: -1px;
-          text-decoration-color: rgb(255, 255, 255);
-          text-decoration-line: none;
-          text-decoration-style: solid;
-        }
-      }
-
-      &.disabled {
-        a {
-          cursor: not-allowed;
-          text-decoration: none;
-        }
-      }
     }
 
     &.disabled {
@@ -52,6 +29,21 @@
         cursor: not-allowed;
         text-decoration: none;
       }
+    }
+  }
+}
+
+.page-item {
+  &.active {
+    background-color: $color-windesheim-green;
+    border: 1px solid darken($color-windesheim-green, 10%);
+
+    > a {
+      color: $color-white;
+      margin-left: -1px;
+      text-decoration-color: rgb(255, 255, 255);
+      text-decoration-line: none;
+      text-decoration-style: solid;
     }
   }
 }

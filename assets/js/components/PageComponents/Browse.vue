@@ -21,7 +21,7 @@
                   <router-link :to="'/summary/' + item.id">
                     <button class="btn btn-windesheim">{{ $t('browse.open') }}</button>
                   </router-link>
-                  <div class="badge badge-pill badge" v-bind:class="item.status">{{ $t('status.' + item.status) }}</div>
+                  <div class="badge badge-pill" v-bind:class="'status--' + item.status">{{ $t('status.' + item.status) }}</div>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">
@@ -54,7 +54,7 @@
                   <router-link :to="'/summary/' + item.id">
                     <button class="btn btn-windesheim">{{ $t('browse.open') }}</button>
                   </router-link>
-                  <div class="badge badge-pill badge" v-bind:class="item.status">{{ $t('status.' + item.status) }}</div>
+                  <div class="badge badge-pill" v-bind:class="'status--' + item.status">{{ $t('status.' + item.status) }}</div>
                 </div>
                 <div class="card-footer">
                   <small class="text-muted">
@@ -72,7 +72,7 @@
           </tab>
         </tabs>
       </div>
-    </article>    
+    </article>
   </div>
 
 </template>
@@ -137,7 +137,7 @@
       getItemsAccount: function (items) {
         var accountLoggedIn = (this.$store.getters.getAccountNumber)
         var allAccountItems = [];
-        
+
         for (let i = 0; i < items.length; i++) {
           if (accountLoggedIn === items[i].examinator[0].account) {
             allAccountItems.push(items[i])

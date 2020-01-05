@@ -3,16 +3,15 @@
     <div class="row justify-content-center">
       <div class="col-md-7">
         <div class="card">
-          <spinner id="spinner" v-if="loading"></spinner>
+          <spinner id="spinner" v-if="loading"/>
           <div class="card-body" v-bind:class="{ overlay : loading}">
             <h5 class="card-title mb-3">{{ $t('login.title') }}</h5>
             <form id="app" @submit="validateCredentials" method="post">
-              <flash-message class="flashpool"></flash-message>
+              <flash-message class="flashpool"/>
               <div class="form-group row">
-                <label
-                  for="emailaddress"
-                  class="col-md-4 col-form-label text-md-right"
-                >{{ $t("login.username") }}</label>
+                <label for="emailaddress" class="col-md-4 col-form-label text-md-right">
+                  {{ $t("login.username") }}
+                </label>
 
                 <div class="col-md-6">
                   <input
@@ -32,7 +31,7 @@
               <div class="form-group row">
                 <label for="password" class="col-md-4 col-form-label text-md-right">{{ $t("login.password") }}</label>
 
-                <div class="col-md-6 password_field">
+                <div class="col-md-6 password-field">
                   <input
                     id="password"
                     v-model="password"
@@ -44,7 +43,7 @@
                     autocomplete="current-password"
                     ref="passwordInput"
                   />
-                  <span class="d-none d-md-block password_field__toggle" @mouseover="showPassword" @mouseleave="hidePassword" ref="passwordToggle">🙈</span>
+                  <span class="d-none d-md-block password-field__toggle" @mouseover="showPassword" @mouseleave="hidePassword" ref="passwordToggle">🙈</span>
                 </div>
               </div>
 
