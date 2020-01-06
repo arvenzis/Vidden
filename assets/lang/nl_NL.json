@@ -40,7 +40,8 @@
         "details": "Details",
         "finalize_mark": "Cijfer definitief maken",
         "finalize_mark_confirm": "Weet je zeker dat je de beoordeling definitief wilt maken? De beoordeling is hierna niet meer te wijzigen.",
-        "show_summary": "Samenvatting inzien"
+        "show_summary": "Samenvatting inzien",
+        "has_to_be_finalized": "Let op: dit resultaat moet nog definitief gemaakt worden door de eerste examinator ({name})."
     },
     "assessment": {
         "new": "Nieuwe beoordeling",
@@ -94,7 +95,7 @@
         "login_400": "Je gebruikersnaam en / of wachtwoord is onjuist",
         "login_500": "Er was een probleem bij het communiceren met de server. Probeer het nog eens",
         "login_else": "{error} Probeer het nog eens.",
-        "wrong_examinator_id": "Enkel de examinator die deze assessment aangemaakt heeft, kan hem afronden.",
+        "wrong_examinator_id": "Alleen de examinator die dit assessment heeft aangemaakt kan hem afronden.",
         "finalize_assessment": "Er is iets misgegaan bij het afronden van de beoordeling"
     },
     "success": {

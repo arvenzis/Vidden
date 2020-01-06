@@ -40,10 +40,16 @@
             <div :class="'card--' + finalMarkDescription">
               <div class="card-body">
                   <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
-                  <h1 class="text-center"><input type="number" v-model.number="finalMark" step="0.0" class="final-mark" :disabled="modifyFinalMarkDisabled" /></h1>
-                  <button type="button" class="btn btn-light btn-block mt-1" @click="finalizeAssessmentMeta(finalMark)" :disabled="modifyFinalMarkDisabled">{{ $t('summary.finalize_mark') }}</button>
+                  <span v-if="currentUserId !== firstTeacherId">
+                    <h1 class="text-center">{{ finalMark }}</h1>
+                  </span>
+                  <span v-else>
+                    <h1 class="text-center"><input type="number" v-model.number="finalMark" step="0.0" class="final-mark" :disabled="modifyFinalMarkDisabled" /></h1>
+                    <button type="button" class="btn btn-light btn-block mt-1" @click="finalizeAssessmentMeta(finalMark)" :disabled="modifyFinalMarkDisabled">{{ $t('summary.finalize_mark') }}</button>
+                  </span>
               </div>
             </div>
+            <div class="alert alert-info mt-2" v-if="currentUserId !== firstTeacherId">{{ $t('summary.has_to_be_finalized', { name: firstTeacherName }) }}</div>
           </div>
         </div>
 
@@ -87,6 +93,7 @@
         items: [],
         currentUserId: this.$store.getters.getCurrentUserId,
         firstTeacherId: null,
+        firstTeacherName: '',
         finalMarkDescription: null,
         final: null,
         loading: false
@@ -207,6 +214,7 @@
           this.items = tmpItems;
           this.final = (response.data.status === 3);
           this.firstTeacherId = response.data.firstTeacherId;
+          this.firstTeacherName = response.data.firstTeacher.fullName;
           this.finalMark = this.calculateAverageMark(response.data.firstTeacherMark, response.data.secondTeacherMark);
           this.finalMarkDescription = this.getMarkDescription(this.finalMark);
 
