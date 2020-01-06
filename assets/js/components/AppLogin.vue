@@ -15,16 +15,16 @@
 
                 <div class="col-md-6">
                   <input
-                         id="emailaddress"
-                         v-model="emailaddress"
-                         type="email"
-                         class="form-control"
-                         name="emailaddress"
-                         required
-                         autocomplete="email"
-                         :disabled="loading"
-                         autofocus
-                         />
+                    id="emailaddress"
+                    v-model="emailaddress"
+                    type="email"
+                    class="form-control"
+                    name="emailaddress"
+                    required
+                    autocomplete="email"
+                    :disabled="loading"
+                    autofocus
+                  />
                 </div>
               </div>
 
@@ -33,16 +33,16 @@
 
                 <div class="col-md-6 password-field">
                   <input
-                         id="password"
-                         v-model="password"
-                         type="password"
-                         class="form-control"
-                         name="password"
-                         required
-                         :disabled="loading"
-                         autocomplete="current-password"
-                         ref="passwordInput"
-                         />
+                    id="password"
+                    v-model="password"
+                    type="password"
+                    class="form-control"
+                    name="password"
+                    required
+                    :disabled="loading"
+                    autocomplete="current-password"
+                    ref="passwordInput"
+                  />
                   <span class="d-none d-md-block password-field__toggle" @mouseover="showPassword" @mouseleave="hidePassword" ref="passwordToggle">🙈</span>
                 </div>
               </div>
@@ -67,61 +67,61 @@
 </template>
 
 <script>
-  import Vue from "vue";
-  import axios from "axios";
-  import VueSession from "vue-session";
-  import Spinner from "vue-simple-spinner";
-  import Toasted from 'vue-toasted';
+import Vue from "vue";
+import axios from "axios";
+import VueSession from "vue-session";
+import Spinner from "vue-simple-spinner";
+import Toasted from 'vue-toasted';
 
-  Vue.use(Toasted)
-  Vue.use(VueSession);
+Vue.use(Toasted)
+Vue.use(VueSession);
 
-  export default {
-    name: "app-login",
+export default {
+  name: "app-login",
 
-    data() {
-      return {
-        loggedInUnsuccessful: false,
-        currentUser: "",
-        accountNumber: "",
-        errorMessage: "",
-        loading: false
-      };
-    },
-    methods: {
-      validateCredentials: function (e) {
-        const ENDPOINTS = "User/Authenticate/";
-        e.preventDefault();
-        this.loading = true;
-        axios
-          .post(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
-            emailaddress: this.emailaddress,
-            password: this.password
-          })
-          .then(response => {
-            if (response.status === 200 && "token" in response.data) {
-              this.$session.start();
-              this.$session.set("jwt", response.data.token);
-            }
-            this.$store.commit("login");
-            this.$store.commit("setCurrentUser", response.data.fullName);
-            this.$store.commit("setCurrentUserId", response.data.id);
-            this.$store.commit("setAccountNumber", response.data.accountNumber);
-
-            this.getUserPreferences(response.data.id);
-            this.loading = false;
-          })
-          .catch(e => {
-            this.loading = false;
-            this.loggedInUnsuccessful = true;
-            if (e == "Error: Request failed with status code 400") {
-              this.displayMessage(this.$t('error.login_400'), "error", 4000)
-            } else if (e == "Error: Request failed with status code 500") {
-              this.displayMessage(this.$t('error.login_500'), "error", 4000)
-            } else {
-              this.displayMessage(this.$t('error.login_else', { error: e } ), "error", 2500)
-            }
-          });
+  data() {
+    return {
+      loggedInUnsuccessful: false,
+      currentUser: "",
+      accountNumber: "",
+      errorMessage: "",
+      loading: false
+    };
+  },
+  methods: {
+    validateCredentials: function (e) {
+      const ENDPOINTS = "User/Authenticate/";
+      e.preventDefault();
+      this.loading = true;
+      axios
+        .post(this.$store.getters.getApiBaseUrl + ENDPOINTS, {
+          emailaddress: this.emailaddress,
+          password: this.password
+        })
+        .then(response => {
+          if (response.status === 200 && "token" in response.data) {
+            this.$session.start();
+            this.$session.set("jwt", response.data.token);
+          }
+          this.$store.commit("login");
+          this.$store.commit("setCurrentUser", response.data.fullName);
+          this.$store.commit("setCurrentUserId", response.data.id);
+          this.$store.commit("setAccountNumber", response.data.accountNumber);
+          
+          this.getUserPreferences(response.data.id);
+          this.loading = false;
+        })
+        .catch(e => {
+          this.loading = false;
+          this.loggedInUnsuccessful = true;
+          if (e == "Error: Request failed with status code 400") {
+            this.displayMessage(this.$t('error.login_400'), "error", 4000)
+          } else if (e == "Error: Request failed with status code 500") {
+            this.displayMessage(this.$t('error.login_500'), "error", 4000)
+          } else {
+            this.displayMessage(this.$t('error.login_else', { error: e } ), "error", 2500)
+          }
+        });
       },
       displayMessage(message, type, duration) {
         Vue.toasted.show(message, {
@@ -143,35 +143,35 @@
         // Since we have a different endpoint for each preference
         // we put all endpoints in an array for use in axios all
         let settingsEndpointsArray = [
-          `userpreference/getshowgradinginwords/${userId}`,
-          `userpreference/getlanguagepreference/${userId}`
+            `userpreference/getshowgradinginwords/${userId}`,
+            `userpreference/getlanguagepreference/${userId}`
         ];
 
         axios.all(
-          settingsEndpointsArray
+            settingsEndpointsArray
             .map(u => axios
-              .get(self.$store.state.apiBaseUrl + u, {
-                headers: {
-                  "Authorization": self.$session.get('jwt')
-                }
-              }))
+                .get(self.$store.state.apiBaseUrl + u, {
+                    headers: {
+                        "Authorization": self.$session.get('jwt')
+                    }
+                }))
         ).then(axios.spread(function (useNumbersInGrading, languagePreference) {
-          self.$store.commit("setUseNumbersInGrading", useNumbersInGrading.data)
-          self.$store.commit("setLanguage", languagePreference.data)
-
-          // If in a magical way the languagepreference was changed
-          // outside the app, then set use this one
-          self.$root.$i18n.locale = languagePreference.data;
-        })
+            self.$store.commit("setUseNumbersInGrading", useNumbersInGrading.data)
+            self.$store.commit("setLanguage", languagePreference.data)
+            
+            // If in a magical way the languagepreference was changed
+            // outside the app, then set use this one
+            self.$root.$i18n.locale = languagePreference.data;
+          })
         ).catch(() => {
-          // Failed to set the preferences, set the defaults
-          self.$store.commit("setUseNumbersInGrading", true)
-          self.$store.commit("setLanguage", "nl_NL")
-        })
-      }
+            // Failed to set the preferences, set the defaults
+            self.$store.commit("setUseNumbersInGrading", true)
+            self.$store.commit("setLanguage", "nl_NL")
+          })
+      }  
     },
-    components: {      
+    components: {
       Spinner
-    }    
-  }
+    } 
+}
 </script>
