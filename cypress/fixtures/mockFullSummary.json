@@ -1,0 +1,92 @@
+{
+  "summaries": [
+    {
+      "group": {
+        "id": 1,
+        "name": "Beheren",
+        "comments": null,
+        "questions": [
+
+        ]
+      },
+      "mark": 4.0,
+      "markDescription": "Insufficient",
+      "succeedingGroupId": 1,
+      "groupStatus": 1
+    },
+    {
+      "group": {
+        "id": 2,
+        "name": "Analyseren",
+        "comments": null,
+        "questions": [
+
+        ]
+      },
+      "mark": 6.0,
+      "markDescription": "Insufficient",
+      "succeedingGroupId": 2,
+      "groupStatus": 1
+    },
+    {
+      "group": {
+        "id": 3,
+        "name": "Adviseren",
+        "comments": null,
+        "questions": [
+
+        ]
+      },
+      "mark": 4.0,
+      "markDescription": "Insufficient",
+      "succeedingGroupId": 3,
+      "groupStatus": 1
+    },
+    {
+      "group": {
+        "id": 4,
+        "name": "Ontwerpen",
+        "comments": null,
+        "questions": [
+
+        ]
+      },
+      "mark": 9.0,
+      "markDescription": "Insufficient",
+      "succeedingGroupId": 4,
+      "groupStatus": 1
+    },
+    {
+      "group": {
+        "id": 5,
+        "name": "Realiseren",
+        "comments": null,
+        "questions": [
+
+        ]
+      },
+      "mark": 6.0,
+      "markDescription": "Insufficient",
+      "succeedingGroupId": 5,
+      "groupStatus": 1
+    },
+    {
+      "group": {
+        "id": 6,
+        "name": "Professionele Ontwikkeling",
+        "comments": null,
+        "questions": [
+
+        ]
+      },
+      "mark": 6.0,
+      "markDescription": "Insufficient",
+      "succeedingGroupId": 6,
+      "groupStatus": 1
+    }
+  ],
+  "suggestedMark": 4.0,
+  "suggestedMarkDescription": "Insufficient",
+  "suggestedMarkExplanation": "Persoonlijke ontwikkeling moet aan voldaan zijn om minimaal een voldoende te behalen.",
+  "status": 2
+}
