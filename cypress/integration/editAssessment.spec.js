@@ -19,13 +19,13 @@ describe('Assessment editing page', function () {
 
   it('Should show the first question answered with Excellent', function () {
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#excellent').should('have.class', 'assessment__answer excellent excellent--active')
+      .parent().get('#excellent').should('have.class', 'assessment__answer excellent active')
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#good').should('have.class', 'assessment__answer good good')
+      .parent().get('#good').should('have.class', 'assessment__answer good')
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#proficient').should('have.class', 'assessment__answer proficient proficient')
+      .parent().get('#proficient').should('have.class', 'assessment__answer proficient')
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#poor').should('have.class', 'assessment__answer poor poor')
+      .parent().get('#poor').should('have.class', 'assessment__answer poor')
   })
 
   it('Should show "answer saved" message if Good is clicked', function () {
@@ -35,26 +35,26 @@ describe('Assessment editing page', function () {
       .and('contain', 'Antwoord opgeslagen')
 
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#excellent').should('have.class', 'assessment__answer excellent excellent')
+      .parent().get('#excellent').should('have.class', 'assessment__answer excellent')
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#good').should('have.class', 'assessment__answer good good--active')
+      .parent().get('#good').should('have.class', 'assessment__answer good active')
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#proficient').should('have.class', 'assessment__answer proficient proficient')
+      .parent().get('#proficient').should('have.class', 'assessment__answer proficient')
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#poor').should('have.class', 'assessment__answer poor poor')
+      .parent().get('#poor').should('have.class', 'assessment__answer poor')
   })
 
   it('Should show the first question answered with Poor after Poor is clicked', function () {
     cy.chooseAnswer('poor')
 
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#excellent').should('have.class', 'assessment__answer excellent excellent')
+      .parent().get('#excellent').should('have.class', 'assessment__answer excellent')
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#good').should('have.class', 'assessment__answer good good')
+      .parent().get('#good').should('have.class', 'assessment__answer good')
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#proficient').should('have.class', 'assessment__answer proficient proficient')
+      .parent().get('#proficient').should('have.class', 'assessment__answer proficient')
     cy.get('.assessment__question.d-sm-block').contains('De student heeft een gestructeerde beheeraanpak')
-      .parent().get('#poor').should('have.class', 'assessment__answer poor poor--active')
+      .parent().get('#poor').should('have.class', 'assessment__answer poor active')
   })
 
   it('Should show "comment saved" message when a product comment is made', function () {
@@ -75,7 +75,7 @@ describe('Assessment editing page', function () {
   })
 
   it('Manage mark should be average of questions', function () {
-    cy.get('.sidebar--open-button').click()
+    cy.get('.open-button').click()
     cy.get('a').contains('Beheren').parent().should('contain', '8.8')
   })
 

@@ -21,7 +21,7 @@ describe('Login page', function () {
   it('Should show the password when mouse hover on field toggle', function () {
     cy.get('input[name=password]').type('password123')
     cy.get('input[name=password]').should('have.value', 'password123').should('have.attr', 'type', 'password')
-    cy.get('.d-none.d-md-block.password-field__toggle').trigger('mouseover')
+    cy.get('.d-none.d-md-block.password_field__toggle').trigger('mouseover')
     cy.get('input[name=password]').should('have.value', 'password123').should('have.attr', 'type', 'text')
   })
 
