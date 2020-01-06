@@ -6,16 +6,16 @@
             <spinner id="spinner--full-top" v-if="!dataReady"/>
             <div v-else>
                 <Sidebar class="sidebar" right :crossIcon="false">
-                    <div v-for="(item, index) in menu" v-bind:key="item.index" class="group">
-                        <h6 class="group-title">
+                    <div v-for="(item, index) in menu" v-bind:key="item.index" class="sidebar__group">
+                        <h6 class="group--title">
                             <router-link to="#" @click.native="deepLinkHeading(index)" class="no-link">{{ item.groupName }}</router-link>
                             <span class="badge badge-pill" v-bind:class="{ 'badge-success': item.groupMark >= 5.5, 'badge-danger': item.groupMark <= 5.5 }" v-if="item.groupMark !== 0">
                                 {{ item.groupMark }}
                             </span>
                         </h6>
-                        <span v-for="child in item.children" v-bind:key="child.uuid" class="child" v-bind:class="child.result">
+                        <span v-for="child in item.children" v-bind:key="child.uuid" class="sidebar__group--child" v-bind:class="'sidebar__group--child--' + child.result">
                             <router-link to="#" @click.native="deepLink(index, child.uuid)" class="link">    
-                                <span class="child-title">{{ child.title }}</span>
+                                <span class="sidebar__group--child--title">{{ child.title }}</span>
                             </router-link>
                         </span>
                     </div>    
@@ -48,11 +48,11 @@
                                             </h4>
                                             <div class="row row-eq-height">
                                                 <div v-for="option in question.answers" v-bind:key="option.result" class="col-lg-6 col-md-6 col-sm-12">
-                                                    <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, { active: option.chosen === true }]">
-                                                        <div class="assessment__answer-body">
-                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer-radio" :disabled="metaFinal" />
+                                                    <div class="assessment__answer" v-bind:id="option.grade" v-bind:class="[option.grade, [option.grade + [(option.chosen) ? '--active' : '']]]">
+                                                        <div class="assessment__answer--body">
+                                                            <input type="radio" v-bind:id="option.grade" v-model="option.chosen" v-on:change="saveAnswer(question, option.id, option.grade, option.result, item.groupId)" v-bind:value="true" class="assessment__answer--radio" :disabled="metaFinal" />
                                                             <label class="form-check-label" v-bind:for="option.grade">
-                                                                <h1 v-bind:class="[option.grade, { active: option.chosen === true }, {'assessment__answer-mark terms': !this.useNumbers, 'assessment__answer-mark': this.useNumbers}]">
+                                                                <h1 v-bind:class="['assessment__answer--mark--' + option.grade, { 'assessment__answer--mark--active': option.chosen === true }, {'assessment__answer--mark--terms': !this.useNumbers, 'assessment__answer--mark': this.useNumbers}]">
                                                                     {{ option.result }}
                                                                 </h1>
                                                                 {{ option.description }}
@@ -129,7 +129,7 @@
             let ENDPOINTS = [
                 `assessment/${this.assessmentMetadataId}`,
                 `assessment/${this.assessmentMetadataId}/question/${this.examinatorId}`          
-            ] 
+            ];
             
             axios.all(
             ENDPOINTS

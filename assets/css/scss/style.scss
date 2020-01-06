@@ -80,57 +80,6 @@ a:hover {
   color: $color-windesheim-black;
 }
 
-.password_field {
-  display: inline-block;
-  position: relative;
-  overflow: hidden;
-
-  &__toggle {
-    position: absolute;
-    top: 6px;
-    right: 20px;
-    transition: right 0.2s;
-  }
-}
-
-.badge.badge-pill.badge {
-  
-  margin-top: 10px;
-  
-  &.new {
-    background-color: $color-white;
-    color: $color-black;
-    border: 1px solid $color-black;
-  }
-
-  &.in_progress {
-    background-color: $color-windesheim-yellow;
-    color: $color-white;
-  }
-
-  &.completed {
-    background-color: $color-windesheim-light-blue;
-    color: $color-white;
-  }
-
-  &.final {
-    background-color: $color-windesheim-green;
-    color: $color-white;
-  }
-}
-
-.finalMarkInput {
-  border: none;
-  border-bottom: 1px solid rgba(0,0,0,.12);
-  display: block;
-  margin: 0 auto;
-  padding: 4px 0;
-  background: 0 0;
-  text-align: center;
-  color: inherit;
-  width: 50%;
-}
-
 .table-summary {
   width: 90%;
 }

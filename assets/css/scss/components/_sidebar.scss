@@ -7,8 +7,7 @@
     box-sizing: border-box;
   }
 
-  &-menu {
-
+  &__menu {
     position: fixed;
     top: 0;
     left: 0;
@@ -28,7 +27,7 @@
       width: 0;
     }
 
-    & .item-list {
+    &__item-list {
       width: 100%;
       height: 100%;
       overflow-y: auto;
@@ -50,12 +49,12 @@
     }
   }
 
-  & .open-button {    
+  &--open-button {
     position: fixed;
     width: 25px;
     height: 100vh;
-    top: 0px;
-    right: 0px;
+    top: 0;
+    right: 0;
     cursor: pointer;
     box-shadow: 1px 0 2px 1px rgba(0, 0, 0, 0.18);
     background: $color-white;
@@ -67,38 +66,38 @@
     }
   }
 
-  .group {
+  &__group {
     position: relative;
     display: block;
     width: 100%;
     
-    &-title {
+    &--title {
       display: block;
       white-space: pre-line;
       font-weight: 600;
-      padding: 10px 0px;
+      padding: 10px 0;
       text-transform: uppercase;
     }
 
-    .child {
+    &--child {
       display: block;
       margin-top: 4px;
       white-space: pre-line;
 
-      &.excellent {
+      &--excellent {
         @include borderAnswer($excellent)
       }
-      &.good {
+      &--good {
         @include borderAnswer($good);
       }
-      &.proficient {
+      &--proficient {
         @include borderAnswer($proficient);
       }
-      &.poor {
+      &--poor {
         @include borderAnswer($poor);
       }
 
-      &-title {
+      &--title {
         display: block;
         margin-left: 10px;
       }
