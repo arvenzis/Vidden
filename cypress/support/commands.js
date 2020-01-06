@@ -5,7 +5,7 @@ Cypress.Commands.add('login', (username, password) => {
   })
   cy.route('POST', 'api/User/Authenticate/', 'fixture:mockAuthenticate').as('login')
   cy.route('GET', 'api/userpreference/getshowgradinginwords/6', false).as('getShowGradingInWords')
-  cy.route('GET', 'api/userpreference/getlanguagepreference/6', 'nl_NL').as('getLanguagePreference')
+  cy.route('GET', 'api/userpreference/getlanguagepreference/6', 'nl_NL').as('getLanguagePreference') 
   cy.visit('')
   cy.get('input[name=emailaddress]').type(username)
   cy.get('input[name=password]').type(password)
