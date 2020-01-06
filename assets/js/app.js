@@ -54,7 +54,7 @@ new Vue({
   },
   created: function () {
     if (Vue.prototype.$session.exists()) {
-      this.$store.state.loggedIn = true;
+      this.$store.commit("login");
     } else {
       this.$store.commit("logout");
     }
