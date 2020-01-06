@@ -35,12 +35,12 @@ describe('Finish page', function () {
   })
 
   it('Should show the the final mark', function () {
-    cy.get('.finalMarkInput').should('have.value', '4')
+    cy.get('.final-mark').should('have.value', '4')
   })
 
   it('Should show the new mark if changed', function () {
-    cy.get('.finalMarkInput').type('.8')
-    cy.get('.finalMarkInput').should('have.value', '4.8')
+    cy.get('.final-mark').type('.8')
+    cy.get('.final-mark').should('have.value', '4.8')
   })
 
   it('Should show a message when mark is successfully finalized', function () {
@@ -65,5 +65,24 @@ describe('Finish page', function () {
     cy.get('.toasted-container.top-right')
       .should('be.visible')
       .and('contain', 'Je beoordeling kon niet definitief worden gemaakt. Probeer het nog eens')
+  })
+})
+
+describe('Finalized page', function () {
+  before(function () {
+    cy.login('BV0111996@windesheim.nl', 'Welkom01!')
+    cy.openEditAssessmentPage()
+    cy.openFinalizedFinishPage()
+  })
+
+  after(function () {
+    cy.backToSummaryPage()
+    cy.backToBrowsePage()
+    cy.backToDashboardPage()
+    cy.logout()
+  })
+
+  it('Should be impossible to make result final if assessment is already finalized', function () {
+    cy.get('button').contains('Cijfer definitief maken').should('be.disabled')
   })
 })
