@@ -40,7 +40,8 @@
         "details": "Details",
         "finalize_mark": "Make result final",
         "finalize_mark_confirm": "Are you sure that you want to complete this assessment? You cannot adjust the assessment once completed.",
-        "show_summary": "View summary"
+        "show_summary": "View summary",
+        "has_to_be_finalized": "Attention: this result still has to be finalized by the first examinator ({name})."
     },
     "assessment": {
         "new": "New assessment",
