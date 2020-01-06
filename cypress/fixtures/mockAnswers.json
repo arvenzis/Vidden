@@ -14,7 +14,7 @@
         },
         {
           "id": 2,
-          "assessmentMetadataId": 1,
+          "assessmentMetadataId": 1, 
           "groupId": 1,
           "createdById": 6,
           "question": "Complexiteit blijkt uit:",
