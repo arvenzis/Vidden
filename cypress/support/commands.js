@@ -127,11 +127,22 @@ Cypress.Commands.add('openFinishPage', () => {
   cy.server()
   cy.route('GET', 'api/assessment/1/fullsummary/6', 'fixture:mockFullSummary').as('getFullSummary')
   cy.route('GET', 'api/assessment/1', 'fixture:mockAssessment').as('getAssessment')
-  cy.get('.sidebar').get('.open-button').click()
-  cy.get('span.child-title').contains('Communicatie').click()
+  cy.get('.sidebar--open-button').click()
+  cy.get('.sidebar__group--child--title').contains('Communicatie').click()
   cy.get('a').contains('Bevestigen').click() 
-  cy.wait(['@getAssessment'])
+  cy.wait(['@getAssessment', '@getFullSummary'])
 })
+
+Cypress.Commands.add('openFinalizedFinishPage', () => {
+  cy.server()
+  cy.route('GET', 'api/assessment/1/fullsummary/6', 'fixture:mockFullSummaryFinal').as('getFullSummaryFinal')
+  cy.route('GET', 'api/assessment/1', 'fixture:mockAssessmentFinal').as('getAssessmentFinal')
+  cy.get('.sidebar--open-button').click()
+  cy.get('.sidebar__group--child--title').contains('Communicatie').click()
+  cy.get('a').contains('Bevestigen').click()
+  cy.wait(['@getAssessmentFinal', '@getFullSummaryFinal'])
+})
+
 
 Cypress.Commands.add('backToEditAssessmentPage', () => {
   cy.server()
