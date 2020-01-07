@@ -6,10 +6,8 @@ describe('Finish page', function () {
   })
 
   after(function () {
-    cy.backToEditAssessmentPage()
-    cy.backToSummaryPage()
     cy.backToBrowsePage()
-    cy.backToDashboardPage()
+    cy.backToDashboardPage() 
     cy.logout()
   })
 
@@ -48,24 +46,11 @@ describe('Finish page', function () {
       status: 200
     })
     cy.route('POST', 'api/assessment/finalize', { userId: "7", assessmentMetaId: "3", finalMark: 8 }).as('finalize')
+    cy.route('GET', 'api/Assessment/1', 'fixture:mockAssessment').as('getAssessment')
     cy.get('button').contains('Cijfer definitief maken').click()
-    cy.wait(['@finalize'])
-    cy.get('.toasted-container.top-right')
-      .should('be.visible')
-      .and('contain', 'Je beoordeling is definitief')
-  })
-
-  it('Should show an error message when incomplete assessment is finalized', function () {
-    cy.server({
-      status: 400
-    })
-    cy.route('POST', 'api/assessment/finalize', { userId: "7", assessmentMetaId: "3", finalMark: null }).as('finalize')
-    cy.get('button').contains('Cijfer definitief maken').click()
-    cy.wait(['@finalize'])
-    cy.get('.toasted-container.top-right')
-      .should('be.visible')
-      .and('contain', 'Je beoordeling kon niet definitief worden gemaakt. Probeer het nog eens')
-  })
+    cy.wait(['@finalize', '@getAssessment'])
+    cy.get('.success.flash__message').should('contain', 'Je beoordeling is definitief gemaakt')
+  })  
 })
 
 describe('Finalized page', function () {
