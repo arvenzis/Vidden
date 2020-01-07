@@ -56,27 +56,7 @@ describe('Summary page', function () {
     cy.wait(['@finalizeMeta'])
   })
 
-  it("Should show a message if assessment is successfully finalized", function () {
-    cy.server({
-      status: 200
-    })
-    cy.route('POST', 'api/assessment/finalizemeta', { userId: 6, assessmentMetaId: "13", finalMark: "9.0" }).as('finalizeMeta')    
-    cy.get('button').contains('Cijfer definitief maken').click()      
-    cy.wait(['@finalizeMeta'])
-    cy.get('.toasted-container.top-right')
-      .should('be.visible')
-      .and('contain', 'Je beoordeling is definitief gemaakt')
-  })
-
-  it("Should show a message if assessment is not successfully finalized", function () {
-    cy.server({
-      status: 400
-    })
-    cy.route('POST', 'api/assessment/finalizemeta', { userId: 6, assessmentMetaId: "13", finalMark: "9.0" }).as('finalizeMeta')
-    cy.get('button').contains('Cijfer definitief maken').click()
-    cy.wait(['@finalizeMeta'])
-    cy.get('.toasted-container.top-right')
-      .should('be.visible')
-      .and('contain', 'Er is iets misgegaan bij het afronden van de beoordeling')
+  it("Shouldn't be able to finalize assessment if forms are not completely filled in", function () {
+    cy.get('button').contains('Cijfer definitief maken').should('be.disabled')    
   })
 })
