@@ -23,7 +23,7 @@
         "all": "All assessments",
         "my": "My assessments",
         "pages": "Page {page} of {total}",
-        "last_updated": "Last updated {date} by {user}",
+        "created_at": "Created at {date} by {user}",
         "open": "Open assessment"
     },
     "summary": {

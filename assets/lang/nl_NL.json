@@ -23,7 +23,7 @@
         "all": "Alle beoordelingen",
         "my": "Mijn beoordelingen",
         "pages": "Pagina {page} van {total}",
-        "last_updated": "Laatst bijgewerkt {date} door {user}",
+        "created_at": "Aangemaakt op {date} door {user}",
         "open": "Open beoordeling"
     },
     "summary": {

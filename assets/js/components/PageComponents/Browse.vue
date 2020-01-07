@@ -26,7 +26,7 @@
                 <div class="card-footer">
                   <small class="text-muted">
                     <span v-for="examinator in item.examinator" v-bind:key="examinator.account">
-                      {{ $t('browse.last_updated', { date: item.date_last_modified, user: examinator.naam + ' (' + examinator.account + ')' }) }}
+                      {{ $t('browse.created_at', { date: item.date_last_modified, user: examinator.naam + ' (' + examinator.account + ')' }) }}
                     </span>
                   </small>
                 </div>
@@ -59,7 +59,7 @@
                 <div class="card-footer">
                   <small class="text-muted">
                     <span v-for="examinator in item.examinator" v-bind:key="examinator.account">
-                      {{ $t('browse.last_updated', { date: item.date_last_modified, user: examinator.naam + ' (' + examinator.account + ')' }) }}
+                      {{ $t('browse.created_at', { date: item.date_last_modified, user: examinator.naam + ' (' + examinator.account + ')' }) }}
                     </span>
                   </small>
                 </div>
@@ -183,8 +183,8 @@
                     naam: response.data[x].student.fullName
                   }
                 ],
-                date_created: createdAt.toLocaleString().slice(0, -3),
-                date_last_modified: updatedAt.toLocaleString().slice(0, -3),
+                date_created: createdAt.toLocaleString('nl-NL').slice(0, -9).replace(',', ' '),
+                date_last_modified: updatedAt.toLocaleString('nl-NL').slice(0, -9).replace(',', ' '),
                 examinator: [
                   {
                     account: response.data[x].firstTeacher.accountNumber,
