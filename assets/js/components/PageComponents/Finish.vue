@@ -177,10 +177,13 @@ export default {
                     "finalMark": mark
                   }, { headers: { "Authorization": this.$session.get('jwt') }})
               .then(() => {
-                Vue.toasted.show(this.$t('success.mark_final'), {
-                  type: 'success',
-                  duration: 1000
+                // Set a success message
+                this.flash(this.$t('success.mark_final'), 'success', { 
+                    timeout: 2000
                 });
+
+                // Push to the summary page
+                this.$router.push('/summary/' + this.assessmentMetadataId);
             }).catch(() => {
                 Vue.toasted.show(this.$t('error.mark_final'), {
                   type: 'error',
