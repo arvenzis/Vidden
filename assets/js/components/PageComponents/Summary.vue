@@ -36,17 +36,17 @@
               </tr>
             </table>
           </div>
-          <div class="col-sm-4 col-md-4">
+          <div class="col-sm-4 col-md-4" v-if="finalMark !== 0">
             <div :class="'card--' + finalMarkDescription">
               <div class="card-body">
-                  <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
-                  <span v-if="currentUserId !== firstTeacherId">
-                    <h1 class="text-center">{{ finalMark }}</h1>
-                  </span>
-                  <span v-else>
-                    <h1 class="text-center"><input type="number" v-model.number="finalMark" step="0.0" class="final-mark" :disabled="modifyFinalMarkDisabled" /></h1>
-                    <button type="button" class="btn btn-light btn-block mt-1" @click="finalizeAssessmentMeta(finalMark)" :disabled="modifyFinalMarkDisabled">{{ $t('summary.finalize_mark') }}</button>
-                  </span>
+                <h6 class="card-heading">{{ $t('summary.computed_result') }}</h6>
+                <span v-if="currentUserId !== firstTeacherId">
+                  <h1 class="text-center">{{ finalMark }}</h1>
+                </span>
+                <span v-else>
+                  <h1 class="text-center"><input type="number" v-model.number="finalMark" step="0.0" class="final-mark" :disabled="modifyFinalMarkDisabled" /></h1>
+                  <button type="button" id="finalizebutton" class="btn btn-light btn-block mt-1" @click="finalizeAssessmentMeta(finalMark)" :disabled="modifyFinalMarkDisabled">{{ $t('summary.finalize_mark') }}</button>
+                </span>    
               </div>
             </div>
             <div class="alert alert-info mt-2" v-if="currentUserId !== firstTeacherId">{{ $t('summary.has_to_be_finalized', { name: firstTeacherName }) }}</div>
@@ -120,7 +120,7 @@
         return p.status
       },
       calculateAverageMark(firstTeacherMark, secondTeacherMark) {
-        return ((firstTeacherMark + secondTeacherMark) / 2).toFixed(1);
+        return (firstTeacherMark || secondTeacherMark !== null ? ((firstTeacherMark + secondTeacherMark) / 2).toFixed(1) : 0);
       },
       getMarkDescription(mark) {
         if (mark < 5.5) {
@@ -150,6 +150,9 @@
                     "finalMark": finalMark
                   }, { headers: {"Authorization": this.$session.get('jwt') }
           }).then(() => {
+            // Disable the finalize button in the dom
+            document.getElementById("finalizebutton").disabled = true;
+            
             Vue.toasted.show(this.$t("success.mark_final"), {
               type: "success",
               duration: 2000
@@ -215,8 +218,8 @@
           this.final = (response.data.status === 3);
           this.firstTeacherId = response.data.firstTeacherId;
           this.firstTeacherName = response.data.firstTeacher.fullName;
-          this.finalMark = this.calculateAverageMark(response.data.firstTeacherMark, response.data.secondTeacherMark);
-          this.finalMarkDescription = this.getMarkDescription(this.finalMark);
+          this.finalMark = (response.data.secondTeacherMark !== null ? this.calculateAverageMark(response.data.firstTeacherMark, response.data.secondTeacherMark) : 0);
+          this.finalMarkDescription = (response.data.secondTeacherMark !== null ? this.getMarkDescription(this.finalMark) : '');
 
           Vue.toasted.show(this.$t('success.loading'), {
             type: 'success',
