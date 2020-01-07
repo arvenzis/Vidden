@@ -83,6 +83,7 @@
           if (this.right) {
             this.$refs.sideNav.style.left = 'auto';
             this.$refs.sideNav.style.right = '0px';
+            this.$refs.sidebarButton.style.boxShadow = 'none';
           }
           this.$nextTick(function() {
             this.$refs.sideNav.style.width = this.width
@@ -95,6 +96,7 @@
           this.$emit('closeMenu');
           this.isSideBarOpen = false;
           this.$refs.sideNav.style.width = '0px';
+          this.$refs.sidebarButton.style.boxShadow = '1px 0 2px 1px rgba(0, 0, 0, 0.38)'; // If only we could simply revert the style to the initial value, but no, Javascript has to be a pain in the ass.
         },
 
         closeMenuOnEsc(e) {
