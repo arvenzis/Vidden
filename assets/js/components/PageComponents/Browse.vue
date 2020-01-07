@@ -109,6 +109,7 @@
       };
     },
     methods: {
+      // Figure out which tab to show
       showTab: function (e, index) {
         if (index === 0) {
           this.showAll = true
@@ -156,6 +157,7 @@
         }
         return allAccountItems
       },
+      // Get all assessments from API
       getAssessments: function () {
         this.loading = true;
         const ENDPOINTS = "Assessment/GetAssessments/";

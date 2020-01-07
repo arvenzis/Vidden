@@ -93,6 +93,7 @@
         data () {
             return {
                 currentUserId: this.$store.getters.getCurrentUserId,
+                // Next eight properties are necessary because of using the ModelSelect component
                 studentOptions: [],
                 templateOptions: [],
                 oecodeOptions: [],
@@ -181,6 +182,9 @@
                      });
             },
             getOeCodes() {
+                // Currently there is only one code available
+                // if we expand the application then it makes sense to put these in a db table
+                // and make an api call
                 this.oecodeOptions = [
                     {
                         value: 'ICT.AFSTSE.D19',

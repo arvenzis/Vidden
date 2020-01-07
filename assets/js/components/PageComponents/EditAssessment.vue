@@ -253,7 +253,7 @@
                     this.scrollToTop();
                     return true;
                 }
-
+                // Push to the finish page
                 this.$router.push('/finish/' + this.assessmentMetadataId + '/' + this.examinatorId);
                 return false;
             },
@@ -353,6 +353,7 @@
                 let tmpMenu = [];
                 let a = 0;
 
+                // Build an endpoint foreach compentence
                 menuItems.forEach(function (subject) {
                     urlArray.push(`assessment/GetSummary/${self.assessmentMetadataId}/${subject.groupId}/${self.examinatorId}`)
                 });
@@ -463,6 +464,7 @@
 
                 return true;
             },
+            // Reset an array order previously messed up by another action
             mapOrder(array, order, key) {
                 array.sort(function (a, b) {
                     var A = a[key],
